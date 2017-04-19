@@ -1,0 +1,28 @@
+# List all files colorized in long format
+alias ll='ls -lh'
+
+# List all files colorized in long format, including dot files
+alias la="ls -lhA"
+
+# List only directories
+alias lsd='ls -l | grep "^d"'
+
+# Always use color output for `ls`
+alias ls="ls -G"
+
+# Move up directories
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+
+
+
+# IP Address
+alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
+
+# Local IP Address
+alias ipl="ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'"
+
+
+# Git
+alias g="git"
