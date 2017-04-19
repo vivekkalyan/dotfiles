@@ -27,6 +27,9 @@ for DOTFILE in "$DOTFILES_DIR"/system/.{path,alias,prompt,rvm}; do
   [ -r "$DOTFILE" ] && source "$DOTFILE"
 done
 
+# Set LSCOLORS
+eval "$(gdircolors "$DOTFILES_DIR"/system/.dir_colors)"
+
 # Settings for virtualenvwrapper
 export WORKON_HOME=$HOME/.virtualenvs
 export PROJECT_HOME=$HOME/.virtualenvs
