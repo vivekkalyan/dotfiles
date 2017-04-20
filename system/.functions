@@ -1,0 +1,52 @@
+
+# resize and optimize image
+# using test results from https://www.smashingmagazine.com/2015/06/efficient-image-resizing-with-imagemagick/
+smartresize() {
+  
+  if [ ! "$#" -eq 3 ]; then
+    echo "Usage: smartresize image width output_dir"
+    return 1
+  fi
+
+  mogrify -path $3 -filter Triangle -define filter:support=2.0 -thumbnail $2 -unsharp 0.25x0.08+8.3+0.045 -dither None -posterize 136 -quality 82 -define jpeg:fancy-upsampling=off -define png:compression-filter=5 -define png:compression-level=9 -define png:compression-strategy=1 -define png:exclude-chunk=all -interlace none -colorspace sRGB $1
+  
+  if [ ! -f ./i_o.yml ]; then
+  RM="1"
+    echo "nice: 10" > ./i_o.yml
+    echo "verbose: true" > ./i_o.yml
+    echo "pack: true" > ./i_o.yml
+    echo "skip_missing_workers: true" > ./i_o.yml
+    echo "allow_lossy: false" > ./i_o.yml
+    echo "advpng:" > ./i_o.yml
+    echo "  level: 4" > ./i_o.yml
+    echo "gifsicle:" > ./i_o.yml
+    echo "  interlace: false" > ./i_o.yml
+    echo "  level: 3" > ./i_o.yml
+    echo "  careful: true" > ./i_o.yml
+    echo "jpegoptim:" > ./i_o.yml
+    echo "  strip: all" > ./i_o.yml
+    echo "  max_quality: 100" > ./i_o.yml
+    echo "jpegrecompress:" > ./i_o.yml
+    echo "  quality: 3" > ./i_o.yml
+    echo "jpegtran:" > ./i_o.yml
+    echo "  copy_chunks: false" > ./i_o.yml
+    echo "  progressive: false" > ./i_o.yml
+    echo "  jpegrescan: true" > ./i_o.yml
+    echo "optipng:" > ./i_o.yml
+    echo "  level: 7" > ./i_o.yml
+    echo "  interlace: false" > ./i_o.yml
+    echo "  strip: true" > ./i_o.yml
+    echo "pngcrush:" > ./i_o.yml
+    echo "  chunks: alla" > ./i_o.yml
+    echo "  fix: true" > ./i_o.yml
+    echo "  brute: true" > ./i_o.yml
+    echo "  blacken: true" > ./i_o.yml
+    echo "pngquant:" > ./i_o.yml
+    echo "  quality: 100..100" > ./i_o.yml
+    echo "  speed: 1" > ./i_o.yml
+  fi
+  image_optim -r $3 --config-paths i_o.yml
+  if [ $RM -eq "1" ]; then
+    rm ./i_o.yml
+  fi
+}

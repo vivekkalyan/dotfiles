@@ -23,7 +23,7 @@ else
 fi
 
 # Load the shell dotfiles, and then some:
-for DOTFILE in "$DOTFILES_DIR"/system/.{path,alias,prompt,rvm}; do
+for DOTFILE in "$DOTFILES_DIR"/system/.{path,alias,prompt,rvm,functions}; do
   [ -r "$DOTFILE" ] && source "$DOTFILE"
 done
 

@@ -19,6 +19,7 @@ apps=(
   # hub
   # httpie
   imagemagick
+  image_optim
   # jq
   # mackup
   # peco
