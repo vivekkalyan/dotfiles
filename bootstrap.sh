@@ -6,6 +6,8 @@ export DOTFILES_DIR
 
 # symlinks
 ln -sfv "$DOTFILES_DIR/startup/.bash_profile" ~
+ln -sfv "$DOTFILES_DIR/git/.gitconfig" ~
+ln -sfv "$DOTFILES_DIR/git/.gitignore" ~
 
 # Package Managers and packages
 . "$DOTFILES_DIR/install/brew.sh"

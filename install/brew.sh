@@ -9,6 +9,7 @@ brew upgrade
 apps=(
   # bash-completion2
   coreutils
+  diff-so-fancy
   # dockutil
   # fasd
   # gifsicle

@@ -1,0 +1,120 @@
+[user]
+  name = Vivek Kalyan
+  email = vivekkalyansk@gmail.com
+
+[github]
+  user = bowsplinter
+
+[credential]
+  helper = osxkeychain
+
+[core]
+  excludesfile = ~/.gitignore
+
+  whitespace = space-before-tab,-indent-with-non-tab,trailing-space
+  # Treat spaces before tabs and all kinds of trailing whitespace as an error
+  # [default] trailing-space: looks for spaces at the end of a line
+  # [default] space-before-tab: looks for spaces before tabs at the beginning of a line
+
+  trustctime = false
+  # Make `git rebase` safer on macOS
+  # More info: <http://www.git-tower.com/blog/make-git-rebase-safe-on-osx/>
+
+[pager]
+  diff = diff-highlight | diff-so-fancy | less --tabs=4 -RFX
+
+[apply]
+  whitespace = fix
+  # Detect whitespace errors when applying a patch
+
+[alias]
+  a = add
+  c = commit
+  cm = commit -m
+  co = checkout
+  df = diff --word-diff
+  f = fetch
+  rb = rebase
+  rbm = rebase origin/master
+  s = status
+  p = push
+  pm = push origin master
+
+  tags = tag -l
+  branches = branch -a
+  remotes = remote -v
+  # Show verbose output about tags, branches or remotes
+
+  amend = commit --amend --reuse-message=HEAD
+  # Add on to last commit
+
+  show-ignored = "! git clean -ndX | perl -pe 's/Would remove/Ignored:/'"
+  # show all ignored files
+
+  prune = fetch --prune
+  # Clean up any remote tracking references that no longer exist on remote
+  # https://git-scm.com/docs/git-fetch#git-fetch--p
+
+  undo = reset --soft HEAD~
+  # Undo last commit
+  # https://git-scm.com/docs/git-reset#git-reset-emgitresetemltmodegtltcommitgt
+
+  stash-all = stash save --include-untracked
+  # Make sure to save un-added files
+  # https://git-scm.com/docs/git-stash
+
+  l = log --pretty=oneline -n 20 --abbrev-commit
+  # View abbreviated SHA, description of the latest 20 commits
+  ll = log --pretty=oneline --graph --abbrev-commit
+  lll = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+  # A nice, colorful, graphical representation of log
+  # https://git-scm.com/docs/git-log
+
+[diff]
+  renames = copies
+  # Detect copies as well as renames
+
+[merge]
+  ff = only
+  # Always use rebase workflow
+  # Global option applies to all merges, including those done during a git pull
+  # https://git-scm.com/docs/git-config#git-config-mergeff
+  log = true
+  # Include summaries of merged commits in newly created merge commit messages
+
+  conflictstyle = diff3
+  # Standard diff is two sets of final changes. This introduces the original text before each side's changes.
+  # https://git-scm.com/docs/git-config#git-config-mergeconflictStyle
+
+[push]
+  default = simple
+  # "push the current branch back to the branch whose changes are usually integrated into the current branch"
+  # "refuse to push if the upstream branch’s name is different from the local one"
+  # https://git-scm.com/docs/git-config#git-config-pushdefault
+
+[help]
+  autocorrect = 20
+  # autocorrects and runs correct command after 2s
+
+[color]
+  ui = always
+[color "status"]
+  added = yellow
+  changed = green
+  untracked = cyan
+[color "branch"]
+  current = yellow reverse
+  local = yellow
+  remote = green
+[color "diff"]
+  meta = yellow bold
+  commit = green bold
+  frag = magenta bold
+  old = red bold
+  new = green bold
+  whitespace = red reverse
+[color "diff-highlight"]
+  oldNormal = red bold
+  oldHighlight = "red bold 52"
+  newNormal = "green bold"
+  newHighlight = "green bold 22"

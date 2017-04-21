@@ -40,3 +40,7 @@ alias ps="ps aux"
 
 # Search Process Status (dont show searching grep process)
 alias psg="ps | grep -v grep | grep -i -e VSZ -e"
+
+# Create python3 virtualenv
+alias mkvirtualenv3="mkvirtualenv --python=/usr/local/bin/python3"
+alias mkproject3="mkproject --python=/usr/local/bin/python3"

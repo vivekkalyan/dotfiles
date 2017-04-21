@@ -32,7 +32,7 @@ eval "$(gdircolors "$DOTFILES_DIR"/system/.dir_colors)"
 
 # Settings for virtualenvwrapper
 export WORKON_HOME=$HOME/.virtualenvs
-export PROJECT_HOME=$HOME/.virtualenvs
+export PROJECT_HOME=$HOME/personal
 source /usr/local/bin/virtualenvwrapper.sh
 
 
