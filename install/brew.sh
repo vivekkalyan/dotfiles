@@ -25,6 +25,7 @@ apps=(
   # mackup
   # peco
   # psgrep
+  postgresql
   python
   # shellcheck
   # ssh-copy-id
@@ -34,3 +35,5 @@ apps=(
 )
 
 brew install "${apps[@]}"
+
+ln -sfv /usr/local/opt/postgresql/homebrew.mxcl.postgresql.plist ~/Library/LaunchAgents
