@@ -12,7 +12,7 @@ alias ll='ls -lhF'
 alias la="ls -lhFA"
 
 # List only directories
-alias lsd='ls -l | grep "^d"'
+alias lsd='ls -lhF | grep "^d"'
 
 # Always use color output for `ls` (use coreutils ls for dircolors)
 alias ls="gls ${colorflag}"
