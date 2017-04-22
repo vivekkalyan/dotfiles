@@ -1,3 +1,10 @@
+pip-install-save() {
+  for pkg in $@; do
+        pip install "$pkg"
+    done
+    pip freeze > requirements.txt;
+}
+
 
 # resize and optimize image
 # using test results from https://www.smashingmagazine.com/2015/06/efficient-image-resizing-with-imagemagick/
