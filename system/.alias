@@ -48,3 +48,6 @@ alias mkproject3="mkproject --python=/usr/local/bin/python3"
 # postgres
 alias pgstart="launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist"
 alias pgstop="launchctl unload ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist"
+
+# Create python server in current directory
+alias pyserver="python -m SimpleHTTPServer"
