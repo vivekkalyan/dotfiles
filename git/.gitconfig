@@ -28,8 +28,8 @@
   # Detect whitespace errors when applying a patch
 
 [alias]
-  a = add
-  aa = add --all
+  a = "!git add $1 && git status && :" 
+  aa = "!git add --all && git status && :"
   c = commit
   cm = commit -m
   co = checkout
