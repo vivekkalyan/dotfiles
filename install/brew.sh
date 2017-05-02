@@ -23,6 +23,7 @@ apps=(
   image_optim
   # jq
   # mackup
+  mysql
   # peco
   # psgrep
   postgresql
@@ -30,6 +31,7 @@ apps=(
   # shellcheck
   # ssh-copy-id
   # tree
+  tomcat
   wget
   wireshark --with-qt
 )
@@ -37,3 +39,4 @@ apps=(
 brew install "${apps[@]}"
 
 ln -sfv /usr/local/opt/postgresql/homebrew.mxcl.postgresql.plist ~/Library/LaunchAgents
+ln -sfv /usr/local/opt/mysql/*.plist ~/Library/LaunchAgents
