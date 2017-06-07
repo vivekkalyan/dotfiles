@@ -51,7 +51,7 @@ alias pgstop="launchctl unload ~/Library/LaunchAgents/homebrew.mxcl.postgresql.p
 
 # mysql
 alias mystart="launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.mysql.plist"
-alisa mystop="launchctl unload ~/Library/LaunchAgents/homebrew.mxcl.mysql.plist"
+alias mystop="launchctl unload ~/Library/LaunchAgents/homebrew.mxcl.mysql.plist"
 
 # Create python server in current directory
 alias pyserver="python -m SimpleHTTPServer"
