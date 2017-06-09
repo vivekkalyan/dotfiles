@@ -20,7 +20,6 @@ apps=(
   # hub
   # httpie
   imagemagick
-  image_optim
   # jq
   # mackup
   mysql
@@ -40,5 +39,5 @@ apps=(
 
 brew install "${apps[@]}"
 
-ln -sfv /usr/local/opt/postgresql/homebrew.mxcl.postgresql.plist ~/Library/LaunchAgents
-ln -sfv /usr/local/opt/mysql/*.plist ~/Library/LaunchAgents
+ln -sfv /usr/local/opt/postgresql/homebrew.mxcl.postgresql.plist ~/Library/LaunchAgents/
+ln -sfv /usr/local/opt/mysql/homebrew.mxcl.mysql.plist ~/Library/LaunchAgents/
