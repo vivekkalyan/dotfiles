@@ -11,7 +11,7 @@ apps=(
   coreutils
   diff-so-fancy
   # dockutil
-  # fasd
+  fasd
   # gifsicle
   git
   # git-extras
@@ -34,6 +34,8 @@ apps=(
   tomcat
   wget
   wireshark --with-qt
+  zsh
+  zsh-completions
 )
 
 brew install "${apps[@]}"
