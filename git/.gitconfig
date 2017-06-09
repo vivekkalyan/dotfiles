@@ -28,7 +28,7 @@
   # Detect whitespace errors when applying a patch
 
 [alias]
-  a = "!git add $1 && git status && :" 
+  a = "!git add $@ && git status && :" 
   aa = "!git add --all && git status && :"
   c = commit
   cm = commit -m
@@ -41,6 +41,7 @@
   rbi = rebase --interactive
   rbs = rebase --skip
   rbm = rebase origin/master
+  reset = reset HEAD $@
   s = status
   p = push
   pm = push origin master
