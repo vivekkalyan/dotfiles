@@ -22,7 +22,7 @@ for DOTFILE in "$DOTFILES_DIR"/system/.{path,alias,rvm,functions}; do
   [ -r "$DOTFILE" ] && source "$DOTFILE"
 done
 
-for DOTFILE in "$DOTFILES_DIR"/system/fasd.zsh; do
+for DOTFILE in "$DOTFILES_DIR"/system/{async,prompt,fasd}.zsh; do
   echo $DOTFILE
   [ -r "$DOTFILE" ] && source "$DOTFILE"
 done

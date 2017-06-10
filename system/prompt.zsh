@@ -23,6 +23,48 @@
 # \e[K  => clears everything after the cursor on the current line
 # \e[2K => clear everything on the current line
 
+# Colors that I like
+if [[ $COLORTERM = gnome-* && $TERM = xterm ]] && infocmp gnome-256color >/dev/null 2>&1; then
+  export TERM=gnome-256color
+elif infocmp xterm-256color >/dev/null 2>&1; then
+  export TERM=xterm-256color
+fi
+
+if tput setaf 1 &> /dev/null; then
+  tput sgr0
+  if [[ $(tput colors) -ge 256 ]] 2>/dev/null; then
+    # Changed these colors to fit Solarized theme
+    MAGENTA=$(tput setaf 125)
+    ORANGE=$(tput setaf 166)
+    GREEN=$(tput setaf 64)
+    PURPLE=$(tput setaf 61)
+    WHITE=$(tput setaf 244)
+  else
+    MAGENTA=$(tput setaf 5)
+    ORANGE=$(tput setaf 4)
+    GREEN=$(tput setaf 2)
+    PURPLE=$(tput setaf 1)
+    WHITE=$(tput setaf 7)
+  fi
+  BOLD=$(tput bold)
+  RESET=$(tput sgr0)
+else
+  MAGENTA="\033[1;31m"
+  ORANGE="\033[1;33m"
+  GREEN="\033[1;32m"
+  PURPLE="\033[1;35m"
+  WHITE="\033[1;37m"
+  BOLD=""
+  RESET="\033[m"
+fi
+
+export MAGENTA
+export ORANGE
+export GREEN
+export PURPLE
+export WHITE
+export BOLD
+export RESET
 
 # turns seconds into human readable time
 # 165392 => 1d 21h 56m 32s
@@ -111,55 +153,13 @@ prompt_pure_preprompt_render() {
   # Initialize the preprompt array.
   local -a preprompt_parts
 
-  if [[ $COLORTERM = gnome-* && $TERM = xterm ]] && infocmp gnome-256color >/dev/null 2>&1; then
-  export TERM=gnome-256color
-elif infocmp xterm-256color >/dev/null 2>&1; then
-  export TERM=xterm-256color
-fi
-
-if tput setaf 1 &> /dev/null; then
-  tput sgr0
-  if [[ $(tput colors) -ge 256 ]] 2>/dev/null; then
-    # Changed these colors to fit Solarized theme
-    MAGENTA=$(tput setaf 125)
-    ORANGE=$(tput setaf 166)
-    GREEN=$(tput setaf 64)
-    PURPLE=$(tput setaf 61)
-    WHITE=$(tput setaf 244)
-  else
-    MAGENTA=$(tput setaf 5)
-    ORANGE=$(tput setaf 4)
-    GREEN=$(tput setaf 2)
-    PURPLE=$(tput setaf 1)
-    WHITE=$(tput setaf 7)
-  fi
-  BOLD=$(tput bold)
-  RESET=$(tput sgr0)
-else
-  MAGENTA="\033[1;31m"
-  ORANGE="\033[1;33m"
-  GREEN="\033[1;32m"
-  PURPLE="\033[1;35m"
-  WHITE="\033[1;37m"
-  BOLD=""
-  RESET="\033[m"
-fi
-
-export MAGENTA
-export ORANGE
-export GREEN
-export PURPLE
-export WHITE
-export BOLD
-export RESET
-
   # Set the path.
-  preprompt_parts+=('%{$BOLD%}%{$MAGENTA%}%n%{$WHITE%} at %{$ORANGE%}%m%{$WHITE%} in %{$GREEN%}%~%{$RESET%}')
+  preprompt_parts+=('%{$BOLD%}%{$GREEN%}%~%{$RESET%}')
 
   # Add git branch and dirty status info.
   typeset -gA prompt_pure_vcs_info
   if [[ -n $prompt_pure_vcs_info[branch] ]]; then
-    preprompt_parts+=("%F{$git_color}"'${prompt_pure_vcs_info[branch]}${prompt_pure_git_dirty}%f')
+    preprompt_parts+=('%{$BOLD%}%{$WHITE%}${prompt_pure_vcs_info[branch]}${prompt_pure_git_dirty}%{$RESET%}')
   fi
   # Git pull/push arrows.
   if [[ -n $prompt_pure_git_arrows ]]; then
@@ -167,7 +167,7 @@ export RESET
   fi
 
   # Username and machine, if applicable.
-  [[ -n $prompt_pure_username ]] && preprompt_parts+=('$prompt_pure_username')
+  [[ -n $prompt_pure_username ]] && preprompt_parts+=($prompt_pure_username)
   # Execution time.
   [[ -n $prompt_pure_cmd_exec_time ]] && preprompt_parts+=('%F{yellow}${prompt_pure_cmd_exec_time}%f')
 
@@ -497,16 +497,16 @@ prompt_pure_setup() {
   add-zsh-hook preexec prompt_pure_preexec
 
   # show username@host if logged in through SSH
-  [[ "$SSH_CONNECTION" != '' ]] && prompt_pure_username='%F{242}%n@%m%f'
+  [[ "$SSH_CONNECTION" != '' ]] && prompt_pure_username='%{$BOLD%}%{$MAGENTA%}%n%{$WHITE%}@%{$ORANGE%}%m%{$RESET%}'
 
   # show username@host if root, with username in white
-  [[ $UID -eq 0 ]] && prompt_pure_username='%F{white}%n%f%F{242}@%m%f'
+  [[ $UID -eq 0 ]] && prompt_pure_username='%{$BOLD%}%F{yellow}%n%{$WHITE%}@%{$ORANGE%}%m%{$RESET%}'
 
   # if a virtualenv is activated, display it in grey
   PROMPT='%(12V.%F{242}%12v%f .)'
 
   # prompt turns red if the previous command didn't exit with 0
-  PROMPT+='%(?.%{$BOLD%}%{$WHITE%}.%{$BOLD%}%F{red})${PURE_PROMPT_SYMBOL:-❯}%{$RESET%} '
+  PROMPT+='%(?.%F{magenta}.%F{red})${PURE_PROMPT_SYMBOL:-❯}%f '
 }
 
 prompt_pure_setup "$@"
