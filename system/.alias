@@ -55,3 +55,7 @@ alias mystop="launchctl unload ~/Library/LaunchAgents/homebrew.mxcl.mysql.plist"
 
 # Create python server in current directory
 alias pyserver="python -m SimpleHTTPServer"
+
+# Merge PDF files
+# Usage: `mergepdf -o output.pdf input{1,2,3}.pdf`
+alias mergepdf='/System/Library/Automator/Combine\ PDF\ Pages.action/Contents/Resources/join.py'
