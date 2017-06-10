@@ -20,4 +20,4 @@ ln -sfv "$DOTFILES_DIR/system/pure.zsh" /usr/local/share/zsh/site-functions/prom
 ln -sfv "$DOTFILES_DIR/system/async.zsh" /usr/local/share/zsh/site-functions/async
 
 # Make zsh default shell
-chsh -s zsh
+sudo chsh -s /bin/zsh
