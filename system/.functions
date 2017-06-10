@@ -1,3 +1,37 @@
+#!/bin/sh
+#
+# Usage: extract <file>
+# Description: extracts archived files / mounts disk images
+# Note: .dmg/hdiutil is macOS-specific.
+#
+# credit: http://nparikh.org/notes/zshrc.txt
+extract () {
+    if [ -z "$1" ]
+      then
+        echo "Usage: extract <file>"
+    elif [ -f $1 ]; then
+        case $1 in
+            *.tar.bz2)  tar -jxvf $1                        ;;
+            *.tar.gz)   tar -zxvf $1                        ;;
+            *.bz2)      bunzip2 $1                          ;;
+            *.dmg)      hdiutil mount $1                    ;;
+            *.gz)       gunzip $1                           ;;
+            *.tar)      tar -xvf $1                         ;;
+            *.tbz2)     tar -jxvf $1                        ;;
+            *.tgz)      tar -zxvf $1                        ;;
+            *.zip)      unzip $1                            ;;
+            *.ZIP)      unzip $1                            ;;
+            *.pax)      cat $1 | pax -r                     ;;
+            *.pax.Z)    uncompress $1 --stdout | pax -r     ;;
+            *.rar)      unrar x $1                          ;;
+            *.Z)        uncompress $1                       ;;
+            *)          echo "'$1' cannot be extracted/mounted via extract()" ;;
+        esac
+    else
+        echo "'$1' is not a valid file"
+    fi
+}
+
 pip-install-save() {
   for pkg in $@; do
         pip install "$pkg"
@@ -9,14 +43,14 @@ pip-install-save() {
 # resize and optimize image
 # using test results from https://www.smashingmagazine.com/2015/06/efficient-image-resizing-with-imagemagick/
 smartresize() {
-  
+
   if [ ! "$#" -eq 3 ]; then
     echo "Usage: smartresize image width output_dir"
     return 1
   fi
 
   mogrify -path $3 -filter Triangle -define filter:support=2.0 -thumbnail $2 -unsharp 0.25x0.08+8.3+0.045 -dither None -posterize 136 -quality 82 -define jpeg:fancy-upsampling=off -define png:compression-filter=5 -define png:compression-level=9 -define png:compression-strategy=1 -define png:exclude-chunk=all -interlace none -colorspace sRGB $1
-  
+
   if [ ! -f ./i_o.yml ]; then
   RM="1"
     echo "nice: 10" > ./i_o.yml
