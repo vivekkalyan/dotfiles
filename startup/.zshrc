@@ -1,8 +1,5 @@
-autoload -Uz compinit promptinit
+autoload -Uz compinit
 compinit
-promptinit
-PURE_PROMPT_SYMBOL=$
-prompt pure
 
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
@@ -34,7 +31,6 @@ eval "$(gdircolors "$DOTFILES_DIR"/system/.dir_colors)"
 export WORKON_HOME=$HOME/.virtualenvs
 export PROJECT_HOME=$HOME/personal
 source /usr/local/bin/virtualenvwrapper.sh
-
 
 # Clean up
 unset DOTFILE
