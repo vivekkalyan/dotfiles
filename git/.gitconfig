@@ -28,7 +28,7 @@
   # Detect whitespace errors when applying a patch
 
 [alias]
-  a = "!git add $@ && git status && :" 
+  a = "!git add $@ && git status && :"
   aa = "!git add --all && git status && :"
   c = commit
   cm = commit -m
@@ -97,6 +97,9 @@
   # "push the current branch back to the branch whose changes are usually integrated into the current branch"
   # "refuse to push if the upstream branch’s name is different from the local one"
   # https://git-scm.com/docs/git-config#git-config-pushdefault
+[pull]
+  rebase = true
+  # https://git-scm.com/docs/git-config/1.8.1.6#git-config-pullrebase
 
 [help]
   autocorrect = 20
