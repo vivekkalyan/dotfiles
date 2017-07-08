@@ -1,6 +1,6 @@
 # Add Homebrew `/usr/local/bin` and User `~/bin` to the `$PATH`
 PATH=/usr/local/bin:$PATH
 PATH=$HOME/bin:$PATH
-
 PATH=/usr/local/share/npm/bin:$PATH
+PATH=$DOTFILES_DIR/bin:$PATH
 export PATH
