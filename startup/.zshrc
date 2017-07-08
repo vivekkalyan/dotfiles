@@ -15,12 +15,10 @@ DOTFILES_DIR="$HOME/personal/dotfiles"
 
 # Load the shell dotfiles, and then some:
 for DOTFILE in "$DOTFILES_DIR"/system/.{path,alias,rvm,functions}; do
-  echo $DOTFILE
   [ -r "$DOTFILE" ] && source "$DOTFILE"
 done
 
 for DOTFILE in "$DOTFILES_DIR"/system/{async,prompt,fasd}.zsh; do
-  echo $DOTFILE
   [ -r "$DOTFILE" ] && source "$DOTFILE"
 done
 
