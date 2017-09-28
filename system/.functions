@@ -91,3 +91,13 @@ smartresize() {
     rm ./i_o.yml
   fi
 }
+
+mysqlsource() {
+  if [ -z "$1" ]; then
+    echo "Usage: mysqlsource <path_to_file>"
+  elif [ -f $1 ]; then
+    mysql -u root -p < $1
+  else
+    echo "'$1' is not a valid file"
+  fi
+}
