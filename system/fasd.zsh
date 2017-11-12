@@ -26,4 +26,4 @@ alias j='fasd_cd -d' # cd, same functionality as j in autojump
 alias jj='fasd_cd -d -i' # interactive directory jump
 
 # programs
-alias sublime='d -e subl'
+alias sublj='d -e subl'
