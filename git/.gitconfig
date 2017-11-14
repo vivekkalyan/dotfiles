@@ -21,7 +21,7 @@
   # More info: <http://www.git-tower.com/blog/make-git-rebase-safe-on-osx/>
 
 [pager]
-  diff = diff-highlight | diff-so-fancy | less --tabs=4 -RFX
+  diff = /usr/local/share/git-core/contrib/diff-highlight/diff-highlight | diff-so-fancy | less --tabs=4 -RFX
 
 [apply]
   whitespace = fix
@@ -81,7 +81,7 @@
   # Detect copies as well as renames
 
 [merge]
-  ff = only
+  # ff = only
   # Always use rebase workflow
   # Global option applies to all merges, including those done during a git pull
   # https://git-scm.com/docs/git-config#git-config-mergeff
@@ -98,7 +98,7 @@
   # "refuse to push if the upstream branch’s name is different from the local one"
   # https://git-scm.com/docs/git-config#git-config-pushdefault
 [pull]
-  rebase = true
+  # rebase = true
   # https://git-scm.com/docs/git-config/1.8.1.6#git-config-pullrebase
 
 [help]
