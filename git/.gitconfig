@@ -80,6 +80,10 @@
   renames = copies
   # Detect copies as well as renames
 
+[diff "pandoc"]
+  textconv=pandoc --to=markdown
+  prompt = false
+
 [merge]
   # ff = only
   # Always use rebase workflow
