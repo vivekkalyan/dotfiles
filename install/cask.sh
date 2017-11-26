@@ -1,6 +1,6 @@
 apps=(
   cheatsheet
-  chrome
+  firefox
   flux
   iterm2
   sublime-text
