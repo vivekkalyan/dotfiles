@@ -30,6 +30,7 @@ apps=(
   python
   # shellcheck
   # ssh-copy-id
+  tldr
   # tree
   tomcat
   wget
