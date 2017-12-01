@@ -14,7 +14,6 @@ fi
 apps=(
   # bash-completion2
   coreutils
-  diff-so-fancy
   # dockutil
   fasd
   # gifsicle
@@ -29,6 +28,7 @@ apps=(
   # mackup
   mysql
   mobile-shell
+  npm
   pandoc
   # peco
   # psgrep
