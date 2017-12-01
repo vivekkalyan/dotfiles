@@ -15,7 +15,7 @@ if [[ "$OS" = "macOS" ]]; then
     . "$DOTFILES_DIR/install/brew.sh"
     . "$DOTFILES_DIR/install/cask.sh"
 else
-    echo "Linux"
+    . "$DOTFILES_DIR/install/apt.sh"
 fi
 
 . "$DOTFILES_DIR/install/pip.sh"
