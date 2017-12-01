@@ -1,13 +1,13 @@
-# Install Homebrew
+#!/usr/bin/env bash
 
-if [ "$OS" = "macOS" ]; then
+# Install Homebrew or make sure it's up to date
+which -s brew
+if [[ $? != 0 ]] ; then
   ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 else
-  sh -c "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh)"
+  brew update
+  brew upgrade
 fi
-
-brew update
-brew upgrade
 
 # Install packages
 
@@ -47,5 +47,9 @@ apps=(
 
 brew install "${apps[@]}"
 
+# Cleanup
+brew cleanup
+
+# Link applications
 ln -sfv /usr/local/opt/postgresql/homebrew.mxcl.postgresql.plist ~/Library/LaunchAgents/
 ln -sfv /usr/local/opt/mysql/homebrew.mxcl.mysql.plist ~/Library/LaunchAgents/

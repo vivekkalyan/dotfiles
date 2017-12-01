@@ -5,15 +5,20 @@ DOTFILES_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # OS
 if [ "$(uname -s)" = "Darwin" ]; then
-  OS="macOS"
+    OS="macOS"
 else
-  OS=$(uname -s)
+    OS=$(uname -s)
 fi
 
 # Package Managers and packages
-# . "$DOTFILES_DIR/install/brew.sh"
-# . "$DOTFILES_DIR/install/cask.sh"
-# . "$DOTFILES_DIR/install/pip.sh"
+if [[ "$OS" = "macOS" ]]; then
+    . "$DOTFILES_DIR/install/brew.sh"
+    . "$DOTFILES_DIR/install/cask.sh"
+else
+    echo "Linux"
+fi
+
+. "$DOTFILES_DIR/install/pip.sh"
 
 # symlinks
 # ln -sfv "$DOTFILES_DIR/startup/.bash_profile" ~
