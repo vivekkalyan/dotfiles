@@ -23,6 +23,7 @@ apps=(
   # jq
   # mackup
   mysql
+  mobile-shell
   pandoc
   # peco
   # psgrep
