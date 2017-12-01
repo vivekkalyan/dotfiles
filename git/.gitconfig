@@ -21,7 +21,7 @@
   # More info: <http://www.git-tower.com/blog/make-git-rebase-safe-on-osx/>
 
 [pager]
-  diff = /usr/local/share/git-core/contrib/diff-highlight/diff-highlight | diff-so-fancy | less --tabs=4 -RFX
+  diff = diff-so-fancy | less --tabs=4 -RFX
 
 [apply]
   whitespace = fix
@@ -126,7 +126,7 @@
   old = red bold
   new = green bold
   whitespace = red reverse
-[color "diff-highlight"]
+[color "diff-so-fancy"]
   oldNormal = red bold
   oldHighlight = "red bold 52"
   newNormal = "green bold"
