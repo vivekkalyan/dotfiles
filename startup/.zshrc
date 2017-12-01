@@ -11,7 +11,16 @@ else
   OS=$(uname -s)
 fi
 
-DOTFILES_DIR="$HOME/personal/dotfiles"
+# Get dotfiles directory
+SOURCE=${(%):-%N}
+while [ -h "$SOURCE" ]; do
+  DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+  SOURCE="$(readlink "$SOURCE")"
+  [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
+done
+
+DOTFILES_DIR="$( cd -P "$( dirname "$( dirname "$SOURCE" )" )" && pwd )"
+
 
 # Load the shell dotfiles, and then some:
 for DOTFILE in "$DOTFILES_DIR"/system/.{path,alias,rvm,functions}; do
