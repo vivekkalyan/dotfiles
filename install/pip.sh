@@ -1,1 +1,1 @@
-pip install virtualenv virtualenvwrapper
+sudo pip install virtualenv virtualenvwrapper
