@@ -8,7 +8,7 @@ set expandtab           " tabs are spaces
 set shiftwidth=4
 
 " UI Config
-set number              " show line numbers
+set relativenumber              " show line numbers
 set showcmd             " show command in bottom bar
 set cursorline          " highlight current line
 
