@@ -11,3 +11,9 @@ set shiftwidth=4
 set number              " show line numbers
 set showcmd             " show command in bottom bar
 set cursorline          " highlight current line
+
+" Movement
+noremap   <Up>     <NOP>
+noremap   <Down>   <NOP>
+noremap   <Left>   <NOP>
+noremap   <Right>  <NOP>
