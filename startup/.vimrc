@@ -8,9 +8,11 @@ set expandtab           " tabs are spaces
 set shiftwidth=4
 
 " UI Config
-set relativenumber              " show line numbers
+set relativenumber      " show line numbers
 set showcmd             " show command in bottom bar
 set cursorline          " highlight current line
+set lazyredraw          " redraw only when we need to.
+set showmatch           " highlight matching [{()}]
 
 " Movement
 noremap   <Up>     <NOP>
