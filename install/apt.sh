@@ -7,6 +7,7 @@ sudo apt upgrade
 
 sudo apt install -y  \
     coreutils \
+    p7zip \
     python3 \
     python-pip \
     git \

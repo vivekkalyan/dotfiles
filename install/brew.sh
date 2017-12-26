@@ -32,6 +32,7 @@ apps=(
   pandoc
   # peco
   # psgrep
+  p7zip
   postgresql
   python
   # shellcheck
