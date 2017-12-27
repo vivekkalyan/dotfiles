@@ -10,6 +10,7 @@
 
 [core]
   excludesfile = ~/.gitignore
+  attributesfile = ~/.gitattributes
 
   whitespace = space-before-tab,-indent-with-non-tab,trailing-space
   # Treat spaces before tabs and all kinds of trailing whitespace as an error
