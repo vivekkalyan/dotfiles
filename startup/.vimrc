@@ -14,6 +14,22 @@ set cursorline          " highlight current line
 set lazyredraw          " redraw only when we need to.
 set showmatch           " highlight matching [{()}]
 
+" Searching 
+set ignorecase          " Ignore case when typing
+set smartcase           " ... unless we type a capital
+set gdefault            " Apply subsititutions globally
+set incsearch           " Incremental searching
+set hlsearch            " Highlight matches when searching
+
+" Remove distracting highlight after finding what we searched
+nnoremap <leader><space> :noh<cr>   
+" Use tab to do matching search
+nnoremap <tab> %        
+vnoremap <tab> %
+" Turn off vim's custom regex
+nnoremap / /\v
+vnoremap / /\v
+
 " Movement
 noremap   <Up>     <NOP>
 noremap   <Down>   <NOP>
