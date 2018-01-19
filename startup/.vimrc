@@ -1,3 +1,12 @@
+" General
+set nocompatible        " remove vi compatibility
+set encoding=utf-8      " set vim encoding
+set scrolloff=3         " minimum lines to keep in view around cursor
+set backspace=indent,eol,start  " backspace works in normal mode
+set wildmenu            " command-line completion
+set wildmode=longest:list,full  " cycle between command line completions
+set laststatus=2        " show file name in status bar
+
 " Colors
 syntax enable           " enable syntax processing
 
@@ -5,14 +14,18 @@ syntax enable           " enable syntax processing
 set tabstop=4           " number of visual spaces per TAB
 set softtabstop=4       " number of spaces in tab when editing
 set expandtab           " tabs are spaces
-set shiftwidth=4
+set shiftwidth=4        " number of spaces in (auto)indent
+set autoindent          " follow indentation of previous line
 
 " UI Config
 set relativenumber      " show line numbers
 set showcmd             " show command in bottom bar
+set showmode            " show mode in bottom bar
 set cursorline          " highlight current line
 set lazyredraw          " redraw only when we need to.
 set showmatch           " highlight matching [{()}]
+set wrap                " wrap text
+set textwidth=79        " characters to wrap text at
 
 " Searching 
 set ignorecase          " Ignore case when typing
@@ -31,7 +44,13 @@ nnoremap / /\v
 vnoremap / /\v
 
 " Movement
-noremap   <Up>     <NOP>
-noremap   <Down>   <NOP>
-noremap   <Left>   <NOP>
-noremap   <Right>  <NOP>
+nnoremap <up> <nop>
+nnoremap <down> <nop>
+nnoremap <left> <nop>
+nnoremap <right> <nop>
+inoremap <up> <nop>
+inoremap <down> <nop>
+inoremap <left> <nop>
+inoremap <right> <nop>
+nnoremap j gj
+nnoremap k gk
