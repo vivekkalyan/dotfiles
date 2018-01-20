@@ -2,11 +2,17 @@
 
 apps=(
   cheatsheet
+  dropbox
   firefox
   flux
-  karabiner-elements
   iterm2
+  karabiner-elements
+  macdown
+  postman
+  spotifree
+  spotify
   sublime-text
+  telegram
   transmission
   vlc
 )
