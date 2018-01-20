@@ -17,4 +17,15 @@ apps=(
   vlc
 )
 
+quicklook=(
+    betterzipql
+    qlcolorcode
+    qlimagesize
+    qlmarkdown
+    qlstephen
+    qlvideo
+    quicklook-csv
+    quicklook-json
+)
+
 brew cask install "${apps[@]}"
