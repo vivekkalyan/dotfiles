@@ -62,3 +62,17 @@ mysqlsource() {
     echo "'$1' is not a valid file"
   fi
 }
+
+gifify() {
+  if [[ -n "$1" ]]; then
+    if [[ $2 == '--good' ]]; then
+      ffmpeg -i $1 -vf scale=720:-1 -r 10 -vcodec png out-static-%05d.png
+      time convert -verbose +dither -layers Optimize out-static*.png  GIF:- | gifsicle --colors 128 --delay=10 --loop --optimize=3 --multifile - > $1.gif
+      rm out-static*.png
+    else
+      ffmpeg -i $1 -vf scale=720:-1 -pix_fmt rgb24 -r 10 -f gif - | gifsicle --optimize=3 --delay=3 > $1.gif
+    fi
+  else
+    echo "Usage: gifify <input_movie.mov> <--good>. You DO need to include extension."
+  fi
+}
