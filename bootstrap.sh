@@ -37,4 +37,12 @@ ln -sfv "$DOTFILES_DIR/system/async.zsh" /usr/local/share/zsh/site-functions/asy
 sudo sh -c 'echo $(brew --prefix)/bin/zsh >> /etc/shells' && \
 chsh -s $(brew --prefix)/bin/zsh
 
+# Hosts file(
+sudo wget https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/gambling-porn/hosts -O /etc/hosts
+if [[ "$OS" = "macOS" ]]; then
+    sudo dscacheutil -flushcache
+    sudo killall -HUP mDNSResponder
+else
+    sudo /etc/rc.d/init.d/nscd restart
+    
 export OS DOTFILES_DIR
