@@ -3,12 +3,17 @@ set nocompatible        " remove vi compatibility
 set encoding=utf-8      " set vim encoding
 set scrolloff=3         " minimum lines to keep in view around cursor
 set backspace=indent,eol,start  " backspace works in normal mode
+set laststatus=2        " show file name in status bar
+
+set path+=**            " search down into subfolders for files
 set wildmenu            " command-line completion
 set wildmode=longest:list,full  " cycle between command line completions
-set laststatus=2        " show file name in status bar
+
+let mapleader = ','     " map leader key to ,
 
 " Colors
 syntax enable           " enable syntax processing
+filetype plugin on      " run scripts based on type of file
 
 " Spaces and Tabs
 set tabstop=4           " number of visual spaces per TAB
@@ -54,3 +59,13 @@ inoremap <left> <nop>
 inoremap <right> <nop>
 nnoremap j gj
 nnoremap k gk
+
+" NERDTree
+" close NERDTree after a file is opened
+let g:NERDTreeQuitOnOpen=0
+" show hidden files in NERDTree
+let NERDTreeShowHidden=1
+" Toggle NERDTree
+nmap <silent> <leader>k :NERDTreeToggle<cr>
+" expand to the path of the file in the current buffer
+nmap <silent> <leader>y :NERDTreeFind<cr>
