@@ -23,7 +23,8 @@ set shiftwidth=4        " number of spaces in (auto)indent
 set autoindent          " follow indentation of previous line
 
 " UI Config
-set relativenumber      " show line numbers
+set relativenumber      " show relative line numbers
+set number              " ... except for current line
 set showcmd             " show command in bottom bar
 set showmode            " show mode in bottom bar
 set cursorline          " highlight current line
