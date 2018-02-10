@@ -61,6 +61,9 @@ inoremap <right> <nop>
 nnoremap j gj
 nnoremap k gk
 
+" Bracket pairs
+inoremap { {<CR>}<Up><End>
+
 " NERDTree
 " close NERDTree after a file is opened
 let g:NERDTreeQuitOnOpen=0
