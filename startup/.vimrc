@@ -40,6 +40,9 @@ set gdefault            " Apply subsititutions globally
 set incsearch           " Incremental searching
 set hlsearch            " Highlight matches when searching
 
+" Make ctags
+command! MakeTags !ctags -R .
+
 " Remove distracting highlight after finding what we searched
 nnoremap <leader><space> :noh<cr>   
 " Use tab to do matching search
