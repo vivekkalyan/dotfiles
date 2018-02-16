@@ -14,6 +14,7 @@ fi
 apps=(
   # bash-completion2
   coreutils
+  ctags
   # dockutil
   fasd
   ffmpeg
