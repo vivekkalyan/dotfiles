@@ -13,7 +13,7 @@ let mapleader = ','     " map leader key to ,
 
 " Colors
 syntax enable           " enable syntax processing
-filetype plugin on      " run scripts based on type of file
+filetype plugin indent on      " run scripts based on type of file
 
 " Spaces and Tabs
 set tabstop=4           " number of visual spaces per TAB
@@ -69,10 +69,28 @@ inoremap { {<CR>}<Up><End>
 
 " NERDTree
 " close NERDTree after a file is opened
-let g:NERDTreeQuitOnOpen=0
+let g:NERDTreeQuitOnOpen=1
 " show hidden files in NERDTree
 let NERDTreeShowHidden=1
+" remove ? for help
+let NERDTreeMinimalUI = 1
+" keep alts and keep jumps when opening nerdtree
+let g:NERDTreeCreatePrefix='silent keepalt keepjumps'
 " Toggle NERDTree
 nmap <silent> <leader>k :NERDTreeToggle<cr>
 " expand to the path of the file in the current buffer
 nmap <silent> <leader>y :NERDTreeFind<cr>
+" Move up a directory using "-" like vim-vinegar (usually "u" does this).
+nmap <buffer> <expr> - g:NERDTreeMapUpdir
+nnoremap <silent> - :silent edit <C-R>=empty(expand('%')) ? '.' : fnameescape(expand('%:p:h'))<CR><CR>
+function! SelectAlternateFileInNERDTree() 
+    let l:previous=expand('#:t')
+    if l:previous != ''
+        call search('\v<' . l:previous . '>')
+    endif
+endfunction
+augroup NERDTreeConfigGroup
+    " Clear all existing autocommands in this group
+    autocmd!
+    autocmd User NERDTreeInit call SelectAlternateFileInNERDTree()
+augroup end
