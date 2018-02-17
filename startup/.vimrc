@@ -22,6 +22,10 @@ set expandtab           " tabs are spaces
 set shiftwidth=4        " number of spaces in (auto)indent
 set autoindent          " follow indentation of previous line
 
+" Folding
+set foldenable          " enable folding
+set foldlevelstart=0    " close all folds by default (learning)
+set foldmethod=indent   " fold based on indent level
 " UI Config
 set relativenumber      " show relative line numbers
 set number              " ... except for current line
@@ -42,6 +46,9 @@ set hlsearch            " Highlight matches when searching
 
 " Make ctags
 command! MakeTags !ctags -R .
+
+" space open/closes folds
+nnoremap <space> za
 
 " Remove distracting highlight after finding what we searched
 nnoremap <leader><space> :noh<cr>   
