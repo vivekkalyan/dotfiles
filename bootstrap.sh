@@ -35,6 +35,8 @@ ln -sfv "$DOTFILES_DIR/karabiner" ~/.config
 ln -sfv "$DOTFILES_DIR/system/prompt.zsh" /usr/local/share/zsh/site-functions/prompt_pure_setup
 ln -sfv "$DOTFILES_DIR/system/async.zsh" /usr/local/share/zsh/site-functions/async
 
+ln -sfv "$DOTFILES_DIR/vim" ~/.vim
+
 sudo sh -c 'echo $(brew --prefix)/bin/zsh >> /etc/shells' && \
 chsh -s $(brew --prefix)/bin/zsh
 
