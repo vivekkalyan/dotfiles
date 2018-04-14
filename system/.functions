@@ -76,3 +76,26 @@ gifify() {
     echo "Usage: gifify <input_movie.mov> <--good>. You DO need to include extension."
   fi
 }
+
+wifi-password() {
+  # locate airport
+  airport="/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport"
+  if [ ! -f $airport ]; then
+    echo "ERROR: Can't find \`airport\` CLI program at \"$airport\"."
+    exit 1
+  fi
+  # check for user-provided ssid 
+  if [ -z "$1" ]; then
+    # get current ssid
+    ssid="`$airport -I | awk '/ SSID/ {print substr($0, index($0, $2))}'`"
+    if [ "$ssid" = "" ]; then
+      echo "ERROR: Could not retrieve current SSID. Are you connected?" >&2
+      exit 1
+    fi
+  else
+    ssid="$@"
+  fi
+  # get password
+  password="`security find-generic-password -D 'AirPort network password' -ga \"$ssid\" 2>&1 >/dev/null`"
+  echo $password
+}
