@@ -48,8 +48,8 @@ alias ps="ps aux"
 alias psg="ps | grep -v grep | grep -i -e VSZ -e"
 
 # Create python3 virtualenv
-alias mkvirtualenv3="mkvirtualenv --python=python3"
-alias mkproject3="mkproject --python=python3"
+alias mkvirtualenv2="mkvirtualenv --python=python2"
+alias mkproject2="mkproject --python=python2"
 
 # postgres
 alias pgstart="launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist"
