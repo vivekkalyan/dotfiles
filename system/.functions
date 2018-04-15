@@ -99,3 +99,12 @@ wifi-password() {
   password="`security find-generic-password -D 'AirPort network password' -ga \"$ssid\" 2>&1 >/dev/null`"
   echo $password
 }
+
+# Read and unset env variables from .env file
+read_env() {
+    export $(cat .env | grep -v "^#" | xargs)
+}
+
+unset_env() {
+    unset $(cat .env | grep -v "^#" | sed -E 's/(.*)=.*/\1/' | xargs)
+}
