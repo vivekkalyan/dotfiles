@@ -101,7 +101,7 @@ wifi-password() {
 }
 
 # Read and unset env variables from .env file
-read_env() {
+load_env() {
     export $(cat .env | grep -v "^#" | xargs)
 }
 
