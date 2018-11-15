@@ -51,13 +51,13 @@ command! MakeTags !ctags -R .
 nnoremap <space> za
 
 " Remove distracting highlight after finding what we searched
-nnoremap <leader><space> :noh<cr>   
+nnoremap <leader>n :noh<cr>   
 " Use tab to do matching search
 nnoremap <tab> %        
 vnoremap <tab> %
 " Turn off vim's custom regex
-nnoremap / /\v
-vnoremap / /\v
+" nnoremap / /\v
+" vnoremap / /\v
 
 " Movement
 nnoremap <up> <nop>
@@ -120,3 +120,10 @@ augroup NERDTreeConfigGroup
     autocmd!
     autocmd User NERDTreeInit call SelectAlternateFileInNERDTree()
 augroup end
+
+" Scalpel
+nmap c* <Plug>(Scalpel)
+
+" Loupe
+let g:LoupeHighlightGroup='IncSearch'
+let g:LoupeCenterResults=1

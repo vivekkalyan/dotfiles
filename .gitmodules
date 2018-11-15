@@ -10,3 +10,9 @@
 [submodule "vim/pack/bowsplinter/start/vim-commentary"]
 	path = vim/pack/bowsplinter/start/vim-commentary
 	url = https://github.com/tpope/vim-commentary.git
+[submodule "vim/pack/bowsplinter/start/loupe"]
+	path = vim/pack/bowsplinter/start/loupe
+	url = https://github.com/wincent/loupe.git
+[submodule "vim/pack/bowsplinter/start/scalpel"]
+	path = vim/pack/bowsplinter/start/scalpel
+	url = https://github.com/wincent/scalpel.git
