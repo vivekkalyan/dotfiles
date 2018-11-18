@@ -126,6 +126,8 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-commentary'
 Plug 'wincent/loupe'
 Plug 'wincent/scalpel'
+Plug 'pangloss/vim-javascript'
+Plug 'mxw/vim-jsx'
 call plug#end()
 
 " NERDTree
