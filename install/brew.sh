@@ -17,6 +17,7 @@ apps=(
   ctags
   # dockutil
   fasd
+  fd
   ffmpeg
   gifsicle
   git
@@ -30,6 +31,7 @@ apps=(
   # mackup
   mysql
   mobile-shell
+  mosh
   npm
   pandoc
   # peco
@@ -37,6 +39,7 @@ apps=(
   p7zip
   postgresql
   python
+  ripgrep
   # shellcheck
   # ssh-copy-id
   tldr
