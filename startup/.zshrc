@@ -39,6 +39,9 @@ else
 fi
 eval "$("$dircolors" "$DOTFILES_DIR"/system/.dir_colors)"
 
+# Set base16-shell colors
+source "$DOTFILES_DIR"/system/base16-tomorrow-night.sh
+
 # Settings for virtualenvwrapper
 export WORKON_HOME=$HOME/.virtualenvs
 export PROJECT_HOME=$HOME/personal
