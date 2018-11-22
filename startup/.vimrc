@@ -126,8 +126,10 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-commentary'
 Plug 'wincent/loupe'
 Plug 'wincent/scalpel'
+Plug 'wincent/pinnacle'
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
+Plug 'justinmk/vim-sneak'
 call plug#end()
 
 " NERDTree
