@@ -37,6 +37,8 @@ alias localip="ipconfig getifaddr en0"
 # Git
 alias g="git"
 
+# Vim
+alias v="vim"
 
 # Always enable colored `grep` output
 alias grep='grep --color=auto'
