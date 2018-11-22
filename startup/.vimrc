@@ -69,8 +69,12 @@ inoremap <up> <nop>
 inoremap <down> <nop>
 inoremap <left> <nop>
 inoremap <right> <nop>
+" Move by visual line rather than physical line
 nnoremap j gj
 nnoremap k gk
+" Move correctly when text is wrapped and using {count}j/k
+nnoremap <expr> j v:count ? 'j' : 'gj'
+nnoremap <expr> k v:count ? 'k' : 'gk'
 
 " Bracket pairs
 inoremap { {<CR>}<Up><End>
