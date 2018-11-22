@@ -134,6 +134,7 @@ Plug 'wincent/pinnacle'
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
 Plug 'justinmk/vim-sneak'
+Plug 'airblade/vim-gitgutter'
 call plug#end()
 
 " NERDTree
@@ -170,3 +171,6 @@ nmap c* <Plug>(Scalpel)
 " Loupe
 let g:LoupeHighlightGroup='IncSearch'
 let g:LoupeCenterResults=1
+
+" vim-gutter
+set updatetime=100  " refresh rate
