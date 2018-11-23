@@ -1,4 +1,5 @@
 function s:CheckColorScheme()
+  set termguicolors
   if !has('termguicolors')
     let g:base16colorspace=256
   endif
