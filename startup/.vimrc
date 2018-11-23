@@ -38,6 +38,11 @@ set showmatch           " highlight matching [{()}]
 set wrap                " wrap text
 set textwidth=79        " characters to wrap text at
 
+" Windows
+set splitbelow          " open horizontal split below current window
+set splitright          " open vertical split to the right of current window
+set switchbuf=usetab    " try to reuse windows/tabs when switching buffers
+
 " Searching 
 set ignorecase          " Ignore case when typing
 set smartcase           " ... unless we type a capital
