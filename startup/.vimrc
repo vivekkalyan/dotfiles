@@ -105,12 +105,15 @@ xnoremap <C-l> <C-w>l
 
 " Save temporary/backup files not in the local directory, but in your ~/.vim
 " directory, to keep them out of git repos.
-" But first mkdir backup, swap, and undo first to make this work
+" But first mkdir backup, swap, view and undo first to make this work
 call system('mkdir ~/.vim')
 call system('mkdir ~/.vim/backup')
 call system('mkdir ~/.vim/swap')
+call system('mkdir ~/.vim/view')
 set backupdir=~/.vim/backup//
 set directory=~/.vim/swap//
+set viewdir=~/.vim/view//
+set viewoptions=cursor,folds
 
 " Keep undo history across sessions by storing it in a file
 if has('persistent_undo')
