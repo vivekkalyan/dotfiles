@@ -16,17 +16,22 @@ let mapleader = ','     " map leader key to ,
 syntax enable           " enable syntax processing
 filetype plugin indent on      " run scripts based on type of file
 
-" Spaces and Tabs
+" Formating
 set tabstop=4           " number of visual spaces per TAB
 set softtabstop=4       " number of spaces in tab when editing
 set expandtab           " tabs are spaces
 set shiftwidth=4        " number of spaces in (auto)indent
 set autoindent          " follow indentation of previous line
+set shiftround          " always indent by multiple of shiftwidth
+set nojoinspaces        " don't autoinsert two spaces after '.', '?', '!' for join command
+set formatoptions+=j    " remove comment leader when joining comment lines
+set formatoptions+=n    " smart auto-indenting inside numbered lists
 
 " Folding
 set foldenable          " enable folding
 set foldlevelstart=0    " close all folds by default (learning)
 set foldmethod=indent   " fold based on indent level
+
 " UI Config
 set relativenumber      " show relative line numbers
 set number              " ... except for current line
@@ -36,14 +41,26 @@ set cursorline          " highlight current line
 set lazyredraw          " redraw only when we need to.
 set showmatch           " highlight matching [{()}]
 set wrap                " wrap text
-set textwidth=79        " characters to wrap text at
+set breakindent         " indent wrapped lines to match start
+set textwidth=80        " characters to wrap text at
+set highlight+=@:ColorColumn    " ~/@ at end of window, 'showbreak'
+set highlight+=N:DiffText       " make current line number stand out a little
+set highlight+=c:LineNr         " blend vertical separators with line numbers
+set list                " show whitespace
+set listchars=tab:▷┅    " WHITE RIGHT-POINTING TRIANGLE (U+25B7, UTF-8: E2 96 B7)
+                        " + BOX DRAWINGS HEAVY TRIPLE DASH HORIZONTAL (U+2505,
+                        " UTF-8: E2 94 85)
+set listchars+=trail:•  " BULLET (U+2022, UTF-8: E2 80 A2)
 
 " Windows
 set splitbelow          " open horizontal split below current window
 set splitright          " open vertical split to the right of current window
 set switchbuf=usetab    " try to reuse windows/tabs when switching buffers
+set hidden              " allow switching modified buffers
+set fillchars=vert:┃    " solid line to seperate windows
+set fillchars+=stlnc:=  " fill inactive status lines with '='
 
-" Searching 
+" Searching
 set ignorecase          " Ignore case when typing
 set smartcase           " ... unless we type a capital
 set gdefault            " Apply subsititutions globally
@@ -57,9 +74,9 @@ command! MakeTags !ctags -R .
 nnoremap <space> za
 
 " Remove distracting highlight after finding what we searched
-nnoremap <leader>n :noh<cr>   
+nnoremap <leader>n :noh<cr>
 " Use tab to do matching search
-nnoremap <tab> %        
+nnoremap <tab> %
 vnoremap <tab> %
 " Turn off vim's custom regex
 " nnoremap / /\v
