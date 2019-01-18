@@ -98,9 +98,6 @@ nnoremap k gk
 nnoremap <expr> j v:count ? 'j' : 'gj'
 nnoremap <expr> k v:count ? 'k' : 'gk'
 
-" Bracket pairs
-inoremap { {<CR>}<Up><End>
-
 " Command Mode
 " Terminal-like experience for command line
 cnoremap <C-a> <Home>
