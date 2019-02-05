@@ -168,6 +168,8 @@ let NERDTreeShowHidden=1
 let NERDTreeMinimalUI = 1
 " keep alts and keep jumps when opening nerdtree
 let g:NERDTreeCreatePrefix='silent keepalt keepjumps'
+" remove ^G as files prefix (replace with no-break space)
+let g:NERDTreeNodeDelimiter = "\u00a0"
 " Toggle NERDTree
 nmap <silent> <leader>k :NERDTreeToggle<cr>
 " expand to the path of the file in the current buffer
