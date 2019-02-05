@@ -13,6 +13,7 @@ fi
 
 apps=(
   # bash-completion2
+  bat
   coreutils
   ctags
   # dockutil
