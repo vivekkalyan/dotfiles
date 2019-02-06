@@ -9,6 +9,7 @@ set path+=**            " search down into subfolders for files
 set wildignore+=**/node_modules/**  " ignore folders
 set wildmenu            " command-line completion
 set wildmode=longest:list,full  " cycle between command line completions
+set clipboard=unnamed   " use system clipboard by default
 
 let mapleader = ','     " map leader key to ,
 
