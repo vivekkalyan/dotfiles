@@ -1,9 +1,9 @@
 [user]
   name = Vivek Kalyan
-  email = vivekkalyansk@gmail.com
+  email = hello@vivekkalyan.com
 
 [github]
-  user = bowsplinter
+  user = vivekkalyan
 
 [credential]
   helper = osxkeychain
