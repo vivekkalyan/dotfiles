@@ -46,6 +46,7 @@ apps=(
   tldr
   # tree
   tomcat
+  vim
   wget
   wireshark --with-qt
   zsh
