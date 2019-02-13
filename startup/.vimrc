@@ -7,6 +7,7 @@ set laststatus=2        " show file name in status bar
 
 set path+=**            " search down into subfolders for files
 set wildignore+=**/node_modules/**  " ignore folders
+set wildignore+=**/env/**           " ignore folders
 set wildmenu            " command-line completion
 set wildmode=longest:list,full  " cycle between command line completions
 set clipboard=unnamed   " use system clipboard by default
