@@ -192,6 +192,7 @@ augroup end
 
 " Scalpel
 nmap c* <Plug>(Scalpel)
+vnoremap c* "hy:%s/<C-r>h//gc<left><left><left>
 
 " Loupe
 let g:LoupeHighlightGroup='IncSearch'
