@@ -64,7 +64,6 @@ set fillchars+=stlnc:=  " fill inactive status lines with '='
 " Searching
 set ignorecase          " Ignore case when typing
 set smartcase           " ... unless we type a capital
-set gdefault            " Apply subsititutions globally
 set incsearch           " Incremental searching
 set hlsearch            " Highlight matches when searching
 
