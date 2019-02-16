@@ -74,6 +74,9 @@ command! MakeTags !ctags -R .
 " space open/closes folds
 nnoremap <space> za
 
+" Q to play macro
+nnoremap Q @q
+
 " Remove distracting highlight after finding what we searched
 nnoremap <leader>n :noh<cr>
 " Use tab to do matching search
