@@ -202,9 +202,5 @@ augroup end
 nmap c* <Plug>(Scalpel)
 vnoremap c* "hy:%s/<C-r>h//gc<left><left><left>
 
-" Loupe
-let g:LoupeHighlightGroup='IncSearch'
-let g:LoupeCenterResults=1
-
 " vim-gutter
 set updatetime=100  " refresh rate
