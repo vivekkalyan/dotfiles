@@ -11,6 +11,7 @@ set wildignore+=**/env/**           " ignore folders
 set wildmenu            " command-line completion
 set wildmode=longest:list,full  " cycle between command line completions
 set clipboard=unnamed   " use system clipboard by default
+set nrformats+=hex,bin  " allow C-A, C-X for binary and hexadecimals
 
 let mapleader = ','     " map leader key to ,
 
