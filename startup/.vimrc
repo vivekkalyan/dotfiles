@@ -68,6 +68,11 @@ set smartcase           " ... unless we type a capital
 set incsearch           " Incremental searching
 set hlsearch            " Highlight matches when searching
 
+" Cursor indicates mode
+let &t_SI = "\<esc>[5 q"    " I beam cursor for insert mode
+let &t_EI = "\<esc>[2 q"    " block cursor for normal mode
+let &t_SR = "\<esc>[3 q"    " underline cursor for replace mode
+
 " Make ctags
 command! MakeTags !ctags -R .
 
