@@ -83,6 +83,11 @@ nnoremap <space> za
 " Q to play macro
 nnoremap Q @q
 
+nnoremap ,f :find<Space>
+nnoremap gb :ls<CR>:buffer<Space>
+nnoremap ,b :buffer<Space>
+nnoremap <cr> :
+
 " Remove distracting highlight after finding what we searched
 nnoremap <leader>n :noh<cr>
 " Use tab to do matching search
