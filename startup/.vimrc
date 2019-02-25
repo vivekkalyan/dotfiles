@@ -208,3 +208,5 @@ vnoremap c* "hy:%s/<C-r>h//gc<left><left><left>
 
 " vim-gutter
 set updatetime=100  " refresh rate
+
+autocmd! bufwritepost .vimrc source %
