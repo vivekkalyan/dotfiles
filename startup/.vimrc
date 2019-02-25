@@ -77,8 +77,8 @@ let &t_SR = "\<esc>[3 q"    " underline cursor for replace mode
 " Make ctags
 command! MakeTags !ctags -R .
 
-" space open/closes folds
-nnoremap <space> za
+" tab open/closes folds
+nnoremap <tab> za
 
 " Q to play macro
 nnoremap Q @q
@@ -90,9 +90,6 @@ nnoremap <cr> :
 
 " Remove distracting highlight after finding what we searched
 nnoremap <leader>n :noh<cr>
-" Use tab to do matching search
-nnoremap <tab> %
-vnoremap <tab> %
 " Turn off vim's custom regex
 " nnoremap / /\v
 " vnoremap / /\v
