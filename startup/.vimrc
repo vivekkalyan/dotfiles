@@ -13,6 +13,10 @@ set wildmode=longest:list,full  " cycle between command line completions
 set clipboard=unnamed   " use system clipboard by default
 set nrformats+=bin      " allow C-A, C-X for binary
 
+set ttimeoutlen=100     " set keycode timeout (defualt is too long -
+                        " follows timeoutlen for mappings which is 1000ms)
+                        " used for fedora machine with xmodmap and xcape
+
 let mapleader = ','     " map leader key to ,
 
 " Colors
