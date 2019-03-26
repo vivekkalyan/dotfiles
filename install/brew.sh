@@ -19,6 +19,7 @@ apps=(
   # dockutil
   fasd
   fd
+  fzf
   ffmpeg
   gifsicle
   git

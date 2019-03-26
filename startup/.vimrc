@@ -87,7 +87,7 @@ nnoremap <tab> za
 " Q to play macro
 nnoremap Q @q
 
-nnoremap ,f :find<Space>
+" nnoremap ,f :find<Space>
 nnoremap gb :ls<CR>:buffer<Space>
 nnoremap ,b :buffer<Space>
 nnoremap <cr> :
@@ -175,6 +175,7 @@ Plug 'mxw/vim-jsx'
 Plug 'justinmk/vim-sneak'
 Plug 'jeetsukumaran/vim-filebeagle'
 Plug 'airblade/vim-gitgutter'
+Plug 'junegunn/fzf.vim'
 call plug#end()
 
 " " NERDTree
@@ -215,3 +216,11 @@ vnoremap c* "hy:%s/<C-r>h//gc<left><left><left>
 set updatetime=100  " refresh rate
 
 autocmd! bufwritepost .vimrc source %
+
+" FZF
+nmap <leader><tab> <plug>(fzf-maps-n)
+nmap <leader>f :FZF<CR>
+nmap <leader>a :Rg<CR>
+imap <c-x><c-k> <plug>(fzf-complete-word)
+imap <c-x><c-f> <plug>(fzf-complete-path)
+imap <c-x><c-l> <plug>(fzf-complete-line)
