@@ -8,6 +8,7 @@ set laststatus=2        " show file name in status bar
 set path+=**            " search down into subfolders for files
 set wildignore+=**/node_modules/**  " ignore folders
 set wildignore+=**/env/**           " ignore folders
+set wildignore+=**/data/**           " ignore folders
 set wildmenu            " command-line completion
 set wildmode=longest:list,full  " cycle between command line completions
 set clipboard=unnamed   " use system clipboard by default
@@ -172,6 +173,8 @@ Plug 'wincent/scalpel'
 Plug 'wincent/pinnacle'
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
+Plug 'vim-scripts/indentpython.vim'
+Plug 'tmhedberg/SimpylFold'
 Plug 'justinmk/vim-sneak'
 Plug 'jeetsukumaran/vim-filebeagle'
 Plug 'airblade/vim-gitgutter'
