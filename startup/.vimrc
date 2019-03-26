@@ -215,6 +215,10 @@ vnoremap c* "hy:%s/<C-r>h//gc<left><left><left>
 " vim-gutter
 set updatetime=100  " refresh rate
 
+" File Beagle
+let g:filebeagle_suppress_keymaps = 1
+map <silent> -          <Plug>FileBeagleOpenCurrentBufferDir
+
 autocmd! bufwritepost .vimrc source %
 
 " FZF
