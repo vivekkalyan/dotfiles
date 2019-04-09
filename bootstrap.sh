@@ -25,6 +25,7 @@ fi
 ln -sfv "$DOTFILES_DIR/startup/.zshrc" ~
 ln -sfv "$DOTFILES_DIR/startup/.vimrc" ~
 ln -sfv "$DOTFILES_DIR/startup/.tmux.conf" ~
+ln -sfv "$DOTFILES_DIR/startup/.ctags" ~
 
 ln -sfv "$DOTFILES_DIR/git/.gitconfig" ~
 ln -sfv "$DOTFILES_DIR/git/.gitignore" ~
