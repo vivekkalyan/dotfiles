@@ -88,9 +88,6 @@ nnoremap <tab> za
 " Q to play macro
 nnoremap Q @q
 
-" nnoremap ,f :find<Space>
-nnoremap gb :ls<CR>:buffer<Space>
-nnoremap ,b :buffer<Space>
 nnoremap <cr> :
 
 " Remove distracting highlight after finding what we searched
@@ -178,6 +175,7 @@ Plug 'tmhedberg/SimpylFold'
 Plug 'justinmk/vim-sneak'
 Plug 'jeetsukumaran/vim-filebeagle'
 Plug 'airblade/vim-gitgutter'
+Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 call plug#end()
 
@@ -225,9 +223,17 @@ map <silent> -          <Plug>FileBeagleOpenCurrentBufferDir
 autocmd! bufwritepost .vimrc source %
 
 " FZF
+let g:fzf_layout = { 'down': '~40%' }
+let g:fzf_command_prefix = 'Fzf'
 nmap <leader><tab> <plug>(fzf-maps-n)
-nmap <leader>f :FZF<CR>
-nmap <leader>a :Rg<CR>
+nmap <leader>f :FzfFiles<CR>
+nmap <leader>a :FzfRg<CR>
+nmap gb :FzfBuffers<CR>
+nmap <leader>g :FzfCommits<CR>
+nmap <leader>G :FzfBCommits<CR>
+
 imap <c-x><c-k> <plug>(fzf-complete-word)
 imap <c-x><c-f> <plug>(fzf-complete-path)
 imap <c-x><c-l> <plug>(fzf-complete-line)
+
+inoremap <expr> <c-x><c-k> fzf#vim#complete#word({'left': '15%'})
