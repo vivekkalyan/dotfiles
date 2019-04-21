@@ -27,7 +27,7 @@ for DOTFILE in "$DOTFILES_DIR"/system/.{path,alias,rvm,functions}; do
   [ -r "$DOTFILE" ] && source "$DOTFILE"
 done
 
-for DOTFILE in "$DOTFILES_DIR"/system/{async,prompt,fasd}.zsh; do
+for DOTFILE in "$DOTFILES_DIR"/system/{async,prompt,fasd,fzf}.zsh; do
   [ -r "$DOTFILE" ] && source "$DOTFILE"
 done
 
