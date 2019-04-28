@@ -125,12 +125,6 @@ set wildcharm=<C-z>
 cnoremap <expr> <Tab> getcmdtype() == '/' \|\| getcmdtype() == '?' ? '<CR>/<C-r>/' : '<C-z>'
 cnoremap <expr> <S-Tab> getcmdtype() == '/' \|\| getcmdtype() == '?' ? '<CR>?<C-r>/' : '<S-Tab>'
 
-" Visual mode
-xnoremap <C-h> <C-w>h
-xnoremap <C-j> <C-w>j
-xnoremap <C-k> <C-w>k
-xnoremap <C-l> <C-w>l
-
 " Save temporary/backup files not in the local directory, but in your ~/.vim
 " directory, to keep them out of git repos.
 " But first mkdir backup, swap, view and undo first to make this work
