@@ -12,40 +12,29 @@ fi
 # Install packages
 
 apps=(
-  # bash-completion2
   bat
   coreutils
   ctags
-  # dockutil
   fasd
   fd
-  fzf
   ffmpeg
+  fzf
   gifsicle
   git
-  # git-extras
   gnu-sed --with-default-names
   grep --with-default-names
-  # hub
-  # httpie
   imagemagick
-  # jq
-  # mackup
-  mysql
   mobile-shell
   mosh
+  mysql
   npm
-  pandoc
-  # peco
-  # psgrep
   p7zip
+  pandoc
   postgresql
   python
   ripgrep
-  # shellcheck
-  # ssh-copy-id
+  sqlite
   tldr
-  # tree
   tomcat
   vim
   wget
