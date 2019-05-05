@@ -37,7 +37,7 @@ set formatoptions+=n    " smart auto-indenting inside numbered lists
 
 " Folding
 set foldenable          " enable folding
-set foldlevelstart=0    " close all folds by default (learning)
+set foldlevelstart=1    " folds by default
 set foldmethod=indent   " fold based on indent level
 
 " UI Config
