@@ -11,11 +11,11 @@ set -e
 # always use rebase workflow
 PULL_ARGS="--rebase --autostash $@"
 
-OLD_HEAD="$(git rev-parse head)"
+OLD_HEAD="$(git rev-parse HEAD)"
 
 git pull $PULL_ARGS
 
-NEW_HEAD="$(git rev-parse head)"
+NEW_HEAD="$(git rev-parse HEAD)"
 
 if [ "$OLD_HEAD" != "$NEW_HEAD" ]; then
   echo "Diffstat:"
