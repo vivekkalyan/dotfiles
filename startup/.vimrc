@@ -125,6 +125,8 @@ set wildcharm=<C-z>
 cnoremap <expr> <Tab> getcmdtype() == '/' \|\| getcmdtype() == '?' ? '<CR>/<C-r>/' : '<C-z>'
 cnoremap <expr> <S-Tab> getcmdtype() == '/' \|\| getcmdtype() == '?' ? '<CR>?<C-r>/' : '<S-Tab>'
 
+inoremap ;pdb import pdb; pdb.set_trace()<ESC>
+
 " Save temporary/backup files not in the local directory, but in your ~/.vim
 " directory, to keep them out of git repos.
 " But first mkdir backup, swap, view and undo first to make this work
