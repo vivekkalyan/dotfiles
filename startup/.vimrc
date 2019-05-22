@@ -88,6 +88,13 @@ nnoremap <tab> za
 " Y to yank to end of line
 nnoremap Y y$
 
+function! BreakHere()
+	s/^\(\s*\)\(.\{-}\)\(\s*\)\(\%#\)\(\s*\)\(.*\)/\1\2\r\1\4\6
+	call histdel("/", -1)
+endfunction
+
+nnoremap <C-j> :<C-u>call BreakHere()<CR>
+
 " Q to play macro
 nnoremap Q @q
 
