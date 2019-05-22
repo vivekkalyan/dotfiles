@@ -106,6 +106,9 @@ nnoremap <leader>n :noh<cr>
 " nnoremap / /\v
 " vnoremap / /\v
 
+" Minimal git blame
+command! -range GB echo join(systemlist("git blame -L <line1>,<line2> " .expand('%')), "\n")
+
 " Move by visual line rather than physical line
 nnoremap j gj
 nnoremap k gk
