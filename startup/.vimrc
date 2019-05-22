@@ -170,8 +170,17 @@ call plug#end()
 nmap c* <Plug>(Scalpel)
 vnoremap c* "hy:%s/<C-r>h//gc<left><left><left>
 
-" vim-gutter
+" GitGutter
 set updatetime=100  " refresh rate
+let g:gitgutter_sign_added = '+'
+let g:gitgutter_sign_modified = '>'
+let g:gitgutter_sign_removed = '-'
+let g:gitgutter_sign_removed_first_line = '^'
+let g:gitgutter_sign_modified_removed = '<'
+" make mappings more mnemonic (chunk)
+nmap <Leader>cs <Plug>GitGutterStageHunk
+nmap <Leader>cu <Plug>GitGutterUndoHunk
+nmap <Leader>cp <Plug>GitGutterPreviewHunk
 
 " File Beagle
 let g:filebeagle_suppress_keymaps = 1
