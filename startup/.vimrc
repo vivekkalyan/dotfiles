@@ -85,6 +85,9 @@ command! MakeTags !ctags -R .
 " tab open/closes folds
 nnoremap <tab> za
 
+" Y to yank to end of line
+nnoremap Y y$
+
 " Q to play macro
 nnoremap Q @q
 
