@@ -96,15 +96,6 @@ nnoremap <leader>n :noh<cr>
 " nnoremap / /\v
 " vnoremap / /\v
 
-" Movement
-nnoremap <up> <nop>
-nnoremap <down> <nop>
-nnoremap <left> <nop>
-nnoremap <right> <nop>
-inoremap <up> <nop>
-inoremap <down> <nop>
-inoremap <left> <nop>
-inoremap <right> <nop>
 " Move by visual line rather than physical line
 nnoremap j gj
 nnoremap k gk
