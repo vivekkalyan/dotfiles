@@ -52,3 +52,5 @@ unset DOTFILE
 
 # Export
 export OS DOTFILES_DIR
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
