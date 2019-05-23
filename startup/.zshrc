@@ -4,6 +4,8 @@ compinit
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
+bindkey -e # emacs bindings
+
 # OS
 if [ "$(uname -s)" = "Darwin" ]; then
   OS="macOS"
@@ -42,6 +44,15 @@ eval "$("$dircolors" "$DOTFILES_DIR"/system/.dir_colors)"
 # Set base16-shell colors
 source "$DOTFILES_DIR"/system/base16-tomorrow-night.sh
 
+# Default Editor
+export EDITOR=$(which vim)
+export VISUAL=$(which vim)
+
+# Vim to edit commands
+autoload -z edit-command-line
+zle -N edit-command-line
+bindkey "^X^E" edit-command-line
+
 # Settings for virtualenvwrapper
 export WORKON_HOME=$HOME/.virtualenvs
 export PROJECT_HOME=$HOME/personal
@@ -54,5 +65,3 @@ unset DOTFILE
 export OS DOTFILES_DIR
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-set -o vi
