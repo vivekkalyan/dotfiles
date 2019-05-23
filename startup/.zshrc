@@ -1,6 +1,9 @@
 autoload -Uz compinit
 compinit
 
+# Colorize completions using default `ls` colors.
+zstyle ':completion:*' list-colors ''
+
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
