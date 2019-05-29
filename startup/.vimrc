@@ -98,7 +98,10 @@ nnoremap <C-j> :<C-u>call BreakHere()<CR>
 " Q to play macro
 nnoremap Q @q
 
+" Enter to enter command mode (& disable for command window to allow q:, q/)
 nnoremap <cr> :
+autocmd CmdwinEnter * unmap <CR>
+autocmd CmdwinLeave * nnoremap <CR> :
 
 " Remove distracting highlight after finding what we searched
 nnoremap <leader>n :noh<cr>
