@@ -124,8 +124,8 @@ nnoremap Q @q
 
 " Enter to enter command mode (& disable for command window to allow q:, q/)
 nnoremap <cr> :
-autocmd CmdwinEnter * unmap <CR>
-autocmd CmdwinLeave * nnoremap <CR> :
+autocmd BufReadPost quickfix nnoremap <buffer> <CR> <CR>
+autocmd CmdwinEnter * nnoremap <buffer> <CR> <CR>
 
 " Remove distracting highlight after finding what we searched
 nnoremap <leader>n :noh<cr>
