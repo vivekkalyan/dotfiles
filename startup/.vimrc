@@ -207,6 +207,9 @@ Plug 'junegunn/fzf.vim'
 Plug 'jiangmiao/auto-pairs'
 call plug#end()
 
+"SimpylFold
+let g:SimpylFold_fold_import = 0
+
 " Scalpel
 nmap c* <Plug>(Scalpel)
 vnoremap c* "hy:%s/<C-r>h//gc<left><left><left>
