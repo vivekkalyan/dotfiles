@@ -180,6 +180,7 @@ Plug 'jeetsukumaran/vim-filebeagle'
 Plug 'airblade/vim-gitgutter'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
+Plug 'jiangmiao/auto-pairs'
 call plug#end()
 
 " Scalpel
