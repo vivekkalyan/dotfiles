@@ -79,6 +79,30 @@ let &t_SI = "\<esc>[5 q"    " I beam cursor for insert mode
 let &t_EI = "\<esc>[2 q"    " block cursor for normal mode
 let &t_SR = "\<esc>[3 q"    " underline cursor for replace mode
 
+" Window management
+function! WinMove(key)
+  let t:curwin = winnr()
+  exec "wincmd ".a:key
+  if (t:curwin == winnr()) "we havent moved
+    if (match(a:key,'[jk]')) "were we going up/down
+      wincmd v
+    else
+      wincmd s
+    endif
+    exec "wincmd ".a:key
+  endif
+endfunction
+
+map <C-w>h :call WinMove('h')<cr>
+map <C-w>k :call WinMove('k')<cr>
+map <C-w>l :call WinMove('l')<cr>
+map <C-w>j :call WinMove('j')<cr>
+
+nmap <left>  :3wincmd <<cr>
+nmap <right> :3wincmd ><cr>
+nmap <up>    :3wincmd +<cr>
+nmap <down>  :3wincmd -<cr>
+
 " Make ctags
 command! MakeTags !ctags -R .
 
