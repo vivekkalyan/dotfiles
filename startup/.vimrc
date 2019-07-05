@@ -205,6 +205,7 @@ Plug 'airblade/vim-gitgutter'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'jiangmiao/auto-pairs'
+Plug 'airblade/vim-rooter'
 call plug#end()
 
 "SimpylFold
