@@ -55,10 +55,6 @@ sudo -u $real_user ln -sfv "$DOTFILES_DIR/git/.gitconfig" $USER_HOME
 sudo -u $real_user ln -sfv "$DOTFILES_DIR/git/.gitignore" $USER_HOME
 sudo -u $real_user ln -sfv "$DOTFILES_DIR/git/.gitattributes" $USER_HOME
 
-if [[ "$OS" = "Arch" ]]; then
-    ln -sfv "$DOTFILES_DIR/arch/.xinitrc" /etc/X11/xinit/xinitrc
-fi
-
 if [[ "$OS" = "macOS" ]]; then
     sudo -u $real_user ln -sfv "$DOTFILES_DIR/karabiner" $USER_HOME/.config
 fi
@@ -75,6 +71,7 @@ fi
 
 #audio
 if [[ "$OS" = "Arch" ]]; then
+    ln -sfv "$DOTFILES_DIR/arch/xinitrc" /etc/X11/xinit/xinitrc
     ln -sfv "$DOTFILES_DIR/arch/pulseaudio.conf" /etc/pulse/default.pa
     sudo -u $real_user pulseaudio -k
     sudo -u $real_user pulseaudio --start
