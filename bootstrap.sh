@@ -6,6 +6,8 @@ DOTFILES_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 # OS
 if [ "$(uname -s)" = "Darwin" ]; then
     OS="macOS"
+elif uname -r | grep -q ARCH; then
+    OS="Arch"
 else
     OS=$(uname -s)
 fi
@@ -14,6 +16,8 @@ fi
 if [[ "$OS" = "macOS" ]]; then
     . "$DOTFILES_DIR/install/brew.sh"
     . "$DOTFILES_DIR/install/cask.sh"
+elif [[ "$OS" = "Arch" ]]; then
+    . "$DOTFILES_DIR/install/pacman.sh"
 else
     . "$DOTFILES_DIR/install/apt.sh"
 fi
@@ -31,15 +35,21 @@ ln -sfv "$DOTFILES_DIR/git/.gitconfig" ~
 ln -sfv "$DOTFILES_DIR/git/.gitignore" ~
 ln -sfv "$DOTFILES_DIR/git/.gitattributes" ~
 
-ln -sfv "$DOTFILES_DIR/karabiner" ~/.config
+if [[ "$OS" = "macOS" ]]; then
+    ln -sfv "$DOTFILES_DIR/karabiner" ~/.config
+fi
 
 ln -sfv "$DOTFILES_DIR/system/prompt.zsh" /usr/local/share/zsh/site-functions/prompt_pure_setup
 ln -sfv "$DOTFILES_DIR/system/async.zsh" /usr/local/share/zsh/site-functions/async
 
 ln -sfv "$DOTFILES_DIR/vim" ~/.vim
 
-sudo sh -c 'echo $(brew --prefix)/bin/zsh >> /etc/shells' && \
-chsh -s $(brew --prefix)/bin/zsh
+if [[ "$OS" = "macOS" ]]; then
+    sudo sh -c 'echo $(brew --prefix)/bin/zsh >> /etc/shells' && \
+    chsh -s $(brew --prefix)/bin/zsh
+else
+    chsh -s /bin/zsh
+fi
 
 # Hosts file(
 sudo wget https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/gambling-porn/hosts -O /etc/hosts
@@ -48,5 +58,6 @@ if [[ "$OS" = "macOS" ]]; then
     sudo killall -HUP mDNSResponder
 else
     sudo /etc/rc.d/init.d/nscd restart
-    
+fi
+
 export OS DOTFILES_DIR
