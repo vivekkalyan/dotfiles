@@ -1,5 +1,18 @@
 #!/usr/bin/env bash
 
+if ! [ $(id -u) = 0 ]; then
+    echo "This script needs to be run as root." >&2
+    exit 1
+fi
+
+
+if [ $SUDO_USER ]; then
+    real_user=$SUDO_USER
+    USER_HOME=$(getent passwd $SUDO_USER | cut -d: -f6)
+else
+    real_user=$(whoami)
+fi
+
 # Get current dir (so can run this script from anywhere)
 DOTFILES_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
@@ -12,12 +25,19 @@ else
     OS=$(uname -s)
 fi
 
+echo $OS
+
+if [[ "$OS" = "Arch" ]]; then
+    ln -sfv "$DOTFILES_DIR/arch/pacman.conf" "/etc/pacman.conf"
+fi
+
 # Package Managers and packages
 if [[ "$OS" = "macOS" ]]; then
     . "$DOTFILES_DIR/install/brew.sh"
     . "$DOTFILES_DIR/install/cask.sh"
 elif [[ "$OS" = "Arch" ]]; then
-    . "$DOTFILES_DIR/install/pacman.sh"
+    echo "todo"
+    #. "$DOTFILES_DIR/install/pacman.sh"
 else
     . "$DOTFILES_DIR/install/apt.sh"
 fi
@@ -26,38 +46,38 @@ fi
 
 # symlinks
 # ln -sfv "$DOTFILES_DIR/startup/.bash_profile" ~
-ln -sfv "$DOTFILES_DIR/startup/.zshrc" ~
-ln -sfv "$DOTFILES_DIR/startup/.vimrc" ~
-ln -sfv "$DOTFILES_DIR/startup/.tmux.conf" ~
-ln -sfv "$DOTFILES_DIR/startup/.ctags" ~
+sudo -u $real_user ln -sfv "$DOTFILES_DIR/startup/.zshrc" $USER_HOME
+sudo -u $real_user ln -sfv "$DOTFILES_DIR/startup/.vimrc" $USER_HOME
+sudo -u $real_user ln -sfv "$DOTFILES_DIR/startup/.tmux.conf" $USER_HOME
+sudo -u $real_user ln -sfv "$DOTFILES_DIR/startup/.ctags" $USER_HOME
 
-ln -sfv "$DOTFILES_DIR/git/.gitconfig" ~
-ln -sfv "$DOTFILES_DIR/git/.gitignore" ~
-ln -sfv "$DOTFILES_DIR/git/.gitattributes" ~
+sudo -u $real_user ln -sfv "$DOTFILES_DIR/git/.gitconfig" $USER_HOME
+sudo -u $real_user ln -sfv "$DOTFILES_DIR/git/.gitignore" $USER_HOME
+sudo -u $real_user ln -sfv "$DOTFILES_DIR/git/.gitattributes" $USER_HOME
 
-if [[ "$OS" = "macOS" ]]; then
-    ln -sfv "$DOTFILES_DIR/karabiner" ~/.config
+if [[ "$OS" = "Arch" ]]; then
+    ln -sfv "$DOTFILES_DIR/arch/.xinitrc" /etc/X11/xinit/xinitrc
 fi
 
-ln -sfv "$DOTFILES_DIR/system/prompt.zsh" /usr/local/share/zsh/site-functions/prompt_pure_setup
-ln -sfv "$DOTFILES_DIR/system/async.zsh" /usr/local/share/zsh/site-functions/async
+if [[ "$OS" = "macOS" ]]; then
+    sudo -u $real_user ln -sfv "$DOTFILES_DIR/karabiner" $USER_HOME/.config
+fi
 
-ln -sfv "$DOTFILES_DIR/vim" ~/.vim
+sudo -u $real_user ln -sfv "$DOTFILES_DIR/system/prompt.zsh" /usr/local/share/zsh/site-functions/prompt_pure_setup
+sudo -u $real_user ln -sfv "$DOTFILES_DIR/system/async.zsh" /usr/local/share/zsh/site-functions/async
+
+sudo -u $real_user ln -sfv "$DOTFILES_DIR/vim" $USER_HOME/.vim
 
 if [[ "$OS" = "macOS" ]]; then
     sudo sh -c 'echo $(brew --prefix)/bin/zsh >> /etc/shells' && \
     chsh -s $(brew --prefix)/bin/zsh
-else
-    chsh -s /bin/zsh
 fi
 
-# Hosts file(
-sudo wget https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/gambling-porn/hosts -O /etc/hosts
-if [[ "$OS" = "macOS" ]]; then
-    sudo dscacheutil -flushcache
-    sudo killall -HUP mDNSResponder
-else
-    sudo /etc/rc.d/init.d/nscd restart
+#audio
+if [[ "$OS" = "Arch" ]]; then
+    ln -sfv "$DOTFILES_DIR/arch/pulseaudio.conf" /etc/pulse/default.pa
+    sudo -u $real_user pulseaudio -k
+    sudo -u $real_user pulseaudio --start
 fi
 
 export OS DOTFILES_DIR

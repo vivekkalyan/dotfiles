@@ -1,1 +1,1 @@
-/home/vivek/.xinitrc
+exec dwm
