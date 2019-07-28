@@ -5,3 +5,8 @@ vim/undo
 vim/view
 vim/autoload/plug.vim
 vim/plugged
+
+suckless/dwm/*
+suckless/st/*
+!suckless/*/config.h
+!suckless/*/PKGBUILD
