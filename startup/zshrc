@@ -28,7 +28,7 @@ DOTFILES_DIR="$( cd -P "$( dirname "$( dirname "$SOURCE" )" )" && pwd )"
 
 
 # Load the shell dotfiles, and then some:
-for DOTFILE in "$DOTFILES_DIR"/system/.{path,alias,rvm,functions}; do
+for DOTFILE in "$DOTFILES_DIR"/system/{path,alias,rvm,functions}; do
   [ -r "$DOTFILE" ] && source "$DOTFILE"
 done
 
@@ -42,7 +42,7 @@ if [[ "$OS" = "macOS" ]]; then
 else
   dircolors="dircolors"
 fi
-eval "$("$dircolors" "$DOTFILES_DIR"/system/.dir_colors)"
+# eval "$("$dircolors" "$DOTFILES_DIR"/system/dir_colors)"
 
 # Set base16-shell colors
 source "$DOTFILES_DIR"/system/base16-tomorrow-night.sh

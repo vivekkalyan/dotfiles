@@ -46,14 +46,14 @@ fi
 
 # symlinks
 # ln -sfv "$DOTFILES_DIR/startup/.bash_profile" ~
-sudo -u $real_user ln -sfv "$DOTFILES_DIR/startup/.zshrc" $USER_HOME
-sudo -u $real_user ln -sfv "$DOTFILES_DIR/startup/.vimrc" $USER_HOME
-sudo -u $real_user ln -sfv "$DOTFILES_DIR/startup/.tmux.conf" $USER_HOME
-sudo -u $real_user ln -sfv "$DOTFILES_DIR/startup/.ctags" $USER_HOME
+sudo -u $real_user ln -sfv "$DOTFILES_DIR/startup/zshrc" "$USER_HOME/.zshrc"
+sudo -u $real_user ln -sfv "$DOTFILES_DIR/startup/vimrc" "$USER_HOME/.vimrc"
+sudo -u $real_user ln -sfv "$DOTFILES_DIR/startup/tmux.conf" "$USER_HOME/.tmux.conf"
+sudo -u $real_user ln -sfv "$DOTFILES_DIR/startup/ctags" "$USER_HOME/.ctags"
 
-sudo -u $real_user ln -sfv "$DOTFILES_DIR/git/.gitconfig" $USER_HOME
-sudo -u $real_user ln -sfv "$DOTFILES_DIR/git/.gitignore" $USER_HOME
-sudo -u $real_user ln -sfv "$DOTFILES_DIR/git/.gitattributes" $USER_HOME
+sudo -u $real_user ln -sfv "$DOTFILES_DIR/git/gitconfig" "$USER_HOME/.gitconfig"
+sudo -u $real_user ln -sfv "$DOTFILES_DIR/git/gitignore" "$USER_HOME/.gitignore"
+sudo -u $real_user ln -sfv "$DOTFILES_DIR/git/gitattributes" "$USER_HOME/.gitattributes"
 
 if [[ "$OS" = "macOS" ]]; then
     sudo -u $real_user ln -sfv "$DOTFILES_DIR/karabiner" $USER_HOME/.config

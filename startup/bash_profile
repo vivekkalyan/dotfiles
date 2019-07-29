@@ -23,12 +23,12 @@ else
 fi
 
 # Load the shell dotfiles, and then some:
-for DOTFILE in "$DOTFILES_DIR"/system/.{path,alias,rvm,functions}; do
+for DOTFILE in "$DOTFILES_DIR"/system/{path,alias,rvm,functions}; do
   [ -r "$DOTFILE" ] && source "$DOTFILE"
 done
 
 # Set LSCOLORS
-eval "$(gdircolors "$DOTFILES_DIR"/system/.dir_colors)"
+eval "$(gdircolors "$DOTFILES_DIR"/system/dir_colors)"
 
 # Settings for virtualenvwrapper
 export WORKON_HOME=$HOME/.virtualenvs
