@@ -1,8 +1,16 @@
 autoload -Uz compinit
 compinit
 
+# Set LSCOLORS
+if [[ "$OS" = "macOS" ]]; then
+  dircolors="gdircolors"
+else
+  dircolors="dircolors"
+fi
+eval "$("$dircolors" "$DOTFILES_DIR"/system/dir_colors)"
+
 # Colorize completions using default `ls` colors.
-zstyle ':completion:*' list-colors ''
+zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
@@ -35,14 +43,6 @@ done
 for DOTFILE in "$DOTFILES_DIR"/system/{async,prompt,fasd,fzf}.zsh; do
   [ -r "$DOTFILE" ] && source "$DOTFILE"
 done
-
-# Set LSCOLORS
-if [[ "$OS" = "macOS" ]]; then
-  dircolors="gdircolors"
-else
-  dircolors="dircolors"
-fi
-# eval "$("$dircolors" "$DOTFILES_DIR"/system/dir_colors)"
 
 # Set base16-shell colors
 source "$DOTFILES_DIR"/system/base16-tomorrow-night.sh

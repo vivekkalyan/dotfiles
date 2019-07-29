@@ -1,14 +1,10 @@
+# Detect which `ls` flavor is in use
 if [[ "$OS" = "macOS" ]];then
     LS="gls"
+    colorflag="-G"
 else
     LS="ls"
-fi
-
-# Detect which `ls` flavor is in use
-if gls --color > /dev/null 2>&1; then # GNU `ls`
-  colorflag="--color"
-else # macOS `ls`
-  colorflag="-G"
+    colorflag="--color=auto"
 fi
 
 # List all files colorized in long format
