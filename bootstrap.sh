@@ -73,6 +73,7 @@ fi
 if [[ "$OS" = "Arch" ]]; then
     ln -sfv "$DOTFILES_DIR/arch/xinitrc" /etc/X11/xinit/xinitrc
     ln -sfv "$DOTFILES_DIR/arch/pulseaudio.conf" /etc/pulse/default.pa
+    ln -sfv "$DOTFILES_DIR/arch/daemon.conf" /etc/pulse/daemon.conf
     sudo -u $real_user pulseaudio -k
     sudo -u $real_user pulseaudio --start
     ln -sfv "$DOTFILES_DIR/arch/50-mouse-acceleration.conf" /etc/X11/xorg.conf.d/50-mouse-acceleration.conf
