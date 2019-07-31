@@ -78,6 +78,9 @@ if [[ "$OS" = "Arch" ]]; then
     sudo -u $real_user pulseaudio --start
     ln -sfv "$DOTFILES_DIR/arch/50-mouse-acceleration.conf" /etc/X11/xorg.conf.d/50-mouse-acceleration.conf
     ln -sfv "$DOTFILES_DIR/arch/grub.conf" /etc/default/grub
+    grub-mkconfig -o /boot/grub/grub.cfg
+    ln -sfv "$DOTFILES_DIR/arch/mkinitcpio.conf" /etc/mkinitcpio.conf
+    mkinitcpio -p linux
 fi
 
 export OS DOTFILES_DIR
