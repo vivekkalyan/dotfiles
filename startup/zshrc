@@ -1,13 +1,6 @@
 autoload -Uz compinit
 compinit
 
-# Set LSCOLORS
-if [[ "$OS" = "macOS" ]]; then
-  dircolors="gdircolors"
-else
-  dircolors="dircolors"
-fi
-eval "$("$dircolors" "$DOTFILES_DIR"/system/dir_colors)"
 
 # Colorize completions using default `ls` colors.
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
@@ -46,6 +39,14 @@ done
 
 # Set base16-shell colors
 source "$DOTFILES_DIR"/system/base16-tomorrow-night.sh
+
+# Set LSCOLORS
+if [[ "$OS" = "macOS" ]]; then
+  dircolors="gdircolors"
+else
+  dircolors="dircolors"
+fi
+eval "$("$dircolors" "$DOTFILES_DIR"/system/dir_colors)"
 
 # Default Editor
 export EDITOR=$(which vim)
