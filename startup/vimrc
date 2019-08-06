@@ -106,9 +106,6 @@ nmap <down>  :3wincmd -<cr>
 " Make ctags
 command! MakeTags !ctags -R .
 
-" tab open/closes folds
-nnoremap <tab> za
-
 " Y to yank to end of line
 nnoremap Y y$
 
