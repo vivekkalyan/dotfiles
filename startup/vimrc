@@ -204,6 +204,7 @@ Plug 'jeetsukumaran/vim-filebeagle'
 Plug 'airblade/vim-gitgutter'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
+Plug 'junegunn/vim-peekaboo'
 Plug 'jiangmiao/auto-pairs'
 Plug 'airblade/vim-rooter'
 call plug#end()
