@@ -1,7 +1,15 @@
 #xinput --set-prop 8 154 1.4,0,0,0,1.4,0,0,0,1
 
+# Keyboard
+setxkbmap -option 'caps:ctrl_modifier'
+xcape -e 'Caps_Lock=Escape'
+# xcape -t 500 -e 'Caps_Lock=Escape'
+
 # Set keyboard delay and rate
 xset r rate 300 50
+
+# redshift
+redshift -l 1.27:103.84 &
 
 # Statusbar
 while true; do

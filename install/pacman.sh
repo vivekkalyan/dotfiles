@@ -21,6 +21,8 @@ telegram-desktop
 vim
 keepassxc
 openssh
+hledger
+xcape
 zsh
 zsh-completions
 fasd
