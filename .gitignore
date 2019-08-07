@@ -10,3 +10,4 @@ suckless/dwm/*
 suckless/st/*
 !suckless/*/config.h
 !suckless/*/PKGBUILD
+!suckless/*/*.diff
