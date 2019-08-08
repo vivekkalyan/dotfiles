@@ -17,8 +17,8 @@ source=(http://dl.suckless.org/dwm/dwm-$pkgver.tar.gz
     dwm-r1615-selfrestart.diff
     dwm-fakefullscreen-20170508-ceac8c9.diff
     dwm-attachaside-20180126-db22360.diff
-    0001-dwm-Use-Mod-Space-for-launcher.patch
-    0001-dwm-Add-keepmenu-config.patch
+    0001-dwm-Use-Mod-Space-for-launcher.diff
+    0002-dwm-Add-keepmenu-config.diff
 	dwm.desktop)
 sha256sums=('39873744647289ab1ccfedde1bfdfd5e203b49bcac7bb23c9f7aa768271246fe'
             '1e9b731366201bc5d84bd0cd1fd140a6cc5756f5cd966f4e48a62160a58c4ad3'
@@ -33,8 +33,8 @@ prepare() {
   patch --strip=1 --input="${srcdir}/dwm-r1615-selfrestart.diff"
   patch --strip=1 --input="${srcdir}/dwm-fakefullscreen-20170508-ceac8c9.diff"
   patch --strip=1 --input="${srcdir}/dwm-attachaside-20180126-db22360.diff"
-  patch --strip=1 --input="${srcdir}/0001-dwm-Use-Mod-Space-for-launcher.patch"
-  patch --strip=1 --input="${srcdir}/0002-dwm-Add-keepmenu-config.patch"
+  patch --strip=1 --input="${srcdir}/0001-dwm-Use-Mod-Space-for-launcher.diff"
+  patch --strip=1 --input="${srcdir}/0002-dwm-Add-keepmenu-config.diff"
   # cp "$srcdir/config.h" config.h
 }
 
