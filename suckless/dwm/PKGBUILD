@@ -20,7 +20,7 @@ source=(http://dl.suckless.org/dwm/dwm-$pkgver.tar.gz
     0001-dwm-Use-Mod-Space-for-launcher.diff
     0002-dwm-Add-keepmenu-config.diff
 	dwm.desktop)
-sha256sums=('39873744647289ab1ccfedde1bfdfd5e203b49bcac7bb23c9f7aa768271246fe'
+sha256sums=('97902e2e007aaeaa3c6e3bed1f81785b817b7413947f1db1d3b62b8da4cd110e'
             '1e9b731366201bc5d84bd0cd1fd140a6cc5756f5cd966f4e48a62160a58c4ad3'
             '3ab0872f66ca32ccef66e851a07087456a69fad6e7729dbec08f78e7ee93b0f3'
             '822a185eaaa43245994505cdcc14402fb67adf3280cdaaf7200451d67e9f463d'
