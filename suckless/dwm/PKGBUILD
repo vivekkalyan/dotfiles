@@ -17,6 +17,7 @@ source=(http://dl.suckless.org/dwm/dwm-$pkgver.tar.gz
     dwm-r1615-selfrestart.diff
     dwm-fakefullscreen-20170508-ceac8c9.diff
     dwm-attachaside-20180126-db22360.diff
+    dwm-focusadjacenttag-6.0.diff
     0001-dwm-Use-Mod-Space-for-launcher.diff
     0002-dwm-Add-keepmenu-config.diff
 	dwm.desktop)
@@ -24,6 +25,7 @@ sha256sums=('97902e2e007aaeaa3c6e3bed1f81785b817b7413947f1db1d3b62b8da4cd110e'
             '1e9b731366201bc5d84bd0cd1fd140a6cc5756f5cd966f4e48a62160a58c4ad3'
             '3ab0872f66ca32ccef66e851a07087456a69fad6e7729dbec08f78e7ee93b0f3'
             '822a185eaaa43245994505cdcc14402fb67adf3280cdaaf7200451d67e9f463d'
+            '56ca6565e6fb68ddbc3c08560f95ddbe71afaffaad28fb2955f6dd240deb6251'
             '93e5d8cebafb46fddcb7447235fa264502a47991dd962f1af50448293d11efdb'
             'c5179ae9b5d69301db7321d615ddb07a08a198ef1d5d2217cb74dd2f28487fa2'
             'bc36426772e1471d6dd8c8aed91f288e16949e3463a9933fee6390ee0ccd3f81')
@@ -33,6 +35,7 @@ prepare() {
   patch --strip=1 --input="${srcdir}/dwm-r1615-selfrestart.diff"
   patch --strip=1 --input="${srcdir}/dwm-fakefullscreen-20170508-ceac8c9.diff"
   patch --strip=1 --input="${srcdir}/dwm-attachaside-20180126-db22360.diff"
+  patch --strip=1 --input="${srcdir}/dwm-focusadjacenttag-6.0.diff"
   patch --strip=1 --input="${srcdir}/0001-dwm-Use-Mod-Space-for-launcher.diff"
   patch --strip=1 --input="${srcdir}/0002-dwm-Add-keepmenu-config.diff"
   # cp "$srcdir/config.h" config.h
