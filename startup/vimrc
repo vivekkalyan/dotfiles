@@ -180,11 +180,13 @@ Plug 'bronson/vim-visual-star-search'
 Plug 'wincent/loupe'
 Plug 'wincent/scalpel'
 Plug 'wincent/pinnacle'
+" Javascript
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
+" Python
 Plug 'vim-scripts/indentpython.vim'
+Plug 'vim-python/python-syntax'
 Plug 'tmhedberg/SimpylFold'
-Plug 'justinmk/vim-sneak'
 Plug 'jeetsukumaran/vim-filebeagle'
 Plug 'airblade/vim-gitgutter'
 Plug 'junegunn/fzf'
@@ -196,6 +198,9 @@ call plug#end()
 
 "SimpylFold
 let g:SimpylFold_fold_import = 0
+
+"Python syntax
+let python_highlight_all = 1
 
 " Scalpel
 nmap c* <Plug>(Scalpel)
