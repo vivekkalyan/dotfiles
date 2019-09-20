@@ -85,10 +85,10 @@ map <C-w>k :call WinMove('k')<cr>
 map <C-w>l :call WinMove('l')<cr>
 map <C-w>j :call WinMove('j')<cr>
 
-nmap <leader><left>  :call ResizeWindow('left')<cr>
-nmap <leader><right> :call ResizeWindow('right')<cr>
-nmap <leader><up>    :call ResizeWindow('up')<cr>
-nmap <leader><down>  :call ResizeWindow('down')<cr>
+nmap <C-w><left>  :call ResizeWindow('left')<cr>
+nmap <C-w><right> :call ResizeWindow('right')<cr>
+nmap <C-w><up>    :call ResizeWindow('up')<cr>
+nmap <C-w><down>  :call ResizeWindow('down')<cr>
 
 " Make ctags
 command! MakeTags !ctags -R .
