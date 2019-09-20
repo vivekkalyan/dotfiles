@@ -192,7 +192,7 @@ Plug 'airblade/vim-gitgutter'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/vim-peekaboo'
-Plug 'jiangmiao/auto-pairs'
+Plug 'tmsvg/pear-tree'
 Plug 'airblade/vim-rooter'
 call plug#end()
 
@@ -205,6 +205,17 @@ let python_highlight_all = 1
 " Scalpel
 nmap c* <Plug>(Scalpel)
 vnoremap c* "hy:%s/<C-r>h//gc<left><left><left>
+
+" Pear-Tree
+" Smart pairs
+let g:pear_tree_smart_openers = 1
+let g:pear_tree_smart_closers = 1
+let g:pear_tree_smart_backspace = 1
+" mappings
+imap <BS> <Plug>(PearTreeBackspace)
+imap <CR> <Plug>(PearTreeExpand)
+imap <Esc> <Plug>(PearTreeFinishExpansion)
+imap <Space> <Plug>(PearTreeSpace)
 
 " GitGutter
 set updatetime=100  " refresh rate
