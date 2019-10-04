@@ -191,6 +191,7 @@ Plug 'jeetsukumaran/vim-filebeagle'
 Plug 'airblade/vim-gitgutter'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
+Plug 'moll/vim-bbye'
 Plug 'junegunn/vim-peekaboo'
 Plug 'tmsvg/pear-tree'
 Plug 'airblade/vim-rooter'
@@ -201,6 +202,10 @@ let g:SimpylFold_fold_import = 0
 
 "Python syntax
 let python_highlight_all = 1
+
+" Bbye
+nmap <Leader>q :Bdelete<CR>
+nmap <Leader>Q :bufdo :Bdelete<CR>
 
 " Scalpel
 nmap c* <Plug>(Scalpel)
