@@ -194,6 +194,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'moll/vim-bbye'
 Plug 'junegunn/vim-peekaboo'
 Plug 'tmsvg/pear-tree'
+Plug 'unblevable/quick-scope'
 Plug 'airblade/vim-rooter'
 call plug#end()
 
