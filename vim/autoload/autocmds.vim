@@ -1,4 +1,4 @@
-let g:BowsplinterColorColumnBlacklist = ['diff', 'undotree', 'nerdtree', 'qf'] 
+let g:BowsplinterColorColumnBlacklist = ['diff', 'undotree', 'nerdtree', 'qf', 'filebeagle', 'help']
 let g:BowsplinterCursorlineBlacklist = ['command-t']
 let g:BowsplinterMkviewFiletypeBlacklist = ['diff', 'hgcommit', 'gitcommit']
 
