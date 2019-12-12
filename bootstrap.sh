@@ -19,7 +19,7 @@ DOTFILES_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 # OS
 if [ "$(uname -s)" = "Darwin" ]; then
     OS="macOS"
-elif uname -r | grep -q ARCH; then
+elif uname -r | grep -q arch; then
     OS="Arch"
 else
     OS=$(uname -s)
