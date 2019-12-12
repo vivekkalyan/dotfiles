@@ -81,6 +81,8 @@ if [[ "$OS" = "Arch" ]]; then
     grub-mkconfig -o /boot/grub/grub.cfg
     ln -sfv "$DOTFILES_DIR/arch/mkinitcpio.conf" /etc/mkinitcpio.conf
     mkinitcpio -p linux
+    mkdir -p /etc/pacman.d/hooks/
+    ln -sfv "$DOTFILES_DIR/arch/nvidia.hook" /etc/pacman.d/hooks/nvidia.hook
 fi
 
 export OS DOTFILES_DIR
