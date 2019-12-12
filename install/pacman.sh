@@ -44,3 +44,16 @@ python-pip
 ripgrep
 sqlite
 tldr
+
+emacs
+unzip
+xclip
+hugo
+vlc
+calibre
+transmission-qt
+yarn
+npm
+tmux
+picom
+feh
