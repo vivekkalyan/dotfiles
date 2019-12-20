@@ -16,6 +16,7 @@ source=(https://dl.suckless.org/$pkgname/$pkgname-$pkgver.tar.gz
         st-anysize-0.8.1.diff
         st-scrollback-0.8.2.diff
         st-scrollback-mouse-0.8.2.diff
+        st-clipboard-0.8.2.diff
         terminfo.patch
         README.terminfo.rst)
 
@@ -26,6 +27,7 @@ sha256sums=(aeb74e10aa11ed364e1bcc635a81a523119093e63befd2f231f8b0705b15bf35
             8118dbc50d2fe07ae10958c65366476d5992684a87a431f7ee772e27d5dee50f  # st-anysize-0.8.1.diff
             9c5aedce2ff191437bdb78aa70894c3c91a47e1be48465286f42d046677fd166  # st-scrollback-0.8.2.diff
             edfac67b876712dc48af150d417c3d3eba6389b52194b64a189c669bf4384653  # st-scrollback-mouse-0.8.2.diff
+            7be1a09831f13361f5659aaad55110bde99b25c8ba826c11d1d7fcec21f32945  # st-clipboard-0.8.2.diff
             bf6c8b73a606a8e513c7919d91f93ed7aeb5f44e80269bb244cc01659145a5ea
             0ebcbba881832adf9c98ce9fe7667c851d3cc3345077cb8ebe32702698665be2)
 _sourcedir=$pkgname-$pkgver
@@ -36,6 +38,7 @@ prepare() {
   patch --directory="$_sourcedir" --strip=1 < st-anysize-0.8.1.diff
   patch --directory="$_sourcedir" --strip=1 < st-scrollback-0.8.2.diff
   patch --directory="$_sourcedir" --strip=1 < st-scrollback-mouse-0.8.2.diff
+  patch --directory="$_sourcedir" --strip=1 < st-clipboard-0.8.2.diff
   patch --directory="$_sourcedir" --strip=0 < terminfo.patch
 
   # This package provides a mechanism to provide a custom config.h. Multiple
