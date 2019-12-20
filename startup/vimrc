@@ -101,7 +101,8 @@ function! BreakHere()
 	call histdel("/", -1)
 endfunction
 
-nnoremap <C-j> :<C-u>call BreakHere()<CR>
+" split lines (opposite of shift-J)
+nnoremap <S-s> :keeppatterns substitute/\s*\%#\s*/\r/e <bar> normal! ==<CR>
 
 " Q to play macro
 nnoremap Q @q
