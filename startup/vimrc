@@ -4,6 +4,7 @@ set encoding=utf-8      " set vim encoding
 set scrolloff=3         " minimum lines to keep in view around cursor
 set backspace=indent,eol,start  " backspace works in normal mode
 set laststatus=2        " show file name in status bar
+set statusline=[%n]\ %<%f\ %m%r%#Pmenu#%=%-14.(%*%l,%c%V%)\ %{LineNoIndicator()}
 
 set path+=**            " search down into subfolders for files
 set wildignore+=**/node_modules/**  " ignore folders
@@ -52,7 +53,6 @@ set wrap                " wrap text
 set breakindent         " indent wrapped lines to match start
 set textwidth=80        " characters to wrap text at
 set highlight+=@:ColorColumn    " ~/@ at end of window, 'showbreak'
-set highlight+=N:DiffText       " make current line number stand out a little
 set highlight+=c:LineNr         " blend vertical separators with line numbers
 set list                " show whitespace
 set listchars=tab:▷┅    " WHITE RIGHT-POINTING TRIANGLE (U+25B7, UTF-8: E2 96 B7)
@@ -66,7 +66,6 @@ set splitright          " open vertical split to the right of current window
 set switchbuf=usetab    " try to reuse windows/tabs when switching buffers
 set hidden              " allow switching modified buffers
 set fillchars=vert:┃    " solid line to seperate windows
-set fillchars+=stlnc:=  " fill inactive status lines with '='
 
 " Searching
 set ignorecase          " Ignore case when typing
@@ -206,6 +205,7 @@ Plug 'junegunn/vim-peekaboo'
 Plug 'tmsvg/pear-tree'
 Plug 'unblevable/quick-scope'
 Plug 'airblade/vim-rooter'
+Plug 'drzel/vim-line-no-indicator'
 call plug#end()
 
 "SimpylFold
