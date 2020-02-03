@@ -6,7 +6,7 @@
   user = vivekkalyan
 
 [credential]
-  helper = osxkeychain
+  helper = cache
 
 [core]
   excludesfile = ~/.gitignore
