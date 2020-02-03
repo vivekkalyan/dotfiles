@@ -92,9 +92,9 @@ zle -N fg-bg
 bindkey '^Z' fg-bg
 
 # Settings for virtualenvwrapper
-export WORKON_HOME=$HOME/.virtualenvs
-export PROJECT_HOME=$HOME/personal
-source /usr/local/bin/virtualenvwrapper.sh
+# export WORKON_HOME=$HOME/.virtualenvs
+# export PROJECT_HOME=$HOME/personal
+# source /usr/local/bin/virtualenvwrapper.sh
 
 # Clean up
 unset DOTFILE
