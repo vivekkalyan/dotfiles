@@ -48,6 +48,7 @@ fi
 # ln -sfv "$DOTFILES_DIR/startup/.bash_profile" ~
 sudo -u $real_user ln -sfv "$DOTFILES_DIR/startup/zshrc" "$USER_HOME/.zshrc"
 sudo -u $real_user ln -sfv "$DOTFILES_DIR/startup/vimrc" "$USER_HOME/.vimrc"
+sudo -u $real_user ln -sfv "$DOTFILES_DIR/startup/spacemacs" "$USER_HOME/.spacemacs"
 sudo -u $real_user ln -sfv "$DOTFILES_DIR/startup/tmux.conf" "$USER_HOME/.tmux.conf"
 sudo -u $real_user ln -sfv "$DOTFILES_DIR/startup/ctags" "$USER_HOME/.ctags"
 
