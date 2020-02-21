@@ -111,8 +111,6 @@ nnoremap <cr> :
 autocmd BufReadPost quickfix nnoremap <buffer> <CR> <CR>
 autocmd CmdwinEnter * nnoremap <buffer> <CR> <CR>
 
-" Remove distracting highlight after finding what we searched
-nnoremap <leader>n :noh<cr>
 " Turn off vim's custom regex
 " nnoremap / /\v
 " vnoremap / /\v
@@ -206,6 +204,7 @@ Plug 'tmsvg/pear-tree'
 Plug 'unblevable/quick-scope'
 Plug 'airblade/vim-rooter'
 Plug 'drzel/vim-line-no-indicator'
+Plug 'romainl/vim-cool'
 call plug#end()
 
 "SimpylFold
