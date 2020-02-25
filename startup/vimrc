@@ -205,6 +205,7 @@ Plug 'unblevable/quick-scope'
 Plug 'airblade/vim-rooter'
 Plug 'drzel/vim-line-no-indicator'
 Plug 'romainl/vim-cool'
+Plug 'vim-scripts/Tab-Name'
 call plug#end()
 
 "SimpylFold
@@ -265,3 +266,7 @@ inoremap <expr> <c-x><c-k> fzf#vim#complete#word({'left': '15%'})
 " Fugitive
 nmap gC :Gcommit<CR>
 nmap gB :Gblame<CR>
+
+" TabName
+command! -nargs=1 TabName TName <args>
+command! TabNoName TNoName
