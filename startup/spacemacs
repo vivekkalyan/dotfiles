@@ -582,7 +582,7 @@ before packages are loaded."
   (defun vivekkalyan/org-agenda-process-inbox-item ()
     "Process a single item in the org-agenda."
     (org-with-wide-buffer
-    (org-agenda-set-tags "@newtags")
+    (org-agenda-set-tags "@unfiled" 'off)
     (org-agenda-set-tags)
     (org-agenda-priority)
     (call-interactively 'vivekkalyan/my-org-agenda-set-effort)
