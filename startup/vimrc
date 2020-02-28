@@ -270,3 +270,73 @@ nmap gB :Gblame<CR>
 " TabName
 command! -nargs=1 TabName TName <args>
 command! TabNoName TNoName
+
+" vim-roam
+
+function! CreateZet(...)
+  let l:fname = ''.localtime().'.md'
+  let l:fnamepath = expand('~/wiki/') . l:fname
+
+  " edit the new file
+  execute "e " . l:fnamepath
+
+  " enter the title and timestamp (using ultisnips) in the new file
+  if len(a:000) > 0
+    execute "normal ggO---\<cr>title: ".join(a:000)."\<cr>created: \<c-r>=strftime('%Y-%m-%d %H:%M')\<cr>\<cr>---\<cr>\<esc>G"
+  else
+    execute "normal ggO---\<cr>title: \<cr>created: \<c-r>=strftime('%Y-%m-%d %H:%M')\<cr>\<cr>---\<cr>\<esc>G"
+  endif
+  write
+  execute "normal \<c-^>"
+  return l:fname
+endfunction
+
+function! s:roam_file(input)
+    " query, keystroke, line or query, keystroke
+    let l:keystroke = a:input[1]
+    if l:keystroke ==? 'ctrl-l'
+        " enter markdown link
+        if len(a:input) == 3
+            let l:line = split(a:input[2])
+            execute "normal! a[" .join(l:line[1:]) ."](./".l:line[0].")"
+        endif
+    else
+        if len(a:input) == 2
+            let l:fname = CreateZet(a:input[0])
+        elseif len(a:input) == 3
+            let l:fname = split(a:input[2])[0]
+        endif
+        execute 'e ~/wiki/'.l:fname
+    endif
+endfunction
+
+function! s:roam_link(input)
+    " input: [query] or [query, line]
+    if len(a:input) == 1
+        let l:title = a:input[0]
+        let l:link = CreateZet(l:title)
+    elseif len(a:input) == 2
+        let l:line = split(a:input[1])
+        let l:title = join(l:line[1:])
+        let l:link = l:line[0]
+    endif
+    execute "normal! a[".l:title."](./".l:link.")"
+endfunction
+
+command! -bang -nargs=* RoamFile call fzf#run(fzf#wrap({
+            \   'source': 'head -n 2 /home/vivek/wiki/*.md | paste -d " " - - - - | cut -d" " -f2,6- | grep -oP "[\d]{10}.md.*" | rg '.shellescape(<q-args>),
+            \   'down': 20,
+            \   'sink*': function('<sid>roam_file'),
+            \   'options': '--print-query --expect ctrl-l',
+            \ }))
+
+command! -bang -nargs=* RoamLink call fzf#run(fzf#wrap({
+            \   'source': 'head -n 2 /home/vivek/wiki/*.md | paste -d " " - - - - | cut -d" " -f2,6- | grep -oP "[\d]{10}.md.*" | rg '.shellescape(<q-args>),
+            \   'down': 20,
+            \   'sink*': function('<sid>roam_link'),
+            \   'options': '--print-query',
+            \ }))
+
+inoremap <C-L> <ESC>:RoamLink<CR>
+noremap <leader>nl :RoamLink<CR>
+noremap <leader>nf :RoamFile<CR>
