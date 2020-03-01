@@ -89,6 +89,10 @@ nmap <C-w><right> :call ResizeWindow('right')<cr>
 nmap <C-w><up>    :call ResizeWindow('up')<cr>
 nmap <C-w><down>  :call ResizeWindow('down')<cr>
 
+"C-jk to move down/up paragraph
+noremap <silent> <expr> <C-k> (line('.') - search('^\n.\+$', 'Wenb')) . 'kzv^'
+noremap <silent> <expr> <C-j> (search('^\n.', 'Wen') - line('.')) . 'jzv^'
+
 " Make ctags
 command! MakeTags !ctags -R .
 
@@ -129,6 +133,11 @@ nnoremap <expr> k v:count ? 'k' : 'gk'
 " Terminal-like experience for command line
 cnoremap <C-a> <Home>
 cnoremap <C-e> <End>
+
+" H/L to move to start/end of sentences
+noremap H ^
+noremap L $
+vnoremap L g_
 
 " `<Tab>`/`<S-Tab>` to move between matches without leaving incremental search.
 " Note dependency on `'wildcharm'` being set to `<C-z>` in order for this to
