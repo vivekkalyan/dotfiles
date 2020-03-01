@@ -303,6 +303,7 @@ function! CreateZet(...)
     execute "normal ggO---\<cr>title: \<cr>created: \<c-r>=strftime('%Y-%m-%d %H:%M')\<cr>\<cr>---\<cr>\<esc>G"
   endif
   write
+  setlocal nobuflisted
   execute "normal \<c-^>"
   return l:fname
 endfunction
@@ -323,6 +324,7 @@ function! s:roam_file(input)
             let l:fname = split(a:input[2])[0]
         endif
         execute 'e ~/wiki/'.l:fname
+        setlocal nobuflisted
     endif
 endfunction
 
