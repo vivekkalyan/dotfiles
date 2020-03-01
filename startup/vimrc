@@ -99,10 +99,17 @@ command! MakeTags !ctags -R .
 " Y to yank to end of line
 nnoremap Y y$
 
-function! BreakHere()
-	s/^\(\s*\)\(.\{-}\)\(\s*\)\(\%#\)\(\s*\)\(.*\)/\1\2\r\1\4\6
-	call histdel("/", -1)
+" copy to attached terminal using the yank(1) script:
+" https://github.com/sunaku/home/blob/master/bin/yank
+function! Yank(text) abort
+  let escape = system('yank', a:text)
+  if v:shell_error
+    echoerr escape
+  else
+    call writefile([escape], '/dev/tty', 'b')
+  endif
 endfunction
+noremap <silent> <C-ins> y:<C-U>call Yank(@0)<CR>
 
 " split lines (opposite of shift-J)
 nnoremap <S-s> :keeppatterns substitute/\s*\%#\s*/\r/e <bar> normal! ==<CR>
