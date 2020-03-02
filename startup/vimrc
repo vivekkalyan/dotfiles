@@ -322,8 +322,10 @@ function! s:roam_file(input)
     else
         if len(a:input) == 2
             let l:fname = CreateZet(a:input[0])
-        elseif len(a:input) == 3
-            let l:fname = split(a:input[2])[0]
+            lt l:fname = split(a:input[2])[0]
+            if empty(glob("~/wiki/".l:fname))
+                let l:fname = CreateZet(a:input[0])
+            endif
         endif
         execute 'e ~/wiki/'.l:fname
         setlocal nobuflisted
@@ -341,22 +343,29 @@ function! s:roam_link(input)
         let l:line = split(a:input[1])
         let l:title = join(l:line[1:])
         let l:link = l:line[0]
+        if empty(glob("~/wiki/".l:link))
+            let l:title = a:input[0]
+            let l:link = CreateZet(l:title)
+        endif
     endif
     execute "normal! a[".l:title."](./".l:link.")"
 endfunction
 
+" check this name for collision/better namespace
+let fzf_command = 'head -n 2 /home/vivek/wiki/*.md | paste -d " " - - - - | cut -d" " -f2,6- | grep -oP "[\d]+.md.*"'
+
 command! -bang -nargs=* RoamFile call fzf#run(fzf#wrap({
-            \   'source': 'head -n 2 /home/vivek/wiki/*.md | paste -d " " - - - - | cut -d" " -f2,6- | grep -oP "[\d]{10}.md.*" | rg '.shellescape(<q-args>),
+            \   'source': fzf_command,
             \   'down': 20,
             \   'sink*': function('<sid>roam_file'),
-            \   'options': '--print-query --expect ctrl-l',
+            \   'options': '--print-query --no-sort --expect ctrl-l --bind "change:reload(head -n 2 /home/vivek/wiki/*.md | paste -d \" \" - - - - | cut -d\" \" -f2,6- | grep -oP \"[\d]+.md.*\"; echo {q})"'
             \ }))
 
 command! -bang -nargs=* RoamLink call fzf#run(fzf#wrap({
-            \   'source': 'head -n 2 /home/vivek/wiki/*.md | paste -d " " - - - - | cut -d" " -f2,6- | grep -oP "[\d]{10}.md.*" | rg '.shellescape(<q-args>),
+            \   'source': fzf_command,
             \   'down': 20,
             \   'sink*': function('<sid>roam_link'),
-            \   'options': '--print-query',
+            \   'options': '--print-query --no-sort --bind "change:reload(head -n 2 /home/vivek/wiki/*.md | paste -d \" \" - - - - | cut -d\" \" -f2,6- | grep -oP \"[\d]+.md.*\"; echo {q})"'
             \ }))
 
 inoremap <C-L> <ESC>:RoamLink<CR>
