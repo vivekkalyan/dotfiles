@@ -310,6 +310,8 @@ endfunction
 
 function! s:roam_file(input)
     " query, keystroke, line or query, keystroke
+    if len(a:input) == 0
+        return
     let l:keystroke = a:input[1]
     if l:keystroke ==? 'ctrl-l'
         " enter markdown link
@@ -330,6 +332,8 @@ endfunction
 
 function! s:roam_link(input)
     " input: [query] or [query, line]
+    if len(a:input) == 0
+        return
     if len(a:input) == 1
         let l:title = a:input[0]
         let l:link = CreateZet(l:title)
