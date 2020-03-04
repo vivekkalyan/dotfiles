@@ -28,7 +28,6 @@ zsh-completions
 fasd
 zathura
 zathura-pdf-mupdf
-redshift
 diff-so-fancy
 bat
 ctags
@@ -57,3 +56,6 @@ npm
 tmux
 picom
 feh
+nextcloud-client
+mpv
+maim
