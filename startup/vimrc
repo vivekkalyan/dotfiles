@@ -312,6 +312,7 @@ function! s:roam_file(input)
     " query, keystroke, line or query, keystroke
     if len(a:input) == 0
         return
+    endif
     let l:keystroke = a:input[1]
     if l:keystroke ==? 'ctrl-l'
         " enter markdown link
@@ -322,7 +323,8 @@ function! s:roam_file(input)
     else
         if len(a:input) == 2
             let l:fname = CreateZet(a:input[0])
-            lt l:fname = split(a:input[2])[0]
+        elseif len(a:input) == 3
+            let l:fname = split(a:input[2])[0]
             if empty(glob("~/wiki/".l:fname))
                 let l:fname = CreateZet(a:input[0])
             endif
@@ -336,6 +338,7 @@ function! s:roam_link(input)
     " input: [query] or [query, line]
     if len(a:input) == 0
         return
+    endif
     if len(a:input) == 1
         let l:title = a:input[0]
         let l:link = CreateZet(l:title)
