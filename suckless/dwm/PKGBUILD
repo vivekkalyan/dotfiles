@@ -21,7 +21,7 @@ source=(http://dl.suckless.org/dwm/dwm-$pkgver.tar.gz
     dwm-pertag-20170513-ceac8c9.diff
     dwm-scratchpad-20191009-f46af6d5dbcd06cb8b9a2ab154349ddd.diff
     0001-dwm-Use-Mod-Space-for-launcher.diff
-    0002-dwm-Add-keepmenu-config.diff
+    0002-dwm-dmenu-applications.diff
 	dwm.desktop)
 sha256sums=('97902e2e007aaeaa3c6e3bed1f81785b817b7413947f1db1d3b62b8da4cd110e'
             '1e9b731366201bc5d84bd0cd1fd140a6cc5756f5cd966f4e48a62160a58c4ad3'
@@ -31,7 +31,7 @@ sha256sums=('97902e2e007aaeaa3c6e3bed1f81785b817b7413947f1db1d3b62b8da4cd110e'
             '11738a343ce3e5092b7eacf08f6f5c638f14fba2b2f8fe82d9b8e1864c949e22'
             'e791342407b0b2a3140d958d8c4dde3910b353713f32f403e795c2fcb81a82c1'
             'f5326f558d3da5b03e71ce7c0bfc6c0f3f79fc7091ca1000cd206edf9214f851'
-            'c5179ae9b5d69301db7321d615ddb07a08a198ef1d5d2217cb74dd2f28487fa2'
+            'db44a2aaed73046b79ffc819df33ad413f172ffd28dee291c869c9aabffaed86'
             'bc36426772e1471d6dd8c8aed91f288e16949e3463a9933fee6390ee0ccd3f81')
 
 prepare() {
@@ -43,7 +43,7 @@ prepare() {
   patch --strip=1 --input="${srcdir}/dwm-focusadjacenttag-6.0.diff"
   patch --strip=1 --input="${srcdir}/dwm-scratchpad-20191009-f46af6d5dbcd06cb8b9a2ab154349ddd.diff"
   patch --strip=1 --input="${srcdir}/0001-dwm-Use-Mod-Space-for-launcher.diff"
-  patch --strip=1 --input="${srcdir}/0002-dwm-Add-keepmenu-config.diff"
+  patch --strip=1 --input="${srcdir}/0002-dwm-dmenu-applications.diff"
   # cp "$srcdir/config.h" config.h
 }
 

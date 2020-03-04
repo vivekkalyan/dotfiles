@@ -84,6 +84,7 @@ if [[ "$OS" = "Arch" ]]; then
     mkinitcpio -p linux
     mkdir -p /etc/pacman.d/hooks/
     ln -sfv "$DOTFILES_DIR/arch/nvidia.hook" /etc/pacman.d/hooks/nvidia.hook
+    systemctl --user enable "$DOTFILES_DIR/init/clipmenud.service"
 fi
 
 export OS DOTFILES_DIR

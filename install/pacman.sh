@@ -59,3 +59,5 @@ feh
 nextcloud-client
 mpv
 maim
+clipmenu
+clipnotify
