@@ -259,11 +259,11 @@ let g:gitgutter_sign_removed = '-'
 let g:gitgutter_sign_removed_first_line = '^'
 let g:gitgutter_sign_modified_removed = '<'
 " make mappings more mnemonic (git)
-nmap ]g <Plug>GitGutterNextHunk
-nmap [g <Plug>GitGutterPrevHunk
-nmap gs <Plug>GitGutterStageHunk
-nmap gu <Plug>GitGutterUndoHunk
-nmap gp <Plug>GitGutterPreviewHunk
+nmap ]g <Plug>(GitGutterNextHunk)
+nmap [g <Plug>(GitGutterPrevHunk)
+nmap gs <Plug>(GitGutterStageHunk)
+nmap gu <Plug>(GitGutterUndoHunk)
+nmap gp <Plug>(GitGutterPreviewHunk)
 
 " File Beagle
 let g:filebeagle_suppress_keymaps = 1
