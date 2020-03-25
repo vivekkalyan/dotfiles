@@ -63,6 +63,7 @@ fi
 sudo -u $real_user ln -sfv "$DOTFILES_DIR/system/prompt.zsh" /usr/local/share/zsh/site-functions/prompt_pure_setup
 sudo -u $real_user ln -sfv "$DOTFILES_DIR/system/async.zsh" /usr/local/share/zsh/site-functions/async
 
+sudo -u $real_user ln -sfv "$DOTFILES_DIR/system/dunstrc" $USER_HOME/.config/dunstrc
 sudo -u $real_user ln -sfv "$DOTFILES_DIR/vim" $USER_HOME/.vim
 
 if [[ "$OS" = "macOS" ]]; then
