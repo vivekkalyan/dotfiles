@@ -1,1 +1,24 @@
-maim -s | xclip -selection clipboard -t image/png
+#!/bin/bash
+
+SCROTDIR=$HOME/screenshots/
+NAME="$(date +%G_%m_%d_%T)_scrot.png"
+
+chosen=$(echo -e "fullscreen\narea\narea [clipboard]\nactive window" | dmenu -p "maim menu " -l 4)
+if [[ $chosen = "fullscreen" ]]; then
+	sleep 1
+	maim "$HOME/maim.png"
+	notify-send "screenshot saved!" -i $HOME/maim.png -t 2500
+	mv $HOME/maim.png $SCROTDIR/$NAME
+elif [[ $chosen = "area" ]]; then
+	maim -s $HOME/maim.png
+	notify-send "screenshot saved!" -i $HOME/maim.png -t 2500
+	mv $HOME/maim.png $SCROTDIR/$NAME
+elif [[ $chosen = "area [clipboard]" ]]; then
+	maim -s | xclip -selection clipboard -t image/png
+	notify-send 'screenshot copied to clipboard' -t 2500
+elif [[ $chosen = "active window" ]]; then
+	sleep 1
+	maim -i $(xdotool getactivewindow) "$HOME/maim.png"
+	notify-send "screenshot saved!" -i $HOME/maim.png -t 2500
+	v $HOME/maim.png $SCROTDIR/$NAME
+fi
