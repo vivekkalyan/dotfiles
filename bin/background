@@ -9,6 +9,8 @@
 
 [ -f "$1" ] || exit 1
 
+pkill -9 xwinwrap
+
 case "$(basename $(file -b -i -L "$1"))" in
     *png*|*jpg*|*jpeg*)
         set -- "$1" $(file "$1" | grep -oE '[0-9]+ x [0-9]+')
