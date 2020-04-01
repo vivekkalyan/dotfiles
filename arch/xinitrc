@@ -1,8 +1,13 @@
 #xinput --set-prop 8 154 1.4,0,0,0,1.4,0,0,0,1
 
 # Keyboard
-setxkbmap -option 'caps:ctrl_modifier'
-xcape -e 'Caps_Lock=Escape'
+setxkbmap -option 'ctrl:swapcaps_hyper'
+# setxkbmap -option 'caps:ctrl_modifier'
+setxkbmap -option 'altwin:swap_alt_win'
+xcape -e 'Control_L=Escape'
+xcape -e 'Shift_L=Shift_L|9'
+xcape -e 'Shift_R=Shift_R|0'
+
 # xcape -t 500 -e 'Caps_Lock=Escape'
 
 # Set keyboard delay and rate
