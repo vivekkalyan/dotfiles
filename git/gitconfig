@@ -84,6 +84,9 @@
   textconv=pandoc --to=markdown
   prompt = false
 
+[interactive]
+  diffFilter = /usr/share/git/diff-highlight/diff-highlight | less --tabs=4 -RFX
+
 [merge]
   # ff = only
   # Always use rebase workflow
