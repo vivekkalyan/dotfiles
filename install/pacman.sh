@@ -28,7 +28,6 @@ zsh-completions
 fasd
 zathura
 zathura-pdf-mupdf
-diff-so-fancy
 bat
 ctags
 fasd
