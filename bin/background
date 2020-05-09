@@ -5,20 +5,18 @@
 # intelligently set wallpaper background
 #
 
-[ "$1" ] || set -- ${HOME}/var/tmp/wall
+bgloc="$HOME/.cache/bg"
 
-[ -f "$1" ] || exit 1
+[ -f "$1" ] && ln -sf "$(readlink -f "$1")" "$bgloc" && notify-send -i "$bgloc" "Changing wallpaper..."
+
+[ -d "$1" ] && ln -sf "$(find "$(readlink -f "$1")" -iregex '.*.\(jpg\|jpeg\|png\|gif\)' -type f | shuf -n 1)" "$bgloc" && notify-send -i "$bgloc" "Random Wallpaper chosen."
 
 pkill -9 xwinwrap
-
-case "$(basename $(file -b -i -L "$1"))" in
+case "$(basename $(file -b -i -L "$bgloc"))" in
     *png*|*jpg*|*jpeg*)
-        set -- "$1" $(file "$1" | grep -oE '[0-9]+ x [0-9]+')
-        if [ "$2" -le 512 ] 2>/dev/null ; then
-            feh --bg-tile --no-fehbg "$1" &
-        else
-            feh --bg-fill --no-fehbg "$1" &
-        fi
+        xwallpaper --zoom "$bgloc"
         ;;
-    *gif*|*webm*|*mp4*|*mkv*) mpvbg "$1" &
+    *gif*|*webm*|*mp4*|*mkv*)
+        mpvbg "$bgloc" &
+        ;;
 esac
