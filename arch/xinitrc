@@ -16,8 +16,8 @@ xset r rate 300 50
 # redshift
 redshift -l 1.27:103.84 &
 
-# picom
-picom -b
+# set background
+background
 
 # dunst (notifications)
 dunst &
