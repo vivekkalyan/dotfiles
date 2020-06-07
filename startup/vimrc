@@ -298,7 +298,7 @@ function! CreateZet(...)
 
   " enter the title and timestamp (using ultisnips) in the new file
   if len(a:000) > 0
-    execute "normal ggO---\<cr>title: ".join(a:000)."\<cr>created: \<c-r>=strftime('%Y-%m-%d %H:%M')\<cr>\<cr>---\<cr>\<esc>G"
+    execute "normal ggO---\<cr>title: ".join(a:000)."\<cr>created: \<c-r>=strftime('%Y-%m-%d %H:%M')\<cr>\<cr>---\<cr>\<cr># ".join(a:000)."\<esc>G"
   else
     execute "normal ggO---\<cr>title: \<cr>created: \<c-r>=strftime('%Y-%m-%d %H:%M')\<cr>\<cr>---\<cr>\<esc>G"
   endif
