@@ -24,6 +24,12 @@ alias ..="cd .."
 alias ...="cd ../.."
 alias ....="cd ../../.."
 
+# Global aliases
+alias -g G='| grep'
+alias -g R='| rg'
+alias -g L='| less'
+alias -g V='| vim -'
+
 # IP Addresses
 alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
 alias localip="ipconfig getifaddr en0"

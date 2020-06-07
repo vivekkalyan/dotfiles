@@ -91,6 +91,16 @@ function fg-bg() {
 zle -N fg-bg
 bindkey '^Z' fg-bg
 
+globalias() {
+    if [[ $LBUFFER =~ '[A-Z0-9]+$' ]]; then
+        zle _expand_alias
+        zle expand-word
+    fi
+    zle self-insert
+}
+zle -N globalias
+bindkey " " globalias # space key to expand globalalias
+
 # Settings for virtualenvwrapper
 # export WORKON_HOME=$HOME/.virtualenvs
 # export PROJECT_HOME=$HOME/personal
