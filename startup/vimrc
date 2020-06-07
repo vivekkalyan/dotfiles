@@ -123,8 +123,8 @@ autocmd BufReadPost quickfix nnoremap <buffer> <CR> <CR>
 autocmd CmdwinEnter * nnoremap <buffer> <CR> <CR>
 
 " Turn off vim's custom regex
-" nnoremap / /\v
-" vnoremap / /\v
+nnoremap / /\v
+vnoremap / /\v
 
 " Minimal git blame
 command! -range GB echo join(systemlist("git blame -L <line1>,<line2> " .expand('%')), "\n")
