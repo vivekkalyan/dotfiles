@@ -34,6 +34,8 @@ alias -g V='| vim -'
 alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
 alias localip="ipconfig getifaddr en0"
 
+# Suffix alias, all files with specified extension open using defined alias
+alias -s git="git clone"
 
 # Programs
 alias g="git"
