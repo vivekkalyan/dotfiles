@@ -22,6 +22,7 @@ endfunction
 function! autocmds#should_mkview() abort
   return
         \ &buftype == '' &&
+        \ getcmdwintype() == '' &&
         \ index(g:BowsplinterMkviewFiletypeBlacklist, &filetype) == -1 &&
         \ !exists('$SUDO_USER') " Don't create root-owned files.
 endfunction
