@@ -101,6 +101,10 @@ globalias() {
 zle -N globalias
 bindkey " " globalias # space key to expand globalalias
 
+# fzf completions
+source /usr/share/fzf/key-bindings.zsh
+source /usr/share/fzf/completion.zsh
+
 # Settings for virtualenvwrapper
 # export WORKON_HOME=$HOME/.virtualenvs
 # export PROJECT_HOME=$HOME/personal
