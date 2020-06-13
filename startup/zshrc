@@ -75,10 +75,14 @@ bindkey "^X^E" edit-command-line
 # https://hellricer.github.io/2019/05/21/ctrl-arrows-in-terminal.html
 bindkey "\e[1;5C" forward-word
 bindkey "\e[1;5D" backward-word
+bindkey "^L" forward-word
+bindkey "^H" backward-word
 
 # ctrl+up/down for partial search
 bindkey '^[[1;5A' history-substring-search-up
 bindkey '^[[1;5B' history-substring-search-down
+bindkey '^K' history-substring-search-up
+bindkey '^J' history-substring-search-down
 
 # Make CTRL-Z background things and unbackground them.
 function fg-bg() {
