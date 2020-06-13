@@ -34,6 +34,7 @@
   cm = commit -m
   co = checkout
   df = diff --word-diff
+  dfs = diff --word-diff --staged
   f = fetch
   rb = rebase
   rba = rebase --abort
