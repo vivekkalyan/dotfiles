@@ -8,10 +8,10 @@ else
 fi
 
 # List all files colorized in long format
-alias ll='ls -lhF'
+alias ll='exa --color auto --group-directories-first --long --group --header --modified --sort=name --git --time-style=long-iso --classify'
 
 # List all files colorized in long format, including dot files
-alias la="ls -lhFA"
+alias la='exa --color auto --all --group-directories-first --long --group --header --modified --sort=name --git --time-style=long-iso --classify'
 
 # List only directories
 alias lsd='ls -lhF | grep "^d"'
