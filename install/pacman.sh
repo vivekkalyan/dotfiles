@@ -43,7 +43,6 @@ ripgrep
 sqlite
 tldr
 
-emacs
 unzip
 xclip
 hugo
@@ -54,9 +53,12 @@ yarn
 npm
 tmux
 picom
-feh
+sxiv
 nextcloud-client
 mpv
 maim
 clipmenu
 clipnotify
+dunst
+jq
+exa
