@@ -227,6 +227,9 @@ Plug 'airblade/vim-rooter'
 Plug 'drzel/vim-line-no-indicator'
 Plug 'romainl/vim-cool'
 Plug 'vim-scripts/Tab-Name'
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
+Plug 'plasticboy/vim-markdown'
+Plug 'reedes/vim-pencil'
 call plug#end()
 
 "SimpylFold
@@ -292,7 +295,29 @@ nmap gB :Gblame<CR>
 command! -nargs=1 TabName TName <args>
 command! TabNoName TNoName
 
-" vim-roam
+" Markdown Preview
+let g:mkdp_auto_start = 0
+let g:mkdp_auto_close = 0
+let g:mkdp_browser = 'firefox-developer-edition'
+
+
+" conceal links, bold, italics
+let g:vim_markdown_conceal = 2
+" don't conceal latex (since support is not good)
+let g:vim_markdown_math = 0
+let g:vim_markdown_frontmatter = 1
+let g:vim_markdown_strikethrough = 1
+" automatically save files when following links
+let g:vim_markdown_autowrite = 1
+" open new file in vsplit
+let g:vim_markdown_edit_url_in = 'vsplit'
+" follow anchor to headings
+let g:vim_markdown_follow_anchor = 1
+
+augroup pencil
+  autocmd!
+  autocmd FileType markdown     call pencil#init({'wrap': 'hard'})
+augroup END
 
 function! CreateZet(...)
   let l:fname = ''.localtime().'.md'
