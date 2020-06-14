@@ -298,7 +298,6 @@ command! TabNoName TNoName
 " Markdown Preview
 let g:mkdp_auto_start = 0
 let g:mkdp_auto_close = 0
-let g:mkdp_browser = 'firefox-developer-edition'
 
 
 " conceal links, bold, italics
