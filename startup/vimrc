@@ -109,7 +109,12 @@ function! Yank(text) abort
     call writefile([escape], '/dev/tty', 'b')
   endif
 endfunction
-noremap <silent> <C-ins> y:<C-U>call Yank(@0)<CR>
+" noremap <silent> <C-ins> y:<C-U>call Yank(@0)<CR>
+
+function! CopyYank() abort
+  call Yank(join(v:event.regcontents, "\n"))
+endfunction
+autocmd TextYankPost * call CopyYank()
 
 " split lines (opposite of shift-J)
 nnoremap <S-s> :keeppatterns substitute/\s*\%#\s*/\r/e <bar> normal! ==<CR>
