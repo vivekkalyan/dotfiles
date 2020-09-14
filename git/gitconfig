@@ -28,7 +28,8 @@
   # Detect whitespace errors when applying a patch
 
 [alias]
-  a = "!git add $@ && git status && :"
+  a = !sh -c 'cd -- ${GIT_PREFIX:-.} && git add -- "$@" && git status' --
+  # https://stackoverflow.com/a/53654984
   aa = "!git add --all && git status && :"
   c = commit
   cm = commit -m
