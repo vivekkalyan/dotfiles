@@ -24,7 +24,6 @@ alias d='fasd -d' # directory
 alias f='fasd -f' # file
 alias j='fasd_cd -d' # cd, same functionality as j in autojump
 alias jj='fasd_cd -d -i' # interactive directory jump
-alias v='a -e vim' # vim
 alias o='a -e open' # open
 
 # programs
