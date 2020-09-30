@@ -28,12 +28,18 @@ function! autocmds#should_mkview() abort
 endfunction
 
 function! autocmds#mkview() abort
-  if exists('*haslocaldir') && haslocaldir()
-    " We never want to save an :lcd command, so hack around it...
-    cd -
-    mkview
-    lcd -
-  else
-    mkview
-  endif
+  try
+    if exists('*haslocaldir') && haslocaldir()
+        " We never want to save an :lcd command, so hack around it...
+        cd -
+        mkview
+        lcd -
+    else
+        mkview
+    endif
+  catch /\<E186\>/
+    " No previous directory: happens when using fzf
+  catch /\<E190\>/
+    " Could be name or path length exceeding NAME_MAX or PATH_MAX.
+  endtry
 endfunction
