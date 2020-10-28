@@ -346,12 +346,15 @@ function! CreateZet(...)
   " edit the new file
   execute "e " . l:fnamepath
 
-  " enter the title and timestamp (using ultisnips) in the new file
+  " enter the title and timestamp in the new file, toggle wrap functionality
+  " from pencil to simplify things
+  PencilToggle
   if len(a:000) > 0
-    execute "normal ggO---\<cr>title: ".join(a:000)."\<cr>created: \<c-r>=strftime('%Y-%m-%d %H:%M')\<cr>\<cr>---\<cr>\<cr># ".join(a:000)."\<esc>G"
+    execute "normal ggO---\<CR>title: ".join(a:000)."\<CR>created: \<c-r>=strftime('%Y-%m-%d %H:%M')\<CR>\<CR>---\<CR>\<CR># ".join(a:000)."\<esc>G"
   else
-    execute "normal ggO---\<cr>title: \<cr>created: \<c-r>=strftime('%Y-%m-%d %H:%M')\<cr>\<cr>---\<cr>\<esc>G"
+    execute "normal ggO---\<CR>title: \<CR>created: \<c-r>=strftime('%Y-%m-%d %H:%M')\<CR>\<CR>---\<CR>\<esc>G"
   endif
+  PencilToggle
   write
   setlocal nobuflisted
   execute "normal \<c-^>"
