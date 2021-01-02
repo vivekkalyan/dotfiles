@@ -295,6 +295,7 @@ inoremap <expr> <c-x><c-k> fzf#vim#complete#word({'left': '15%'})
 " Fugitive
 nmap gC :Gcommit<CR>
 nmap gB :Gblame<CR>
+nmap gS :Gstatus<CR>
 
 " TabName
 command! -nargs=1 TabName TName <args>
