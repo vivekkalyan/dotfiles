@@ -45,6 +45,7 @@
   rbm = rebase origin/master
   reset = reset HEAD $@
   s = status
+  ss = status .
   p = push
   pm = push origin master
 
