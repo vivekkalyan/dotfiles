@@ -231,7 +231,10 @@ Plug 'drzel/vim-line-no-indicator'
 Plug 'romainl/vim-cool'
 Plug 'vim-scripts/Tab-Name'
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
-Plug 'plasticboy/vim-markdown'
+" Plug 'plasticboy/vim-markdown'
+Plug 'tpope/vim-markdown'
+Plug 'mattly/vim-markdown-enhancements'
+
 Plug 'reedes/vim-pencil'
 call plug#end()
 
@@ -327,6 +330,7 @@ let g:pencil#autoformat_config = {
     \     'black': [
     \       'htmlH[0-9]',
     \       'markdown(Code|H[0-9]|Url|IdDeclaration|Link|Rule|Highlight[A-Za-z0-9]+)',
+    \       'markdown(ListMarker|OrderedListMarker)',
     \       'markdown(FencedCodeBlock|InlineCode)',
     \       'mkd(Code|Rule|Delimiter|Link|ListItem|ListItemLine|IndentCode)',
     \       'mmdTable[A-Za-z0-9]*',
@@ -335,6 +339,7 @@ let g:pencil#autoformat_config = {
     \     'white': [
     \      'markdown(Code|Link)',
     \     ],
+    \     'enforce-previous-line': 1,
     \   },
     \ }
 
