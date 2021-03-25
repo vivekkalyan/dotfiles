@@ -236,6 +236,7 @@ Plug 'tpope/vim-markdown'
 Plug 'mattly/vim-markdown-enhancements'
 
 Plug 'reedes/vim-pencil'
+Plug 'dhruvasagar/vim-table-mode'
 call plug#end()
 
 "SimpylFold
@@ -335,6 +336,7 @@ let g:pencil#autoformat_config = {
     \       'mkd(Code|Rule|Delimiter|Link|ListItem|ListItemLine|IndentCode)',
     \       'mmdTable[A-Za-z0-9]*',
     \       'Comment',
+    \       'Table',
     \     ],
     \     'white': [
     \      'markdown(Code|Link)',
