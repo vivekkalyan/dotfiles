@@ -433,3 +433,54 @@ command! -bang -nargs=* RoamLink call fzf#run(fzf#wrap({
 inoremap <C-L> <ESC>:RoamLink<CR>
 noremap <leader>nl :RoamLink<CR>
 noremap <leader>nf :RoamFile<CR>
+
+
+for char in [ '_', '.', ':', ',', ';', '<bar>', '/', '<bslash>', '*', '+', '-', '#' ]
+    execute 'xnoremap i' . char . ' :<C-u>normal! T' . char . 'vt' . char . '<CR>'
+    execute 'onoremap i' . char . ' :normal vi' . char . '<CR>'
+    execute 'xnoremap a' . char . ' :<C-u>normal! F' . char . 'vf' . char . '<CR>'
+    execute 'onoremap a' . char . ' :normal va' . char . '<CR>'
+endfor
+
+" number text object (integer and float)
+" --------------------------------------
+" in
+function! VisualNumber()
+    call search('\d\([^0-9\.]\|$\)', 'cW')
+    normal v
+    call search('\(^\|[^0-9\.]\d\)', 'becW')
+endfunction
+xnoremap in :<C-u>call VisualNumber()<CR>
+onoremap in :<C-u>normal vin<CR>
+
+" square brackets text objects
+" ----------------------------
+" ir ar
+xnoremap ir i[
+xnoremap ar a[
+onoremap ir :normal vi[<CR>
+onoremap ar :normal va[<CR>
+
+" line text objects
+" -----------------
+" il al
+xnoremap il g_o^
+onoremap il :<C-u>normal vil<CR>
+xnoremap al $o0
+onoremap al :<C-u>normal val<CR>
+
+" square brackets text objects
+" ----------------------------
+" iq aq
+xnoremap iq i'
+xnoremap aq a'
+onoremap iq :normal vi'<CR>
+onoremap aq :normal va'<CR>
+
+" square brackets text objects
+" ----------------------------
+" iQ aQ
+xnoremap iQ i"
+xnoremap aQ a"
+onoremap iQ :normal vi"<CR>
+onoremap aQ :normal va"<CR>
