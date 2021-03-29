@@ -231,9 +231,7 @@ Plug 'drzel/vim-line-no-indicator'
 Plug 'romainl/vim-cool'
 Plug 'vim-scripts/Tab-Name'
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
-" Plug 'plasticboy/vim-markdown'
-Plug 'tpope/vim-markdown'
-Plug 'mattly/vim-markdown-enhancements'
+Plug 'plasticboy/vim-markdown'
 
 Plug 'reedes/vim-pencil'
 Plug 'dhruvasagar/vim-table-mode'
