@@ -333,7 +333,7 @@ let g:pencil#autoformat_config = {
     \       'markdown(Code|H[0-9]|Url|IdDeclaration|Link|Rule|Highlight[A-Za-z0-9]+)',
     \       'markdown(ListMarker|OrderedListMarker)',
     \       'markdown(FencedCodeBlock|InlineCode)',
-    \       'mkd(Code|Rule|Delimiter|Link|ListItem|ListItemLine|IndentCode)',
+    \       'mkd(Code|Rule|Delimiter|Link|ListItem|ListItemLine|IndentCode|Snippet[A-Za-z0-9]+)',
     \       'mmdTable[A-Za-z0-9]*',
     \       'Comment',
     \       'Table',
@@ -367,7 +367,7 @@ function! CreateZet(...)
   return l:fname
 endfunction
 
-" Returns syntax names at current line
+" Returns syntax names at cursor
 nmap <F9> :call <SID>SynStack()<CR>
 function! <SID>SynStack()
   if !exists("*synstack")
