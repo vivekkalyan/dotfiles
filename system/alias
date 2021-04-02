@@ -43,6 +43,8 @@ alias -s git="git clone"
 alias g="git"
 alias h="hledger"
 alias v="vim"
+alias n="notes"
+alias t="task"
 
 
 # Always enable colored `grep` output
