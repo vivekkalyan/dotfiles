@@ -75,9 +75,10 @@
   l = log --pretty=oneline -n 20 --abbrev-commit
   # View abbreviated SHA, description of the latest 20 commits
   ll = log --pretty=oneline --graph --abbrev-commit
-  lll = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+  lll = log --graph --abbrev-commit --decorate --all --pretty=format:'%C(bold green)%h%C(reset) %C(white)%s%C(reset) - %C(cyan)%aD%C(reset) %C(yellow)(%ar)%C(reset)%C(bold yellow)%d%C(reset)'' %C(dim white)- %an%C(reset)'
   # A nice, colorful, graphical representation of log
   # https://git-scm.com/docs/git-log
+  # --all: shows all branches
 
 [diff]
   renames = copies
