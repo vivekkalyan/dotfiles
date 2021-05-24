@@ -29,7 +29,7 @@ alias -g G='| grep'
 alias -g R='| rg'
 alias -g L='| less'
 alias -g V='| vim -'
-alias -g C='| xclip -selection clipboard'
+alias -g C='| sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g" | xclip -selection clipboard'
 alias -g P='xclip -selection clipboard -o > '
 
 # IP Addresses
