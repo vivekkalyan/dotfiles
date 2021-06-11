@@ -51,7 +51,7 @@ set lazyredraw          " redraw only when we need to.
 set showmatch           " highlight matching [{()}]
 set wrap                " wrap text
 set breakindent         " indent wrapped lines to match start
-set textwidth=80        " characters to wrap text at
+set textwidth=120        " characters to wrap text at
 set list                " show whitespace
 set listchars=tab:▷┅    " WHITE RIGHT-POINTING TRIANGLE (U+25B7, UTF-8: E2 96 B7)
                         " + BOX DRAWINGS HEAVY TRIPLE DASH HORIZONTAL (U+2505,
