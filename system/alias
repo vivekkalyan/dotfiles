@@ -32,10 +32,6 @@ alias -g V='| vim -'
 alias -g C='| sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g" | xclip -selection clipboard'
 alias -g P='xclip -selection clipboard -o > '
 
-# IP Addresses
-alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
-alias localip="ipconfig getifaddr en0"
-
 # Suffix alias, all files with specified extension open using defined alias
 alias -s git="git clone"
 
