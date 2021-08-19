@@ -5,7 +5,3 @@ setlocal spell
 " <C-g>u: creates a new change sequence for the context of undo (allows for undo to happen on that specific change only)
 " `]: mark denoting where the cursor was before making the [s or ]s jumps.
 inoremap z= <C-g>u<Esc>[S1z=`]a<C-g>u
-
-" background
-setlocal background=light
-colorscheme pencil
