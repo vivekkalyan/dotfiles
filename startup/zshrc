@@ -108,7 +108,7 @@ source /usr/share/fzf/key-bindings.zsh
 source /usr/share/fzf/completion.zsh
 
 # hledger
-LEDGER_FILE=$HOME/personal/finance/2021.journal
+LEDGER_FILE=$HOME/personal/finance/2022.journal
 export LEDGER_FILE
 
 # Settings for virtualenvwrapper
