@@ -1,3 +1,0 @@
-setxkbmap -option
-pkill xcape
-setxkbmap -option 'altwin:swap_alt_win'

@@ -1,7 +1,0 @@
-setxkbmap -option
-pkill xcape
-setxkbmap -option 'altwin:swap_alt_win'
-setxkbmap -option 'ctrl:swapcaps_hyper'
-xcape -e 'Control_L=Escape'
-xcape -e 'Shift_L=Shift_L|9'
-xcape -e 'Shift_R=Shift_R|0'
