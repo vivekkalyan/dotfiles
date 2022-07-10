@@ -13,8 +13,8 @@ keymap("n", "L", "$", opts)
 keymap("v", "L", "g_", opts)
 
 -- turn off vim's custom regex
-keymap("n", "/", "/\v", opts)
-keymap("v", "/", "/\v", opts)
+-- keymap("n", "/", "/\\v", opts)
+-- keymap("v", "/", "/\\v", opts)
 
 -- Open File Explorer
 keymap("n", "<leader>e", ":Lex 30<cr>", opts)
