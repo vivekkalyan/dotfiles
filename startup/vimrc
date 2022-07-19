@@ -285,6 +285,11 @@ nmap <leader>a :FzfRg<CR>
 nmap gb :FzfBuffers<CR>
 nmap <leader>g :FzfCommits<CR>
 nmap <leader>G :FzfBCommits<CR>
+let g:fzf_action = {
+  \ 'ctrl-t': 'tab split',
+  \ 'ctrl-s': 'split',
+  \ 'ctrl-v': 'vsplit' }
+
 
 imap <c-x><c-k> <plug>(fzf-complete-word)
 imap <c-x><c-f> <plug>(fzf-complete-path)
