@@ -28,6 +28,17 @@ keymap("n", "<S-s>", ":keeppatterns substitute/\\s*\\%#\\s*/\\r/e <bar> normal! 
 -- Play macro
 keymap("n", "Q", "@q", opts)
 
+-- Enter to enter command mode (& disable for command window to allow q:, q/)
+keymap("n", "<CR>", ":", opts)
+vim.api.nvim_create_autocmd(
+    { "BufReadPost"},
+    { pattern = { "quickfix" }, command = "nnoremap <buffer> <CR> <CR>"}
+)
+vim.api.nvim_create_autocmd(
+    { "CmdwinEnter"},
+    { pattern = { "*" }, command = "nnoremap <buffer> <CR> <CR>"}
+)
+
 -- C-j/k to move down/up paragraph
 keymap("n", "<C-j>", "(search('^\\n.', 'Wen') - line('.')) . 'jzv^'", expr_opts)
 keymap("n", "<C-k>", "(line('.') - search('^\\n.\\+$', 'Wenb')) . 'kzv^'", expr_opts)
