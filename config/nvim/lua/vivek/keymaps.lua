@@ -1,4 +1,5 @@
 local opts = { noremap = true, silent = true }
+local remap_opts = { silent = true }
 local expr_opts = { noremap = true, silent = true, expr = true}
 
 local keymap = vim.keymap.set
@@ -59,3 +60,9 @@ keymap("v", ">", ">gv", opts)
 -- Terminal-like experience for command line
 keymap("c", "<C-a>", "<Home>", opts)
 keymap("c", "<C-e>", "<End>", opts)
+
+-- telescope
+keymap("n", "<leader>f", "<cmd>lua require'telescope.builtin'.find_files()<cr>", remap_opts)
+keymap("n", "<leader>a", "<cmd>lua require'telescope.builtin'.live_grep()<cr>", remap_opts)
+keymap("n", "<leader>b", "<cmd>lua require'telescope.builtin'.buffers()<cr>", remap_opts)
+keymap("n", "<leader>h", "<cmd>lua require'telescope.builtin'.help_tags()<cr>", remap_opts)
