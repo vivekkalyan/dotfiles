@@ -62,3 +62,5 @@ clipnotify
 dunst
 jq
 exa
+rust
+rust-src
