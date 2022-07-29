@@ -1,6 +1,7 @@
 local opts = { noremap = true, silent = true }
 local remap_opts = { silent = true }
 local expr_opts = { noremap = true, silent = true, expr = true}
+local remap_expr_opts = { silent = true, expr = true}
 
 local keymap = vim.keymap.set
 
@@ -60,6 +61,12 @@ keymap("v", ">", ">gv", opts)
 -- Terminal-like experience for command line
 keymap("c", "<C-a>", "<Home>", opts)
 keymap("c", "<C-e>", "<End>", opts)
+
+-- luasnip
+keymap("i", "<Tab>", "luasnip#expand_or_jumpable() ? '<Plug>luasnip-expand-or-jump' : '<Tab>'", remap_expr_opts)
+keymap("i", "<S-Tab>", "<cmd>lua require'luasnip'.jump(-1)<cr>", opts)
+keymap("s", "<Tab>", "<cmd>lua require('luasnip').jump(1)<cr>", opts)
+keymap("s", "<S-Tab>", "<cmd>lua require('luasnip').jump(-1)<cr>", opts)
 
 -- telescope
 keymap("n", "<leader>f", "<cmd>lua require'telescope.builtin'.find_files()<cr>", remap_opts)
