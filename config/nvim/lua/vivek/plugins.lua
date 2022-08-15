@@ -71,6 +71,9 @@ return packer.startup(function(use)
   -- treesitter
   use { 'nvim-treesitter/nvim-treesitter' }
 
+  -- git
+  use { 'lewis6991/gitsigns.nvim' }
+
   -- autopairs
   use "windwp/nvim-autopairs"
 
