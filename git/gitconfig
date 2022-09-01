@@ -1,6 +1,7 @@
 [user]
   name = Vivek Kalyan
   email = hello@vivekkalyan.com
+  signingkey = /home/vivek/.ssh/github.pub
 
 [github]
   user = vivekkalyan
@@ -80,6 +81,9 @@
   # https://git-scm.com/docs/git-log
   # --all: shows all branches
 
+[commit]
+  gpgsign = true
+
 [diff]
   renames = copies
   # Detect copies as well as renames
@@ -90,6 +94,9 @@
 
 [interactive]
   diffFilter = /usr/share/git/diff-highlight/diff-highlight | less --tabs=4 -RFX
+
+[gpg]
+  format = ssh
 
 [merge]
   # ff = only
