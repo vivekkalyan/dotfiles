@@ -1,5 +1,10 @@
+#!/bin/sh
+
+# reset any previously set options
 setxkbmap -option
 pkill xcape
+
+# set options
 setxkbmap -option 'altwin:swap_alt_win'
 setxkbmap -option 'ctrl:hyper_capscontrol'
 xcape -e 'Control_L=Escape'
