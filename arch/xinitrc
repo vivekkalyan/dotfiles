@@ -33,4 +33,9 @@ while true; do
    sleep 20s    # Update time at interval
 done &
 
+while true; do
+    task sync
+    sleep 600s
+done &
+
 exec dwm
