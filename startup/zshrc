@@ -60,7 +60,7 @@ if [[ "$OS" = "macOS" ]]; then
 else
   dircolors="dircolors"
 fi
-eval "$("$dircolors" "$DOTFILES_DIR"/system/dir_colors)"
+eval "$("$dircolors" "$DOTFILES_DIR"/system/dircolors)"
 
 # Default Editor
 export EDITOR=$(which vim)

@@ -52,8 +52,8 @@ RESET 0
 
 FILE 00
 DIR 01;34
-LINK 36
-MULTIHARDLINK 04;36
+LINK 35
+MULTIHARDLINK 04;35
 
 FIFO 04;01;36
 SOCK 04;33
@@ -61,10 +61,10 @@ DOOR 04;01;36
 BLK 01;33
 CHR 33
 
-ORPHAN 31
+ORPHAN 01;37;41
 MISSING 01;37;41
 
-EXEC 01;36
+EXEC 01;31
 
 SETUID 01;04;37
 SETGID 01;04;37
@@ -164,13 +164,13 @@ STICKY 04;37;44
 .xlsx 32
 
 #+--- Executables ---+
-.app 01;36
-.bat 01;36
-.btm 01;36
-.cmd 01;36
-.com 01;36
-.exe 01;36
-.reg 01;36
+.app 01;31
+.bat 01;31
+.btm 01;31
+.cmd 01;31
+.com 01;31
+.exe 01;31
+.reg 01;31
 
 #+--- Ignores ---+
 *~ 02;37
