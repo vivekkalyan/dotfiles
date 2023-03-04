@@ -36,12 +36,14 @@ if tput setaf 1 &> /dev/null; then
     # Changed these colors to fit Solarized theme
     MAGENTA=$(tput setaf 125)
     ORANGE=$(tput setaf 166)
+    BLUE=$(tput setaf 116)
     GREEN=$(tput setaf 64)
     PURPLE=$(tput setaf 61)
     WHITE=$(tput setaf 244)
   else
     MAGENTA=$(tput setaf 5)
-    ORANGE=$(tput setaf 4)
+    ORANGE=$(tput setaf 3)
+    BLUE=$(tput setaf 4)
     GREEN=$(tput setaf 2)
     PURPLE=$(tput setaf 1)
     WHITE=$(tput setaf 7)
@@ -51,6 +53,7 @@ if tput setaf 1 &> /dev/null; then
 else
   MAGENTA="\033[1;31m"
   ORANGE="\033[1;33m"
+  BLUE="\033[1;34m"
   GREEN="\033[1;32m"
   PURPLE="\033[1;35m"
   WHITE="\033[1;37m"
@@ -60,6 +63,7 @@ fi
 
 export MAGENTA
 export ORANGE
+export BLUE
 export GREEN
 export PURPLE
 export WHITE
@@ -154,7 +158,7 @@ prompt_pure_preprompt_render() {
   local -a preprompt_parts
 
   # Set the path.
-  preprompt_parts+=('%{$BOLD%}%{$GREEN%}%~%{$RESET%}')
+  preprompt_parts+=('%{$BOLD%}%{$BLUE%}%~%{$RESET%}')
 
   # Add git branch and dirty status info.
   typeset -gA prompt_pure_vcs_info
