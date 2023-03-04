@@ -166,26 +166,32 @@ STICKY 04;37;44
 .csv 36
 .tsv 36
 
+#+-- Data Compiled ---+
+.sqlite 01;36
+.sqlite3 01;36
+.pkl 01;36
+.checkpoint 01;36
+
 #+--- Documents ---+
-.doc 33
-.docx 33
-.dot 33
-.epub 33
-.odg 33
-.odp 33
-.ods 33
-.odt 33
-.otg 33
-.otp 33
-.ots 33
-.ott 33
-.pdf 33
-.PDF 33
-.ppt 33
-.pptx 33
-.psd 33
-.xls 33
-.xlsx 33
+.doc 01;33
+.docx 01;33
+.dot 01;33
+.epub 01;33
+.odg 01;33
+.odp 01;33
+.ods 01;33
+.odt 01;33
+.otg 01;33
+.otp 01;33
+.ots 01;33
+.ott 01;33
+.pdf 01;33
+.PDF 01;33
+.ppt 01;33
+.pptx 01;33
+.psd 01;33
+.xls 01;33
+.xlsx 01;33
 
 #+--- Executables ---+
 .app 01;31
@@ -248,6 +254,7 @@ STICKY 04;37;44
 .pm 32
 .py 32
 .pyi 32
+.pyx 32
 .rb 32
 .hs 32
 .php 32
@@ -277,17 +284,17 @@ STICKY 04;37;44
 *LICENSE 04;33
 
 #+--- Text ---+
-.txt 32
-.tex 32
-.bib 32
-.org 32
-.md 32
-.mkd 32
-.markdown 32
-.rmd 32
-.Rmd 32
-.pdc 32
-.pandoc 32
+.txt 33
+.tex 33
+.bib 33
+.org 33
+.md 33
+.mkd 33
+.markdown 33
+.rmd 33
+.Rmd 33
+.pdc 33
+.pandoc 33
 
 #+--- Video ---+
 .anx 31
