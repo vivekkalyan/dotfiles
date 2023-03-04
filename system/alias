@@ -25,6 +25,10 @@ alias -g P='xclip -selection clipboard -o > '
 
 # Suffix alias, all files with specified extension open using defined alias
 alias -s git="git clone"
+alias -s pdf="zathura"
+alias -s xlsx="libreoffice"
+alias -s {mkv,mp4}="mpv"
+alias -s {jpg,jpeg,png}="sxiv"
 
 # Programs
 alias g="git"
