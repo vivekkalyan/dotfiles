@@ -47,24 +47,8 @@ alias ps="ps aux"
 # Search Process Status (dont show searching grep process)
 alias psg="ps | grep -v grep | grep -i -e VSZ -e"
 
-# Create python3 virtualenv
-alias mkvirtualenv2="mkvirtualenv --python=python2"
-alias mkproject2="mkproject --python=python2"
-
-# postgres
-alias pgstart="launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist"
-alias pgstop="launchctl unload ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist"
-
-# mysql
-alias mystart="launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.mysql.plist"
-alias mystop="launchctl unload ~/Library/LaunchAgents/homebrew.mxcl.mysql.plist"
-
 # Create python server in current directory
 alias pyserver="python -m http.server"
-
-# Merge PDF files
-# Usage: `mergepdf -o output.pdf input{1,2,3}.pdf`
-alias mergepdf='/System/Library/Automator/Combine\ PDF\ Pages.action/Contents/Resources/join.py'
 
 # Create notification
 alias notify="notify-send \"Running job finished\""
