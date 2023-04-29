@@ -43,7 +43,8 @@ treesitter.setup {
     keymaps = {
       init_selection = '<c-space>',
       node_incremental = '<c-space>',
-      node_decremental = '<M-space>',
+      scope_incremental = "<nop>",
+      node_decremental = '<BS>',
     },
   },
 
