@@ -73,3 +73,12 @@ keymap("n", "<leader>f", "<cmd>lua require'telescope.builtin'.find_files()<cr>",
 keymap("n", "<leader>a", "<cmd>lua require'telescope.builtin'.live_grep()<cr>", remap_opts)
 keymap("n", "<leader>b", "<cmd>lua require'telescope.builtin'.buffers()<cr>", remap_opts)
 keymap("n", "<leader>h", "<cmd>lua require'telescope.builtin'.help_tags()<cr>", remap_opts)
+
+-- window
+local status_ok, window = pcall(require, "vivek.window")
+if status_ok then
+  keymap('n', "<C-w>h", "<cmd> lua require('vivek.window').win_move('h')<cr>", opts)
+  keymap('n', "<C-w>j", "<cmd> lua require('vivek.window').win_move('j')<cr>", opts)
+  keymap('n', "<C-w>k", "<cmd> lua require('vivek.window').win_move('k')<cr>", opts)
+  keymap('n', "<C-w>l", "<cmd> lua require('vivek.window').win_move('l')<cr>", opts)
+end
