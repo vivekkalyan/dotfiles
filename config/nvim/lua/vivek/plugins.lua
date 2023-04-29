@@ -78,6 +78,9 @@ return packer.startup(function(use)
   -- autopairs
   use "windwp/nvim-autopairs"
 
+  -- comment
+  use 'echasnovski/mini.nvim'
+
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
   if PACKER_BOOTSTRAP then
