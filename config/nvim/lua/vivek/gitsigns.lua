@@ -69,6 +69,8 @@ gitsigns.setup {
     -- Actions
     map('n', 'gs', gs.stage_hunk)
     map('n', 'gr', gs.reset_hunk)
+    map('v', 'gs', function() gs.stage_hunk {vim.fn.line("."), vim.fn.line("v")} end)
+    map('v', 'gr', function() gs.reset_hunk {vim.fn.line("."), vim.fn.line("v")} end)
     map('n', 'gS', gs.stage_buffer)
     map('n', 'gu', gs.undo_stage_hunk)
     map('n', 'gR', gs.reset_buffer)
