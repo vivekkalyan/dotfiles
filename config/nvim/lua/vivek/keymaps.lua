@@ -81,4 +81,9 @@ if status_ok then
   keymap('n', "<C-w>j", "<cmd> lua require('vivek.window').win_move('j')<cr>", opts)
   keymap('n', "<C-w>k", "<cmd> lua require('vivek.window').win_move('k')<cr>", opts)
   keymap('n', "<C-w>l", "<cmd> lua require('vivek.window').win_move('l')<cr>", opts)
+
+  keymap('n', "<C-left>", "<cmd> lua require('vivek.window').resize_win('left')<cr>", opts)
+  keymap('n', "<C-down>", "<cmd> lua require('vivek.window').resize_win('down')<cr>", opts)
+  keymap('n', "<C-up>", "<cmd> lua require('vivek.window').resize_win('up')<cr>", opts)
+  keymap('n', "<C-right>", "<cmd> lua require('vivek.window').resize_win('right')<cr>", opts)
 end
