@@ -74,6 +74,10 @@ keymap("n", "<leader>a", "<cmd>lua require'telescope.builtin'.live_grep()<cr>", 
 keymap("n", "<leader>b", "<cmd>lua require'telescope.builtin'.buffers()<cr>", remap_opts)
 keymap("n", "<leader>h", "<cmd>lua require'telescope.builtin'.help_tags()<cr>", remap_opts)
 
+keymap("n", "<leader>gc", "<cmd>lua require'telescope.builtin'.git_commits()<cr>", remap_opts)
+keymap("n", "<leader>gC", "<cmd>lua require'telescope.builtin'.git_bcommits()<cr>", remap_opts)
+keymap("n", "<leader>gb", "<cmd>lua require'telescope.builtin'.git_branches()<cr>", remap_opts)
+
 -- window
 local status_ok, window = pcall(require, "vivek.window")
 if status_ok then
