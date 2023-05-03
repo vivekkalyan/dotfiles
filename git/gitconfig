@@ -126,7 +126,9 @@
   # autocorrects and runs correct command after 2s
 
 [color]
-  ui = always
+  ui = auto
+  # colors output when it’s going straight to a terminal, but omits the color-control codes when the output is redirected to a pipe or a file.
+  # ensures telescope picker works: https://github.com/nvim-telescope/telescope.nvim/wiki/FAQ#why-arent-git-pickers-working
 [color "status"]
   added = yellow
   changed = green
