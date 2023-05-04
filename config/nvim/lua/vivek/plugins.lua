@@ -72,6 +72,9 @@ return packer.startup(function(use)
   use { 'nvim-treesitter/nvim-treesitter' }
   use { 'nvim-treesitter/nvim-treesitter-textobjects' }
 
+  -- directory
+  use "elihunter173/dirbuf.nvim"
+
   -- git
   use { 'lewis6991/gitsigns.nvim' }
 
