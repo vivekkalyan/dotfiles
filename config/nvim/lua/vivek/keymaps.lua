@@ -41,6 +41,11 @@ vim.api.nvim_create_autocmd(
     { pattern = { "*" }, command = "nnoremap <buffer> <CR> <CR>"}
 )
 
+-- Save file
+keymap("n", "<C-s>", "<cmd>w<cr><esc>", opts)
+keymap("i", "<C-s>", "<cmd>w<cr><esc>", opts)
+keymap("v", "<C-s>", "<cmd>w<cr><esc>", opts)
+
 -- C-j/k to move down/up paragraph
 keymap("n", "<C-j>", "(search('^\\n.', 'Wen') - line('.')) . 'jzv^'", expr_opts)
 keymap("n", "<C-k>", "(line('.') - search('^\\n.\\+$', 'Wenb')) . 'kzv^'", expr_opts)
