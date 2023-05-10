@@ -41,6 +41,9 @@ vim.api.nvim_create_autocmd(
     { pattern = { "*" }, command = "nnoremap <buffer> <CR> <CR>"}
 )
 
+-- Clear search with <esc>
+keymap("n", "<esc>", "<cmd>noh<cr><esc>", opts)
+
 -- Save file
 keymap("n", "<C-s>", "<cmd>w<cr><esc>", opts)
 keymap("i", "<C-s>", "<cmd>w<cr><esc>", opts)
