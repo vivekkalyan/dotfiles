@@ -85,8 +85,8 @@ keymap("n", "<leader>fh", "<cmd>lua require'telescope.builtin'.help_tags()<cr>",
 keymap("n", "<leader>fk", "<cmd>lua require'telescope.builtin'.keymaps()<cr>", remap_opts)
 keymap("n", "<leader>f*", "<cmd>lua require'telescope.builtin'.grep_string()<cr>", remap_opts)
 
-keymap("n", "<leader>gc", "<cmd>lua require'telescope.builtin'.git_commits()<cr>", remap_opts)
-keymap("n", "<leader>gC", "<cmd>lua require'telescope.builtin'.git_bcommits()<cr>", remap_opts)
+keymap("n", "<leader>fg", "<cmd>lua require'telescope.builtin'.git_commits()<cr>", remap_opts)
+keymap("n", "<leader>fG", "<cmd>lua require'telescope.builtin'.git_bcommits()<cr>", remap_opts)
 keymap("n", "<leader>gb", "<cmd>lua require'telescope.builtin'.git_branches()<cr>", remap_opts)
 
 -- window
