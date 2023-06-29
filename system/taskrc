@@ -34,3 +34,7 @@ report.next.sort=urgency-,project+
 report.someday.description=Someday tasks
 report.someday.filter=status:pending -waiting limit:page +someday
 report.someday.sort=urgency-,project+
+
+report.someday.description=Waiting tasks
+report.waiting.filter=status:pending +waiting limit:page
+report.someday.sort=urgency-,project+
