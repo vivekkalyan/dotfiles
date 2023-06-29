@@ -30,3 +30,7 @@ data.location=~/.task
 
 report.next.filter=status:pending -waiting limit:page -someday
 report.next.sort=urgency-,project+
+
+report.someday.description=Someday tasks
+report.someday.filter=status:pending -waiting limit:page +someday
+report.someday.sort=urgency-,project+
