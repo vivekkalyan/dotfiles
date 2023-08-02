@@ -34,6 +34,7 @@ local options = {
   cursorline = true,                        -- highlight the current line
   lazyredraw = true,                        -- redraw only when we need to.
   showmatch = true,                         -- highlight matching [{()}]
+  termguicolors = true,                     -- enable 24-bit colors
   list = true,                              -- show whitespace
   listchars = "tab:▷┅,trail:•",             -- WHITE RIGHT-POINTING TRIANGLE (U+25B7, UTF-8: E2 96 B7)
                                             -- BOX DRAWINGS HEAVY TRIPLE DASH HORIZONTAL (U+2505, UTF-8: E2 94 85)
