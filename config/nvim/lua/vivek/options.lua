@@ -6,8 +6,6 @@ local options = {
   pumheight = 10,                          -- pop up menu height
   laststatus = 2,                           -- always show status bar
   clipboard = "unnamed",                    -- use system clipboard
-  timeoutlen = 100,                         -- set keycode timeout (default is too long) - follows timeoutlen for
-                                            -- mappings which is 1000ms) used for xmodmap and xcape
 
   -- Formatting
   tabstop = 2,                              -- nunber of visual spaces per tab
