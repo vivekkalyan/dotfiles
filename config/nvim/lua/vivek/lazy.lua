@@ -11,13 +11,4 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-require("lazy").setup({
-  {
-    "romainl/Apprentice",
-    priority = 1000,
-    config = function()
-      -- load colorscheme
-      vim.cmd([[colorscheme apprentice]])
-    end,
-  },
-})
+require("lazy").setup("vivek.plugins")
