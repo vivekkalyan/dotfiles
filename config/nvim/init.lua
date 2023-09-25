@@ -1,13 +1,2 @@
-require "vivek.options"
-require "vivek.keymaps"
-require "vivek.plugins"
-require "vivek.colorscheme"
-require "vivek.cmp"
-require "vivek.lsp"
-require "vivek.telescope"
-require "vivek.treesitter"
-require "vivek.autopairs"
-require "vivek.dirbuf"
-require "vivek.gitsigns"
-require "vivek.window"
-require "vivek.comment"
+require("vivek.core")
+require("vivek.lazy")
