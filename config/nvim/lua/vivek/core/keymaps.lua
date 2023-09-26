@@ -70,24 +70,6 @@ keymap("v", ">", ">gv", opts)
 keymap("c", "<C-a>", "<Home>", opts)
 keymap("c", "<C-e>", "<End>", opts)
 
--- luasnip
-keymap("i", "<Tab>", "luasnip#expand_or_jumpable() ? '<Plug>luasnip-expand-or-jump' : '<Tab>'", remap_expr_opts)
-keymap("i", "<S-Tab>", "<cmd>lua require'luasnip'.jump(-1)<cr>", opts)
-keymap("s", "<Tab>", "<cmd>lua require('luasnip').jump(1)<cr>", opts)
-keymap("s", "<S-Tab>", "<cmd>lua require('luasnip').jump(-1)<cr>", opts)
-
--- telescope
-keymap("n", "<leader>fa", "<cmd>lua require'telescope.builtin'.live_grep()<cr>", remap_opts)
-keymap("n", "<leader>fb", "<cmd>lua require'telescope.builtin'.buffers()<cr>", remap_opts)
-keymap("n", "<leader>ff", "<cmd>lua require'telescope.builtin'.find_files()<cr>", remap_opts)
-keymap("n", "<leader>fF", "<cmd>lua require'telescope.builtin'.find_files { hidden = true, no_ignore = true } <cr>", remap_opts)
-keymap("n", "<leader>fh", "<cmd>lua require'telescope.builtin'.help_tags()<cr>", remap_opts)
-keymap("n", "<leader>fk", "<cmd>lua require'telescope.builtin'.keymaps()<cr>", remap_opts)
-keymap("n", "<leader>f*", "<cmd>lua require'telescope.builtin'.grep_string()<cr>", remap_opts)
-
-keymap("n", "<leader>fg", "<cmd>lua require'telescope.builtin'.git_commits()<cr>", remap_opts)
-keymap("n", "<leader>fG", "<cmd>lua require'telescope.builtin'.git_bcommits()<cr>", remap_opts)
-keymap("n", "<leader>gb", "<cmd>lua require'telescope.builtin'.git_branches()<cr>", remap_opts)
 
 -- window
 local status_ok, window = pcall(require, "vivek.window")
