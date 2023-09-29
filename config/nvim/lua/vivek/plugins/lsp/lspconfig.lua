@@ -4,6 +4,7 @@ return {
   dependencies = {
     "hrsh7th/cmp-nvim-lsp",
     { "antosha417/nvim-lsp-file-operations", config = true },
+    { "https://git.sr.ht/~whynothugo/lsp_lines.nvim", config = true },
   },
   config = function()
     -- import lspconfig plugin
@@ -11,9 +12,13 @@ return {
 
     -- import cmp-nvim-lsp plugin
     local cmp_nvim_lsp = require("cmp_nvim_lsp")
-    local keymap = vim.keymap -- for conciseness
 
+    -- disable virtual text since lsp_lines handles that
+    vim.diagnostic.config({virtual_text = false})
+
+    local keymap = vim.keymap -- for conciseness
     local opts = { noremap = true, silent = true }
+
     local on_attach = function(client, bufnr)
       opts.buffer = bufnr
 
@@ -36,14 +41,14 @@ return {
       opts.desc = "See available code actions"
       keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts) -- see available code actions, in visual mode will apply to selection
 
-      opts.desc = "Smart rename"
+      opts.desc = "Smart code rename"
       keymap.set("n", "<leader>cr", vim.lsp.buf.rename, opts) -- smart rename
 
-      opts.desc = "Show buffer diagnostics"
+      opts.desc = "Show buffer code diagnostics"
       keymap.set("n", "<leader>cD", "<cmd>Telescope diagnostics bufnr=0<CR>", opts) -- show  diagnostics for file
 
-      opts.desc = "Show line diagnostics"
-      keymap.set("n", "<leader>cd", vim.diagnostic.open_float, opts) -- show diagnostics for line
+      opts.desc = "Toggle code diagnostic lines"
+      keymap.set("n", "<leader>cd", require("lsp_lines").toggle, opts) -- show diagnostics for line
 
       opts.desc = "Go to previous diagnostic"
       keymap.set("n", "[d", vim.diagnostic.goto_prev, opts) -- jump to previous diagnostic in buffer
