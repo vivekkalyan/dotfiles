@@ -69,7 +69,7 @@ for k, v in pairs(options) do
 end
 
 -- statusline
-vim.cmd [[set statusline=[%n]\ %<%f\ %m%r%#Pmenu#%=%-14.(%*%l,%c%V%)]]
+vim.cmd([[set statusline=[%n]\ %<%f\ %m%r%=%-14.(%l,%c%V%)]])
 vim.cmd [[set nrformats+=bin]]              -- allow C-A, C-X for binary
 vim.cmd [[set iskeyword+=-]]                -- make word definition include -
 vim.cmd [[set formatoptions+=n]]            -- smart auto-indenting inside numbered lists
