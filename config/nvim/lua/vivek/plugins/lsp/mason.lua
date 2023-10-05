@@ -44,6 +44,10 @@ return {
         "prettier",
         "stylua",
         "shfmt",
+
+        -- linters
+        "eslint_d",
+        "ruff",
       },
     })
   end,
