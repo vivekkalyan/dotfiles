@@ -11,6 +11,11 @@ return {
     -- configure autopairs
     autopairs.setup({
       check_ts = true, -- enable treesitter
+      fast_wrap = {
+        map = "<C-e>",
+        end_key = "L",
+        cursor_pos_before = false,
+      },
     })
 
     -- import nvim-autopairs completion functionality
