@@ -5,6 +5,7 @@ return {
     "hrsh7th/cmp-nvim-lsp",
     { "antosha417/nvim-lsp-file-operations", config = true },
     { "https://git.sr.ht/~whynothugo/lsp_lines.nvim", config = true },
+    "kosayoda/nvim-lightbulb",
   },
   config = function()
     -- import lspconfig plugin
@@ -14,7 +15,15 @@ return {
     local cmp_nvim_lsp = require("cmp_nvim_lsp")
 
     -- disable virtual text since lsp_lines handles that
-    vim.diagnostic.config({virtual_text = false})
+    vim.diagnostic.config({ virtual_text = false })
+
+    -- import nvim-lightbulb
+    local lightbulb = require("nvim-lightbulb")
+    lightbulb.setup({
+      autocmd = { enabled = true },
+      sign = { enabled = false },
+      virtual_text = { enabled = true },
+    })
 
     local keymap = vim.keymap -- for conciseness
     local opts = { noremap = true, silent = true }
