@@ -18,9 +18,6 @@ keymap("v", "L", "g_", opts)
 -- keymap("n", "/", "/\\v", opts)
 -- keymap("v", "/", "/\\v", opts)
 
--- Open File Explorer
-keymap("n", "<leader>e", ":Lex 30<cr>", opts)
-
 -- Yank to end of line
 keymap("n", "Y", "y$", opts)
 
