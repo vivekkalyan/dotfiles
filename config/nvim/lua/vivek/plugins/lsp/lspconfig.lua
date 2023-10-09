@@ -110,5 +110,26 @@ return {
       on_attach = on_attach,
     })
 
+    -- remove distracting virtual lines when doing edits
+    -- toggle based on when Buffer modified state changes
+    -- if buffer is modified (changes are being made): disable virtual lines
+    -- if buffer is not modified (on open/write): enable virtual lines
+
+    local diagnostic_augroup = vim.api.nvim_create_augroup("diagnostic", { clear = true })
+    vim.api.nvim_create_autocmd({ "BufModifiedSet" }, {
+      group = diagnostic_augroup,
+      callback = function()
+        local is_modified = vim.api.nvim_buf_get_option(0, "modified")
+        vim.diagnostic.config({ virtual_lines = not is_modified })
+      end,
+    })
+
+    vim.api.nvim_create_autocmd({ "BufReadPre" }, {
+      group = diagnostic_augroup,
+      callback = function()
+        vim.diagnostic.config({ virtual_lines = true })
+      end,
+    })
+
   end,
 }
