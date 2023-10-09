@@ -5,7 +5,7 @@ return {
     build = ":TSUpdate",
     dependencies = {
       "windwp/nvim-ts-autotag",
-      'JoosepAlviste/nvim-ts-context-commentstring',
+      "JoosepAlviste/nvim-ts-context-commentstring",
     },
     config = function()
       -- import nvim-treesitter plugin
