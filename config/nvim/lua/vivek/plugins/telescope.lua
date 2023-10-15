@@ -28,7 +28,7 @@ return {
 
     -- set keymaps
     local keymap = vim.keymap -- for conciseness
-    keymap.set("n", "<leader>u", "<cmd>Telescope undo<cr>", { desc = "Find string in cwd" })
+    keymap.set("n", "<leader>u", "<cmd>Telescope undo<cr>", { desc = "List undo tree" })
 
     keymap.set("n", "<leader>fa", "<cmd>Telescope live_grep<cr>", { desc = "Find string in cwd" })
     keymap.set("n", "<leader>fb", "<cmd>Telescope buffers<cr>", { desc = "List open buffers" })
