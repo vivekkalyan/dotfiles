@@ -1,23 +1,25 @@
 return {
   {
-    "rebelot/kanagawa.nvim",
+    "catppuccin/nvim",
+    name = "catppuccin",
     priority = 1000,
     config = function()
-      -- config colorscheme
-      local kanagawa = require("kanagawa")
+      -- config color_overrides
+      local catppuccin = require("catppuccin")
 
-      kanagawa.setup({
-        keywordStyle = { italic = false, bold = true },
-        colors = { -- add/modify theme and palette colors
-          palette = { dragonAsh = "#737373" },
+      catppuccin.setup({
+        color_overrides = {
+          latte = {},
+          mocha = {
+            base = "#1c1c1c",
+          },
         },
       })
       -- load colorscheme
-      vim.cmd([[colorscheme kanagawa-dragon]])
+      vim.cmd([[colorscheme catppuccin-mocha]])
     end,
   },
   { "romainl/Apprentice", lazy = true },
-  { "catppuccin/nvim", lazy = true },
   { "AlexvZyl/nordic.nvim", lazy = true },
   { "savq/melange-nvim", lazy = true },
   { "navarasu/onedark.nvim", lazy = true },
