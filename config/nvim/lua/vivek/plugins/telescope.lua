@@ -31,7 +31,7 @@ return {
     keymap.set("n", "<leader>u", "<cmd>Telescope undo<cr>", { desc = "List undo tree" })
 
     keymap.set("n", "<leader>fa", "<cmd>Telescope live_grep<cr>", { desc = "Find string in cwd" })
-    keymap.set("n", "<leader>fb", "<cmd>Telescope buffers<cr>", { desc = "List open buffers" })
+    keymap.set("n", "gb", "<cmd>Telescope buffers<cr>", { desc = "List open buffers" })
     keymap.set(
       "n",
       "<leader>ff",

@@ -76,8 +76,8 @@ return {
         end, { expr = true })
 
         -- Actions
-        map("n", "<leader>gs", gs.stage_hunk, { desc = "Stage Hunk" })
-        map("n", "<leader>gS", gs.stage_buffer, { desc = "Stage Buffer" })
+        map("n", "gs", gs.stage_hunk, { desc = "Stage Hunk" })
+        map("n", "gS", gs.stage_buffer, { desc = "Stage Buffer" })
         map("n", "<leader>gu", gs.undo_stage_hunk, { desc = "Undo Stage Hunk" })
         map("n", "<leader>gr", gs.reset_hunk, { desc = "Reset Hunk" })
         map("n", "<leader>gR", gs.reset_buffer, { desc = "Reset Buffer" })
