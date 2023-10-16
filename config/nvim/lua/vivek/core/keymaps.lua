@@ -5,9 +5,8 @@ local remap_expr_opts = { silent = true, expr = true }
 
 local keymap = vim.keymap.set
 
---Remap , as leader key
-vim.g.mapleader = ","
-
+--Remap SPACE as leader key
+vim.g.mapleader = " "
 
 -- H/L to move to start/end of sentences
 keymap("n", "H", "^", opts)
@@ -74,7 +73,6 @@ keymap("v", ">", ">gv", opts)
 -- Terminal-like experience for command line
 keymap("c", "<C-a>", "<Home>", opts)
 keymap("c", "<C-e>", "<End>", opts)
-
 
 -- window
 local status_ok, window = pcall(require, "vivek.window")
