@@ -1,33 +1,30 @@
-local opts = { noremap = true, silent = true }
-local remap_opts = { silent = true }
-local expr_opts = { noremap = true, silent = true, expr = true }
-local remap_expr_opts = { silent = true, expr = true }
-
-local keymap = vim.keymap.set
-
---Remap SPACE as leader key
+-- Set leader to SPACE
 vim.g.mapleader = " "
 
--- H/L to move to start/end of sentences
-keymap("n", "H", "^", opts)
-keymap("n", "L", "$", opts)
-keymap("v", "L", "g_", opts)
+-- For conciseness
+local keymap = vim.keymap.set
 
--- turn off vim's custom regex
--- keymap("n", "/", "/\\v", opts)
--- keymap("v", "/", "/\\v", opts)
+-- H/L to move to start/end of sentences
+keymap("n", "H", "^", { silent = true })
+keymap("n", "L", "$", { silent = true })
+keymap("v", "L", "g_", { silent = true })
 
 -- Yank to end of line
-keymap("n", "Y", "y$", opts)
+keymap("n", "Y", "y$", { silent = true })
 
 -- Split lines (opposite of shift-J)
-keymap("n", "<S-s>", ":keeppatterns substitute/\\s*\\%#\\s*/\\r/e <bar> normal! ==<CR>", opts)
+keymap(
+  "n",
+  "<S-s>",
+  ":keeppatterns substitute/\\s*\\%#\\s*/\\r/e <bar> normal! ==<CR>",
+  { silent = true }
+)
 
 -- Play macro
-keymap("n", "Q", "@q", opts)
+keymap("n", "Q", "@q", { silent = true })
 
 -- Enter to enter command mode (& disable for command window to allow q:, q/)
-keymap("n", "<CR>", ":", opts)
+keymap("n", "<CR>", ":", { silent = true })
 vim.api.nvim_create_autocmd(
   { "BufReadPost" },
   { pattern = { "quickfix" }, command = "nnoremap <buffer> <CR> <CR>" }
@@ -38,16 +35,12 @@ vim.api.nvim_create_autocmd(
 )
 
 -- Clear search with <esc>
-keymap("n", "<esc>", "<cmd>noh<cr><esc>", opts)
+keymap("n", "<esc>", "<cmd>noh<cr><esc>", { silent = true })
 
 -- Save file
-keymap("n", "<C-s>", "<cmd>w<cr><esc>", opts)
-keymap("i", "<C-s>", "<cmd>w<cr><esc>", opts)
-keymap("v", "<C-s>", "<cmd>w<cr><esc>", opts)
-
--- C-j/k to move down/up paragraph
-keymap("n", "<C-j>", "(search('^\\n.', 'Wen') - line('.')) . 'jzv^'", expr_opts)
-keymap("n", "<C-k>", "(line('.') - search('^\\n.\\+$', 'Wenb')) . 'kzv^'", expr_opts)
+keymap("n", "<C-s>", "<cmd>w<cr><esc>", { silent = true })
+keymap("i", "<C-s>", "<cmd>w<cr><esc>", { silent = true })
+keymap("v", "<C-s>", "<cmd>w<cr><esc>", { silent = true })
 
 -- Move by visual line rather than physical line
 -- Move correctly when text is wrapped and using {count}j/k
@@ -57,33 +50,48 @@ keymap("n", "j", function()
   else
     return "gj"
   end
-end, expr_opts)
+end, { silent = true, expr = true })
 keymap("n", "k", function()
   if vim.v.count then
     return "k"
   else
     return "gk"
   end
-end, expr_opts)
+end, { silent = true, expr = true })
 
 -- Stay in indent mode
-keymap("v", "<", "<gv", opts)
-keymap("v", ">", ">gv", opts)
+keymap("v", "<", "<gv", { silent = true })
+keymap("v", ">", ">gv", { silent = true })
 
 -- Terminal-like experience for command line
-keymap("c", "<C-a>", "<Home>", opts)
-keymap("c", "<C-e>", "<End>", opts)
+keymap("c", "<C-a>", "<Home>", { silent = true })
+keymap("c", "<C-e>", "<End>", { silent = true })
 
 -- window
 local status_ok, window = pcall(require, "vivek.window")
 if status_ok then
-  keymap("n", "<C-w>h", "<cmd> lua require('vivek.window').win_move('h')<cr>", opts)
-  keymap("n", "<C-w>j", "<cmd> lua require('vivek.window').win_move('j')<cr>", opts)
-  keymap("n", "<C-w>k", "<cmd> lua require('vivek.window').win_move('k')<cr>", opts)
-  keymap("n", "<C-w>l", "<cmd> lua require('vivek.window').win_move('l')<cr>", opts)
+  keymap("n", "<C-w>h", "<cmd> lua require('vivek.window').win_move('h')<cr>", { silent = true })
+  keymap("n", "<C-w>j", "<cmd> lua require('vivek.window').win_move('j')<cr>", { silent = true })
+  keymap("n", "<C-w>k", "<cmd> lua require('vivek.window').win_move('k')<cr>", { silent = true })
+  keymap("n", "<C-w>l", "<cmd> lua require('vivek.window').win_move('l')<cr>", { silent = true })
 
-  keymap("n", "<C-left>", "<cmd> lua require('vivek.window').resize_win('left')<cr>", opts)
-  keymap("n", "<C-down>", "<cmd> lua require('vivek.window').resize_win('down')<cr>", opts)
-  keymap("n", "<C-up>", "<cmd> lua require('vivek.window').resize_win('up')<cr>", opts)
-  keymap("n", "<C-right>", "<cmd> lua require('vivek.window').resize_win('right')<cr>", opts)
+  keymap(
+    "n",
+    "<C-left>",
+    "<cmd> lua require('vivek.window').resize_win('left')<cr>",
+    { silent = true }
+  )
+  keymap(
+    "n",
+    "<C-down>",
+    "<cmd> lua require('vivek.window').resize_win('down')<cr>",
+    { silent = true }
+  )
+  keymap("n", "<C-up>", "<cmd> lua require('vivek.window').resize_win('up')<cr>", { silent = true })
+  keymap(
+    "n",
+    "<C-right>",
+    "<cmd> lua require('vivek.window').resize_win('right')<cr>",
+    { silent = true }
+  )
 end
