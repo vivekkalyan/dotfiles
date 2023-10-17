@@ -9,7 +9,6 @@ return {
 
       catppuccin.setup({
         color_overrides = {
-          latte = {},
           mocha = {
             base = "#1c1c1c",
           },
