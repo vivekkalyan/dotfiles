@@ -28,8 +28,8 @@ keymap("n", "<esc>", "<cmd>noh<cr><esc>", { silent = true })
 
 -- Save file
 keymap("n", "<C-s>", "<cmd>w<cr><esc>", { silent = true })
-keymap("i", "<C-s>", "<cmd>w<cr><esc>", { silent = true })
-keymap("v", "<C-s>", "<cmd>w<cr><esc>", { silent = true })
+keymap("i", "<C-s>", "<cmd>w<cr><esc>gi", { silent = true }) -- go back to insert mode with same position
+keymap("v", "<C-s>", "<cmd>w<cr><esc>gv", { silent = true }) -- go back to visual mode with same selection
 
 -- Move by visual line rather than physical line
 -- Move correctly when text is wrapped and using {count}j/k
