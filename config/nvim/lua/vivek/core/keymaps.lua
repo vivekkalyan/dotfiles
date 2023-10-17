@@ -23,17 +23,6 @@ keymap(
 -- Play macro
 keymap("n", "Q", "@q", { silent = true })
 
--- Enter to enter command mode (& disable for command window to allow q:, q/)
-keymap("n", "<CR>", ":", { silent = true })
-vim.api.nvim_create_autocmd(
-  { "BufReadPost" },
-  { pattern = { "quickfix" }, command = "nnoremap <buffer> <CR> <CR>" }
-)
-vim.api.nvim_create_autocmd(
-  { "CmdwinEnter" },
-  { pattern = { "*" }, command = "nnoremap <buffer> <CR> <CR>" }
-)
-
 -- Clear search with <esc>
 keymap("n", "<esc>", "<cmd>noh<cr><esc>", { silent = true })
 
