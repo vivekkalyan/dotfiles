@@ -18,13 +18,4 @@ fasd_cd() {
 }
 
 # jump to recently used items
-alias a='fasd -a' # any
-alias s='fasd -si' # show / search / select
-alias d='fasd -d' # directory
-alias f='fasd -f' # file
-alias j='fasd_cd -d' # cd, same functionality as j in autojump
-alias jj='fasd_cd -d -i' # interactive directory jump
-alias o='a -e open' # open
-
-# programs
-alias sublj='d -e subl'
+alias j='fasd_cd -d' # cd
