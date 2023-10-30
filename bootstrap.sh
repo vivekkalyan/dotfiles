@@ -44,6 +44,8 @@ fi
 
 . "$DOTFILES_DIR/install/pip.sh"
 
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+
 # symlinks
 # ln -sfv "$DOTFILES_DIR/startup/.bash_profile" ~
 sudo -u $real_user ln -sfv "$DOTFILES_DIR/startup/zshrc" "$USER_HOME/.zshrc"
