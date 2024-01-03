@@ -45,9 +45,9 @@ return {
           enable = true,
           keymaps = {
             init_selection = "<nop>",
-            node_incremental = "<CR>",
+            node_incremental = "v",
             scope_incremental = "<nop>",
-            node_decremental = "<BS>",
+            node_decremental = "V",
           },
         },
         -- enable nvim-ts-context-commentstring plugin for commenting tsx and jsx
