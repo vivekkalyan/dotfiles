@@ -13,6 +13,18 @@ return {
             base = "#1c1c1c",
           },
         },
+        highlight_overrides = {
+          all = function(colors)
+            -- make StatusLine and StatusLineNC be easier to read
+            -- make IncSearch and CurSearch more pastel
+            return {
+              StatusLine = { bg = "#87875f", fg = "#1c1c1c" },
+              StatusLineNC = { bg = "#444444", fg = "#87875f" },
+              IncSearch = { bg = "#89b4fa", style = { "bold" } },
+              CurSearch = { bg = "#f5c2e7", style = { "bold" } },
+            }
+          end,
+        },
       })
       -- load colorscheme
       vim.cmd([[colorscheme catppuccin-mocha]])
