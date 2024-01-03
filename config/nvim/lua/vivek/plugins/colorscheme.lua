@@ -8,6 +8,7 @@ return {
       local catppuccin = require("catppuccin")
 
       catppuccin.setup({
+        show_end_of_buffer = true,
         color_overrides = {
           mocha = {
             base = "#1c1c1c",
