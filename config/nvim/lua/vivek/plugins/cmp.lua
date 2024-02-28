@@ -47,10 +47,10 @@ return {
         end,
       },
       mapping = cmp.mapping.preset.insert({
-        ["<C-p>"] = cmp.mapping.select_prev_item(), -- previous suggestion
+        ["<C-p>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }), -- previous suggestion
         ["<C-n>"] = cmp.mapping(function() -- start completion if not started, else next suggetion
           if cmp.visible() then
-            cmp.select_next_item()
+            cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
           else
             cmp.complete()
           end
@@ -58,7 +58,7 @@ return {
         ["<C-b>"] = cmp.mapping.scroll_docs(-4),
         ["<C-f>"] = cmp.mapping.scroll_docs(4),
         ["<C-e>"] = cmp.mapping.abort(), -- close completion window
-        ["<CR>"] = cmp.mapping.confirm({ select = false }),
+        ["<CR>"] = cmp.mapping.confirm({ select = true }),
       }),
       -- sources for autocompletion
       sources = cmp.config.sources({
