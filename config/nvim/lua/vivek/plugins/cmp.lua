@@ -37,6 +37,8 @@ return {
     -- loads vscode style snippets from installed plugins (e.g. friendly-snippets)
     require("luasnip.loaders.from_vscode").lazy_load()
 
+    vim.api.nvim_set_hl(0, "CmpGhostText", { link = "Comment", default = true })
+
     cmp.setup({
       completion = {
         completeopt = "menu,menuone,preview,noselect",
@@ -73,6 +75,11 @@ return {
           maxwidth = 50,
           ellipsis_char = "...",
         }),
+      },
+      experimental = {
+        ghost_text = {
+          hl_group = "CmpGhostText",
+        },
       },
     })
     cmp.setup.cmdline({ "/", "?" }, {
