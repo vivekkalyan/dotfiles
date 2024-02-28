@@ -23,7 +23,7 @@ local options = {
   breakindent = true, -- indent wrapped lines to match start
 
   -- Folding
-  foldlevelstart = 1, -- folds by default
+  foldlevelstart = 99, -- dont fold by default
   foldmethod = "indent", -- fold based on indent level
 
   -- UI Config
