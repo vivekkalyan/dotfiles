@@ -46,6 +46,14 @@ return {
       opts.desc = "See available code actions"
       keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts) -- see available code actions, in visual mode will apply to selection
 
+      opts.desc = "Organise imports"
+      keymap.set("n", "<leader>co", function()
+        vim.lsp.buf.code_action({
+          apply = true,
+          context = { only = { "source.organizeImports" } },
+        })
+      end, opts) -- organise imports
+
       opts.desc = "Smart code rename"
       keymap.set("n", "<leader>cr", vim.lsp.buf.rename, opts) -- smart rename
 
