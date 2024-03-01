@@ -4,7 +4,6 @@ return {
   dependencies = {
     "hrsh7th/cmp-nvim-lsp",
     { "antosha417/nvim-lsp-file-operations", config = true },
-    { "https://git.sr.ht/~whynothugo/lsp_lines.nvim", config = true },
     "kosayoda/nvim-lightbulb",
   },
   config = function()
@@ -13,9 +12,6 @@ return {
 
     -- import cmp-nvim-lsp plugin
     local cmp_nvim_lsp = require("cmp_nvim_lsp")
-
-    -- disable virtual text since lsp_lines handles that
-    vim.diagnostic.config({ virtual_text = false })
 
     -- import nvim-lightbulb
     local lightbulb = require("nvim-lightbulb")
@@ -55,9 +51,6 @@ return {
 
       opts.desc = "Show buffer code diagnostics"
       keymap.set("n", "<leader>cD", "<cmd>Telescope diagnostics bufnr=0<CR>", opts) -- show  diagnostics for file
-
-      opts.desc = "Toggle code diagnostic lines"
-      keymap.set("n", "<leader>cd", require("lsp_lines").toggle, opts) -- show diagnostics for line
 
       opts.desc = "Go to previous diagnostic"
       keymap.set("n", "[d", vim.diagnostic.goto_prev, opts) -- jump to previous diagnostic in buffer
