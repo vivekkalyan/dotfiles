@@ -5,6 +5,7 @@ return {
     "hrsh7th/cmp-nvim-lsp",
     { "antosha417/nvim-lsp-file-operations", config = true },
     "kosayoda/nvim-lightbulb",
+    "mizlan/delimited.nvim",
   },
   config = function()
     -- import lspconfig plugin
@@ -20,6 +21,9 @@ return {
       sign = { enabled = false },
       virtual_text = { enabled = true },
     })
+
+    -- import delimited plugin
+    local delimited = require("delimited")
 
     local keymap = vim.keymap -- for conciseness
     local opts = { noremap = true, silent = true }
@@ -67,12 +71,12 @@ return {
 
       opts.desc = "Go to previous diagnostic"
       keymap.set("n", "[d", function()
-        vim.diagnostic.goto_prev({ float = false })
+        delimited.goto_prev({ float = false })
       end, opts) -- jump to previous diagnostic in buffer
 
       opts.desc = "Go to next diagnostic"
       keymap.set("n", "]d", function()
-        vim.diagnostic.goto_next({ float = false })
+        delimited.goto_next({ float = false })
       end, opts) -- jump to next diagnostic in buffer
 
       opts.desc = "Set diagnostics to location list"
