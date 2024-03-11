@@ -25,3 +25,12 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.opt_local.spell = true
   end,
 })
+
+-- create keymap to spell correct in markdown filetypes
+vim.api.nvim_create_autocmd("FileType", {
+  group = vim.api.nvim_create_augroup("spell_correct", { clear = true }),
+  pattern = "markdown",
+  callback = function(event)
+    vim.keymap.set("i", "z=", "<C-g>u<Esc>[S1z=`]a<C-g>u", { buffer = event.buf })
+  end,
+})
