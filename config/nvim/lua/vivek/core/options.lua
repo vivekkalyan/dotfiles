@@ -6,6 +6,7 @@ local options = {
   pumheight = 10, -- pop up menu height
   laststatus = 2, -- always show status bar
   clipboard = "unnamed", -- use system clipboard
+  virtualedit = "block", -- enable block visual selection to not be limited to eol
 
   -- Formatting
   tabstop = 2, -- nunber of visual spaces per tab
