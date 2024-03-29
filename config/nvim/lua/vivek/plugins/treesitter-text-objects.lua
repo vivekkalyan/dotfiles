@@ -71,10 +71,12 @@ return {
         swap = {
           enable = true,
           swap_next = {
-            ["<leader>s"] = "@parameter.inner", -- swap object under cursor with next
+            [">F"] = { query = "@function.outer", desc = "Swap next function" },
+            [">A"] = { query = "@parameter.inner", desc = "Swap next argument" },
           },
           swap_previous = {
-            ["<leader>S"] = "@parameter.inner", -- swap object under cursor with previous
+            ["<F"] = { query = "@function.outer", desc = "Swap previous function" },
+            ["<A"] = { query = "@parameter.inner", desc = "Swap previous argument" },
           },
         },
         move = {
