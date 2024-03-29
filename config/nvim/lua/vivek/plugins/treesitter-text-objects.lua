@@ -15,46 +15,28 @@ return {
 
           keymaps = {
             -- You can use the capture groups defined in textobjects.scm
-            ["a="] = {
-              query = "@assignment.outer",
-              desc = "Select outer part of an assignment region",
-            },
-            ["i="] = {
-              query = "@assignment.inner",
-              desc = "Select inner part of an assignment region",
-            },
+            ["a="] = { query = "@assignment.outer", desc = "a assignment" },
+            ["i="] = { query = "@assignment.inner", desc = "inner assignment" },
 
-            ["a,"] = {
-              query = "@parameter.outer",
-              desc = "Select outer part of a parameter/field region",
-            },
-            ["i,"] = {
-              query = "@parameter.inner",
-              desc = "Select inner part of a parameter/field region",
-            },
+            ["a,"] = { query = "@parameter.outer", desc = "a parameter/field" },
+            ["i,"] = { query = "@parameter.inner", desc = "inner parameter/field" },
 
-            ["ai"] = {
-              query = "@conditional.outer",
-              desc = "Select outer part of a conditional region",
-            },
-            ["ii"] = {
-              query = "@conditional.inner",
-              desc = "Select inner part of a conditional region",
-            },
+            ["ai"] = { query = "@conditional.outer", desc = "a conditional" },
+            ["ii"] = { query = "@conditional.inner", desc = "inner conditional" },
 
-            ["al"] = { query = "@loop.outer", desc = "Select outer part of a loop region" },
-            ["il"] = { query = "@loop.inner", desc = "Select inner part of a loop region" },
+            ["al"] = { query = "@loop.outer", desc = "a loop" },
+            ["il"] = { query = "@loop.inner", desc = "inner loop" },
 
-            ["ab"] = { query = "@block.outer", desc = "Select outer part of a block region" }, -- overrides default text object block of parenthesis to parenthesis
-            ["ib"] = { query = "@block.inner", desc = "Select inner part of a block region" }, -- overrides default text object block of parenthesis to parenthesis
+            ["ak"] = { query = "@block.outer", desc = "a block" },
+            ["ik"] = { query = "@block.inner", desc = "inner block" },
 
-            ["af"] = { query = "@function.outer", desc = "Select outer part of a function region" },
-            ["if"] = { query = "@function.inner", desc = "Select inner part of a function region" },
+            ["af"] = { query = "@function.outer", desc = "a function" },
+            ["if"] = { query = "@function.inner", desc = "inner function" },
 
-            ["ac"] = { query = "@class.outer", desc = "Select outer part of a class region" },
-            ["ic"] = { query = "@class.inner", desc = "Select inner part of a class region" },
+            ["ac"] = { query = "@class.outer", desc = "a class" },
+            ["ic"] = { query = "@class.inner", desc = "inner class" },
 
-            ["in"] = { query = "@number.inner", desc = "Select inner part of a number region" },
+            ["in"] = { query = "@number.inner", desc = "inner number" },
           },
           -- set selection mode for each query
           -- not able to set this due to bug it seems: https://github.com/nvim-treesitter/nvim-treesitter-textobjects/pull/435
