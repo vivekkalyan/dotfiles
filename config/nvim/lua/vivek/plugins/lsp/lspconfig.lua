@@ -150,6 +150,11 @@ return {
     lspconfig["tsserver"].setup({
       capabilities = capabilities,
       on_attach = on_attach,
+      settings = {
+        completions = {
+          completeFunctionCalls = true,
+        },
+      },
     })
 
     -- remove distracting virtual lines when doing edits
