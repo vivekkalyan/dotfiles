@@ -34,14 +34,14 @@ keymap("v", "<C-s>", "<cmd>w<cr><esc>gv", { silent = true }) -- go back to visua
 -- Move by visual line rather than physical line
 -- Move correctly when text is wrapped and using {count}j/k
 keymap("n", "j", function()
-  if vim.v.count then
+  if vim.v.count > 0 then
     return "j"
   else
     return "gj"
   end
 end, { silent = true, expr = true })
 keymap("n", "k", function()
-  if vim.v.count then
+  if vim.v.count > 0 then
     return "k"
   else
     return "gk"
