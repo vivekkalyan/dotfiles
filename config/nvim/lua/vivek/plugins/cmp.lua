@@ -5,6 +5,7 @@ return {
     "hrsh7th/cmp-buffer", -- source for text in buffer
     "hrsh7th/cmp-path", -- source for file system paths
     "hrsh7th/cmp-cmdline", -- cmdline completions
+    "hrsh7th/cmp-calc", -- calculator completions
     { "L3MON4D3/LuaSnip", build = "make install_jsregexp" }, -- snippet engine
     "saadparwaiz1/cmp_luasnip", -- for autocompletion
     "rafamadriz/friendly-snippets", -- useful snippets
@@ -66,6 +67,7 @@ return {
       sources = cmp.config.sources({
         { name = "nvim_lsp" },
         { name = "luasnip" }, -- snippets
+        { name = "calc" }, -- calculator
         { name = "buffer" }, -- text within current buffer
         { name = "path" }, -- file system paths
       }),
