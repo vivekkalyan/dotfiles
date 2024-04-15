@@ -84,7 +84,7 @@ return {
         map("n", "<leader>gp", gs.preview_hunk_inline, { desc = "Preview Hunk" })
         map("n", "<leader>gd", gs.diffthis, { desc = "Diff Hunk" })
 
-        map("v", "<leader>gs", function()
+        map("v", "gs", function()
           gs.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
         end, { desc = "Stage Hunk" })
         map("v", "<leader>gr", function()
