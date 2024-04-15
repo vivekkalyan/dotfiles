@@ -21,6 +21,7 @@ return {
           "html",
           "javascript",
           "json",
+          "ledger",
           "lua",
           "markdown",
           "tsx",
