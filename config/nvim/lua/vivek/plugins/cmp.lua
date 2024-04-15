@@ -6,6 +6,7 @@ return {
     "hrsh7th/cmp-path", -- source for file system paths
     "hrsh7th/cmp-cmdline", -- cmdline completions
     "hrsh7th/cmp-calc", -- calculator completions
+    "kirasok/cmp-hledger", -- hledger completions
     { "L3MON4D3/LuaSnip", build = "make install_jsregexp" }, -- snippet engine
     "saadparwaiz1/cmp_luasnip", -- for autocompletion
     "rafamadriz/friendly-snippets", -- useful snippets
@@ -70,6 +71,7 @@ return {
         { name = "calc" }, -- calculator
         { name = "buffer" }, -- text within current buffer
         { name = "path" }, -- file system paths
+        { name = "hledger" }, -- hledger accounts
       }),
       -- configure lspkind for vs-code like pictograms in completion menu
       formatting = {
