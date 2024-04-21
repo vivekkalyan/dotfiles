@@ -46,7 +46,7 @@ local options = {
   splitright = true, -- open vertical split to the right of current window
   switchbuf = "usetab", -- try to reuse windows/tabs when switching buffers
   hidden = true, -- allow switching modified buffers
-  fillchars = "vert:┃", -- solid line to seperate windows
+  fillchars = "vert:┃,fold: ", -- solid line to seperate windows, space for folding
 
   -- Search
   ignorecase = true, -- Ignore case when typing
