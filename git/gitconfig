@@ -1,7 +1,7 @@
 [user]
   name = Vivek Kalyan
   email = hello@vivekkalyan.com
-  signingkey = /home/vivek/.ssh/github.pub
+  signingkey = ~/.ssh/github.pub
 
 [github]
   user = vivekkalyan
