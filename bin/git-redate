@@ -1,0 +1,58 @@
+#!/bin/zsh
+# Function to print usage information
+print_usage() {
+    echo "Usage: git-edit-date [commit-hash]"
+    echo "  commit-hash: The hash of the commit to edit (defaults to last commit if not provided)"
+}
+
+# Get commit hash or use last commit if not provided
+commit_hash=$1
+if [[ -z "$commit_hash" ]]; then
+    commit_hash=$(git rev-parse HEAD)
+    echo "No commit hash provided. Using last commit: $commit_hash"
+fi
+
+# Verify the commit exists
+if ! git rev-parse --verify $commit_hash^{commit} >/dev/null 2>&1; then
+    echo "Error: Invalid commit hash." 1>&2
+    exit 1
+fi
+
+# Get current date of the commit
+current_date=$(git show -s --format=%ci $commit_hash)
+
+# Create a temporary file with the current date
+temp_file=$(mktemp)
+echo "$current_date" > "$temp_file"
+
+# Open the editor for date modification
+${EDITOR:-vi} "$temp_file"
+
+# Read the new date from the temporary file
+new_date=$(cat "$temp_file")
+rm "$temp_file"
+
+# Check if the date was changed
+if [[ "$new_date" == "$current_date" ]]; then
+    echo "Date not changed. Exiting."
+    exit 0
+fi
+
+# Check if the commit is the last commit
+if [[ "$commit_hash" == "$(git rev-parse HEAD)" ]]; then
+    # Use amend for the last commit
+    GIT_COMMITTER_DATE="$new_date" git commit --amend --no-edit --date="$new_date"
+else
+    # Use filter-branch for older commits
+    git filter-branch -f --env-filter '
+        if [ $GIT_COMMIT = "'$commit_hash'" ]
+        then
+            export GIT_AUTHOR_DATE="'$new_date'"
+            export GIT_COMMITTER_DATE="'$new_date'"
+        fi
+    ' -- $commit_hash^..HEAD
+fi
+
+# Verify the change
+echo "Commit date updated. New details:"
+git show -s --format="%h %ci %s" $commit_hash
