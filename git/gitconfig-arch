@@ -1,0 +1,5 @@
+[core]
+  pager = /usr/share/git/diff-highlight/diff-highlight | less --tabs=4 -RFX
+
+[interactive]
+  diffFilter = /usr/share/git/diff-highlight/diff-highlight | less --tabs=4 -RFX

@@ -9,6 +9,9 @@
 [credential]
   helper = cache
 
+[include]
+  path = ~/.gitconfig-os
+
 [core]
   excludesfile = ~/.gitignore
   attributesfile = ~/.gitattributes
@@ -21,8 +24,6 @@
   trustctime = false
   # Make `git rebase` safer on macOS
   # More info: <http://www.git-tower.com/blog/make-git-rebase-safe-on-osx/>
-
-  pager = /usr/share/git/diff-highlight/diff-highlight | less --tabs=4 -RFX
 
 [apply]
   whitespace = fix
@@ -95,9 +96,6 @@
 [diff "pandoc"]
   textconv=pandoc --to=markdown
   prompt = false
-
-[interactive]
-  diffFilter = /usr/share/git/diff-highlight/diff-highlight | less --tabs=4 -RFX
 
 [gpg]
   format = ssh
