@@ -31,8 +31,6 @@ then
   echo
   NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-  # Append Homebrew initialization to .zprofile
-  echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >>${HOME}/.zprofile
   # Immediately evaluate the Homebrew environment settings for the current session
   eval "$(/opt/homebrew/bin/brew shellenv)"
 else
