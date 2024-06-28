@@ -1,10 +1,2 @@
-# Add Homebrew `/usr/local/bin` and User `~/bin` to the `$PATH`
-PATH=/usr/local/sbin:$PATH
-PATH=/usr/local/bin:$PATH
-PATH=$HOME/bin:$PATH
-PATH=/usr/local/share/npm/bin:$PATH
-PATH=$DOTFILES_DIR/bin:$PATH
-PATH=/usr/local/opt/python/libexec/bin:$PATH
-PATH="/usr/local/opt/icu4c/bin:$PATH"
-PATH="/usr/local/opt/icu4c/sbin:$PATH"
+PATH="/opt/homebrew/opt/make/libexec/gnubin:$PATH" # gmake as make
 export PATH
