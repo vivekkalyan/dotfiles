@@ -12,35 +12,17 @@ fi
 # Install packages
 
 apps=(
-  bat
-  coreutils
-  ctags
-  fasd
+  curl
   fd
-  ffmpeg
-  fzf
-  gifsicle
   git
-  gnu-sed --with-default-names
-  grep --with-default-names
-  imagemagick
-  mobile-shell
-  mosh
-  mysql
-  npm
-  p7zip
-  pandoc
-  postgresql
-  python
-  ripgrep
-  sqlite
-  tldr
-  tomcat
-  vim
-  wget
-  wireshark --with-qt
-  zsh
-  zsh-completions
+  make
+  neovim
+  node
+  pre-commit
+  rg
+  rust
+  supabase/tap/supabase
+  uv
 )
 
 brew install "${apps[@]}"
@@ -49,5 +31,3 @@ brew install "${apps[@]}"
 brew cleanup
 
 # Link applications
-ln -sfv /usr/local/opt/postgresql/homebrew.mxcl.postgresql.plist ~/Library/LaunchAgents/
-ln -sfv /usr/local/opt/mysql/homebrew.mxcl.mysql.plist ~/Library/LaunchAgents/
