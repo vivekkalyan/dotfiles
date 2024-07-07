@@ -43,3 +43,12 @@ echo
 echo "${GREEN}Checking homebrew installation"
 echo
 brew update && brew doctor
+
+# Get current dir (so can run this script from anywhere)
+DOTFILES_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+# Create symlinks
+echo
+echo "${GREEN}Creating symlinks"
+echo
+ln -sfnv "$DOTFILES_DIR/config/" "$HOME/.config"
