@@ -10,12 +10,9 @@
   helper = cache
 
 [include]
-  path = ~/.gitconfig-os
+  path = ~/.config/git/config-os
 
 [core]
-  excludesfile = ~/.gitignore
-  attributesfile = ~/.gitattributes
-
   whitespace = space-before-tab,-indent-with-non-tab,trailing-space
   # Treat spaces before tabs and all kinds of trailing whitespace as an error
   # [default] trailing-space: looks for spaces at the end of a line
