@@ -4,7 +4,17 @@ RED='\033[0;31m'
 GREEN='\033[0;32m'
 NC='\033[0m' # No COLOR
 
+# OS
+if [ "$(uname -s)" = "Darwin" ]; then
+    OS="macOS"
+elif uname -r | grep -q arch; then
+    OS="Arch"
+else
+    OS=$(uname -s)
+fi
+
 clear
+echo "${GREEN}OS: $OS"
 echo "Enter root password"
 
 # Ask for the administrator password upfront.
@@ -52,3 +62,8 @@ echo
 echo "${GREEN}Creating symlinks"
 echo
 ln -sfnv "$DOTFILES_DIR/config/" "$HOME/.config"
+if [ "$OS" = "Arch" ]; then
+  ln -sfnv "$DOTFILES_DIR/config/git/config-arch" "$DOTFILES_DIR/config/git/config-os"
+elif [ "$OS" = "macOS" ]; then
+  ln -sfnv "$DOTFILES_DIR/config/git/config-darwin" "$DOTFILES_DIR/config/git/config-os"
+fi

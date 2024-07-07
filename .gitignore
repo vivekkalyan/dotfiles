@@ -11,3 +11,5 @@ suckless/st/*
 !suckless/*/config.h
 !suckless/*/PKGBUILD
 !suckless/*/*.diff
+
+config/git/config-os
