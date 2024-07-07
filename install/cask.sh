@@ -2,9 +2,11 @@
 
 apps=(
   alacritty
-  karabiner-elements
-  spotify
   docker
+  flux
+  karabiner-elements
+  obsidian
+  spotify
 )
 
 brew cask install "${apps[@]}"

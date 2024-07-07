@@ -15,11 +15,12 @@ apps=(
   curl
   fd
   git
+  hledger
   make
   neovim
   node
   pre-commit
-  rg
+  ripgrep
   rust
   supabase/tap/supabase
   uv
