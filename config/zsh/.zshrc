@@ -34,15 +34,14 @@ else
   OS=$(uname -s)
 fi
 
-# Get dotfiles directory
+# Get the .zshrc file path (~/.config/zsh/.zshrc)
 SOURCE=${(%):-%N}
-while [ -h "$SOURCE" ]; do
-  DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
-  SOURCE="$(readlink "$SOURCE")"
-  [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
-done
-
-DOTFILES_DIR="$( cd -P "$( dirname "$( dirname "$SOURCE" )" )" && pwd )"
+# Get the config dir (~/.config)
+CONFIG_DIR="$( dirname $( dirname $SOURCE ) )"
+# Get the real path of config dir (resolve symlinks)
+DOTFILES_CONFIG_DIR="$(readlink -f $CONFIG_DIR)"
+# Get the dotfiles directory (parent folder)
+DOTFILES_DIR="$(dirname $DOTFILES_CONFIG_DIR)"
 
 # Load the shell dotfiles, and then some:
 for DOTFILE in "$DOTFILES_DIR"/system/{path,alias,rvm,functions}; do
