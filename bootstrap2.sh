@@ -67,3 +67,4 @@ if [ "$OS" = "Arch" ]; then
 elif [ "$OS" = "macOS" ]; then
   ln -sfnv "$DOTFILES_DIR/config/git/config-darwin" "$DOTFILES_DIR/config/git/config-os"
 fi
+ln -sfnv "$DOTFILES_DIR/config/zsh/zshenv" "$HOME/.zshenv"
