@@ -56,8 +56,8 @@ done
 # source "$DOTFILES_DIR"/system/base16-tomorrow-night.sh
 
 # Default Editor
-export EDITOR=$(which vim)
-export VISUAL=$(which vim)
+export EDITOR=$(which nvim)
+export VISUAL=$(which nvim)
 
 # Vim to edit commands
 autoload -z edit-command-line
