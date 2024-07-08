@@ -44,13 +44,13 @@ if [[ "$commit_hash" == "$(git rev-parse HEAD)" ]]; then
     GIT_COMMITTER_DATE="$new_date" git commit --amend --no-edit --date="$new_date"
 else
     # Use filter-branch for older commits
-    git filter-branch -f --env-filter '
-        if [ $GIT_COMMIT = "'$commit_hash'" ]
+      git filter-branch -f --env-filter "
+        if [ \$GIT_COMMIT = '$commit_hash' ]
         then
-            export GIT_AUTHOR_DATE="'$new_date'"
-            export GIT_COMMITTER_DATE="'$new_date'"
+            export GIT_AUTHOR_DATE='$new_date'
+            export GIT_COMMITTER_DATE='$new_date'
         fi
-    ' -- $commit_hash^..HEAD
+    " -- $commit_hash^..HEAD
 fi
 
 # Verify the change
