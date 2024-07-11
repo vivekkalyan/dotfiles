@@ -1,14 +1,14 @@
 # List all files colorized in long format
-alias ll='exa --color=always --group-directories-first --long --group --header --modified --sort=name --git --time-style=long-iso --classify'
+alias ll='eza --color=always --group-directories-first --long --group --header --modified --sort=name --git --time-style=long-iso --classify'
 
 # List all files colorized in long format, including dot files
-alias la='exa --color=always --all --group-directories-first --long --group --header --modified --sort=name --git --time-style=long-iso --classify'
+alias la='eza --color=always --all --group-directories-first --long --group --header --modified --sort=name --git --time-style=long-iso --classify'
 
 # Use color output for `ls` except when piping
 alias ls="ls --color=auto"
 
 # List only directories
-alias lsd='exa --color=always --all --only-dirs --long --group --header --modified --sort=name --git --time-style=long-iso --classify'
+alias lsd='eza --color=always --all --only-dirs --long --group --header --modified --sort=name --git --time-style=long-iso --classify'
 
 # Navigation up directories
 alias ..="cd .."

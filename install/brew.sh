@@ -13,6 +13,7 @@ fi
 
 apps=(
   curl
+  eza
   fd
   git
   hledger
