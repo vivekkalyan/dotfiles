@@ -5,7 +5,8 @@ compinit
 HISTSIZE=1000000000
 SAVEHIST=1000000000
 HISTFILESIZE=1000000000
-HISTFILE="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/history"
+[ -d "$XDG_STATE_HOME"/zsh ] || mkdir -p "$XDG_STATE_HOME"/zsh
+HISTFILE="${XDG_STATE_HOME:-$HOME/.local/state}/zsh/histfile"
 
 # History options
 setopt hist_expire_dups_first  # if history needs to be trimmed, evict dups first
