@@ -12,6 +12,7 @@ fi
 # Install packages
 
 apps=(
+  coreutils
   curl
   eza
   fd

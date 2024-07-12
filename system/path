@@ -1,3 +1,4 @@
 PATH="/opt/homebrew/opt/make/libexec/gnubin:$PATH" # gmake as make
+PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"
 PATH=$DOTFILES_DIR/bin:$PATH
 export PATH
