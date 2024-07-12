@@ -16,9 +16,6 @@ setopt hist_verify             # if a cmd triggers history expansion, show it in
 setopt share_history           # share command history data
 setopt extended_history        # write timestamps to history
 
-# Set LSCOLORS
-eval "$("dircolors" "$DOTFILES_DIR"/system/dircolors)"
-
 # Colorize completions using default `ls` colors.
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 
@@ -54,6 +51,9 @@ done
 
 # Set base16-shell colors
 # source "$DOTFILES_DIR"/system/base16-tomorrow-night.sh
+
+# Set LSCOLORS (needs to be after setting path on osx)
+eval "$("dircolors" "$DOTFILES_DIR"/system/dircolors)"
 
 # Default Editor
 export EDITOR=$(which nvim)
