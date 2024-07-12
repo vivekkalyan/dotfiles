@@ -22,6 +22,9 @@ keymap(
 
 -- Play macro
 keymap("n", "Q", "@q", { silent = true })
+-- repeat . and macro on visually selected lines
+keymap("v", ".", ":norm .<CR>", { silent = false })
+keymap("v", "Q", ":norm @q<CR>", { silent = false })
 
 -- Clear search with <esc>
 keymap("n", "<esc>", "<cmd>noh<cr><esc>", { silent = true })
