@@ -68,7 +68,7 @@ return {
       keymap.set("n", "<leader>cr", vim.lsp.buf.rename, opts) -- smart rename
 
       opts.desc = "Show line diagnostics"
-      vim.keymap.set("n", "<leader>cd", function()
+      vim.keymap.set("n", "<C-w>d", function()
         vim.diagnostic.open_float({ scope = "cursor" })
       end, opts) -- open diagnostic window
 
