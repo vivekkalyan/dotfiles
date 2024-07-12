@@ -31,6 +31,10 @@ alias -s xlsx="libreoffice"
 alias -s {mkv,mp4}="mpv"
 alias -s {jpg,jpeg,png}="sxiv"
 
+# Run commands using shortcuts
+bindkey -s '^g' 'git status --short^M'
+bindkey -s '^v' 'nvim^M'
+
 # Programs
 alias g="git"
 alias h="hledger"
