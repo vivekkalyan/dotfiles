@@ -5,11 +5,12 @@ compinit
 HISTSIZE=1000000000
 SAVEHIST=1000000000
 HISTFILESIZE=1000000000
-HISTFILE="$HOME/.zsh_history"
+HISTFILE="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/history"
 
 # History options
 setopt hist_expire_dups_first  # if history needs to be trimmed, evict dups first
 setopt hist_ignore_dups        # don't add consecutive dups to history
+setopt hist_find_no_dups       # don't show dups when cycling history
 setopt hist_ignore_space       # don't add commands starting with space to history
 setopt hist_reduce_blanks      # remove junk whitespace from commands before adding to history
 setopt hist_verify             # if a cmd triggers history expansion, show it instead of running
