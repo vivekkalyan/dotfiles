@@ -16,10 +16,16 @@ return {
         mappings = {
           i = {
             ["<esc>"] = actions.close,
+            -- change horizontal split keymap
             ["<C-x>"] = actions.nop,
             ["<C-s>"] = actions.select_horizontal,
           },
         },
+      },
+      pickers = {
+        find_files = {
+          find_command = { "rg", "--files", "--hidden", "--glob", "!**/.git/*" },
+        }
       },
     })
 
@@ -41,7 +47,7 @@ return {
     keymap.set(
       "n",
       "<leader>fF",
-      "<cmd>Telescope find_files { hidden = true, no_ignore = true } <cr>",
+      "<cmd>Telescope find_files no_ignore=true<cr>",
       { desc = "Fuzzy find all files in cwd" }
     )
     keymap.set("n", "<leader>fh", "<cmd>Telescope help_tags<cr>", { desc = "List help tags" })
