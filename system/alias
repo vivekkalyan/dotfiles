@@ -10,6 +10,13 @@ alias ls="eza --color=auto --group-directories-first"
 # List only directories
 alias lsd='eza --color=auto --all --only-dirs --long --group --header --modified --sort=name --git --time-style=long-iso --classify'
 
+# Common settings
+alias cp="cp -iv"
+alias mkdir="mkdir -pv"
+alias mv="mv -iv"
+alias rm="rm -Iv"
+alias rsync="rsync -avP"
+
 # Navigation up directories
 alias ..="cd .."
 alias ...="cd ../.."
