@@ -1,14 +1,14 @@
 # List all files colorized in long format
-alias ll='eza --color=always --group-directories-first --long --group --header --modified --sort=name --git --time-style=long-iso --classify'
+alias ll='eza --color=auto --group-directories-first --long --group --header --modified --sort=name --git --time-style=long-iso --classify'
 
 # List all files colorized in long format, including dot files
-alias la='eza --color=always --all --group-directories-first --long --group --header --modified --sort=name --git --time-style=long-iso --classify'
+alias la='eza --color=auto --all --group-directories-first --long --group --header --modified --sort=name --git --time-style=long-iso --classify'
 
 # Use color output for `ls` except when piping
-alias ls="ls --color=auto"
+alias ls="eza --color=auto --group-directories-first"
 
 # List only directories
-alias lsd='eza --color=always --all --only-dirs --long --group --header --modified --sort=name --git --time-style=long-iso --classify'
+alias lsd='eza --color=auto --all --only-dirs --long --group --header --modified --sort=name --git --time-style=long-iso --classify'
 
 # Navigation up directories
 alias ..="cd .."
@@ -38,13 +38,11 @@ bindkey -s '^v' 'nvim^M'
 # Programs
 alias g="git"
 alias h="hledger"
-alias v="vim"
-alias n="notes"
 alias t="task"
 
-
-# Always enable colored `grep` output
+# Enable colored output when possible
 alias grep='grep --color=auto'
+alias diff='diff --color=auto'
 
 # Process Status Table
 alias ps="ps aux"
@@ -53,7 +51,7 @@ alias ps="ps aux"
 alias psg="ps | grep -v grep | grep -i -e VSZ -e"
 
 # Create python server in current directory
-alias pyserver="python -m http.server"
+alias pyserver="python3 -m http.server"
 
 # Create notification
 alias notify="notify-send \"Running job finished\""
