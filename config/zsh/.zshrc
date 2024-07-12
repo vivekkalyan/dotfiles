@@ -24,22 +24,6 @@ zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 
 bindkey -e # emacs bindings
 
-# OS
-if [ "$(uname -s)" = "Darwin" ]; then
-  OS="macOS"
-else
-  OS=$(uname -s)
-fi
-
-# Get the .zshrc file path (~/.config/zsh/.zshrc)
-SOURCE=${(%):-%N}
-# Get the config dir (~/.config)
-CONFIG_DIR="$( dirname $( dirname $SOURCE ) )"
-# Get the real path of config dir (resolve symlinks)
-DOTFILES_CONFIG_DIR="$(readlink -f $CONFIG_DIR)"
-# Get the dotfiles directory (parent folder)
-DOTFILES_DIR="$(dirname $DOTFILES_CONFIG_DIR)"
-
 # Load the shell dotfiles, and then some:
 for DOTFILE in "$DOTFILES_DIR"/system/{path,alias,rvm,functions}; do
   [ -r "$DOTFILE" ] && source "$DOTFILE"
@@ -104,23 +88,7 @@ source /usr/share/fzf/completion.zsh
 LEDGER_FILE=$HOME/personal/finance/2022.journal
 export LEDGER_FILE
 
-# config
-XDG_CONFIG_HOME=$HOME/.config/
-XDG_DATA_HOME=$HOME/.local/share
-export XDG_CONFIG_HOME XDG_DATA_HOME
-
-# python
-PYTHON=/usr/bin/python
-
-# Settings for virtualenvwrapper
-# export WORKON_HOME=$HOME/.virtualenvs
-# export PROJECT_HOME=$HOME/personal
-# source /usr/local/bin/virtualenvwrapper.sh
-
 # Clean up
 unset DOTFILE
-
-# Export
-export OS DOTFILES_DIR
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
