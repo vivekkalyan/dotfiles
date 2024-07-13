@@ -51,6 +51,14 @@ keymap("n", "k", function()
   end
 end, { silent = true, expr = true })
 
+-- Only yank if the line is not empty
+keymap("n", "dd", function()
+  if vim.fn.getline(".") == "" then
+    return '"_dd'
+  end
+  return "dd"
+end, { expr = true })
+
 -- Stay in indent mode
 keymap("v", "<", "<gv", { silent = true })
 keymap("v", ">", ">gv", { silent = true })
