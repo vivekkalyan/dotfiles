@@ -22,14 +22,20 @@ alias ..="cd .."
 alias ...="cd ../.."
 alias ....="cd ../../.."
 
+# copy and paste
+(( $+commands[xclip] )) && {
+  alias pbpaste='xclip -i -selection clipboard -o'
+  alias pbcopy='xclip -selection clipboard'
+}
+
 # Global aliases
 alias -g G='| grep'
 alias -g J='| jq'
 alias -g R='| rg'
 alias -g L='| less'
 alias -g V='| vim -'
-alias -g C='| sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g" | xclip -selection clipboard'
-alias -g P='xclip -selection clipboard -o > '
+alias -g C='| sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g" | pbcopy'
+alias -g P='pbpaste > '
 
 # Suffix alias, all files with specified extension open using defined alias
 alias -s git="git clone"
