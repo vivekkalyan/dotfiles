@@ -19,8 +19,8 @@ apps=(
   git
   hledger
   make
+  mise
   neovim
-  node
   pre-commit
   ripgrep
   rust

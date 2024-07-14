@@ -94,3 +94,4 @@ export LEDGER_FILE
 unset DOTFILE
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+eval "$($(which mise) activate zsh)"
