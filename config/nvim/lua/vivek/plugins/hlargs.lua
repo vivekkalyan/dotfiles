@@ -1,6 +1,6 @@
 return {
   "m-demare/hlargs.nvim",
-  config = {
+  opts = {
     -- link to color used by @parameter
     highlight = { link = "@parameter" },
   },

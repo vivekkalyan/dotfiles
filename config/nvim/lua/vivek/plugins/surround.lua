@@ -2,7 +2,7 @@ return {
   "kylechui/nvim-surround",
   event = "VeryLazy",
   -- remove some keymaps
-  config = {
+  opts = {
     keymaps = {
       normal = "ys",
       normal_cur = "yss",
