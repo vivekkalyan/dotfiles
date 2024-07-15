@@ -5,6 +5,7 @@ apps=(
   docker
   flux
   karabiner-elements
+  linear-linear
   obsidian
   spotify
 )
