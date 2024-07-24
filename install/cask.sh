@@ -4,6 +4,7 @@ apps=(
   alacritty
   docker
   flux
+  font-meslo-lg-nerd-font
   karabiner-elements
   linear-linear
   obsidian
