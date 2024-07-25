@@ -38,6 +38,9 @@ return {
         end,
       },
     },
+    view_options = {
+      show_hidden = true,
+    },
   },
   config = function(_, opts)
     local oil = require("oil")
