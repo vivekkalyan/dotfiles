@@ -12,10 +12,13 @@ keymap("v", "L", "g_", { silent = true })
 -- Yank to end of line
 keymap("n", "Y", "y$", { silent = true })
 
+-- Merge lines
+keymap("n", "M", "J", { silent = true })
+
 -- Split lines (opposite of shift-J)
 keymap(
   "n",
-  "<S-s>",
+  "S",
   ":keeppatterns substitute/\\s*\\%#\\s*/\\r/e <bar> normal! ==<CR>",
   { silent = true }
 )
