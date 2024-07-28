@@ -23,7 +23,6 @@ apps=(
   neovim
   pre-commit
   ripgrep
-  rust
   supabase/tap/supabase
   uv
 )
