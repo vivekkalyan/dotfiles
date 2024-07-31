@@ -60,23 +60,35 @@ return {
         -- Navigation
         map("n", "]g", function()
           if vim.wo.diff then
-            return "]c"
+            vim.cmd.normal({ "]c", bang = true })
+          else
+            gitsigns.nav_hunk("next")
           end
-          vim.schedule(function()
-            gs.next_hunk()
-          end)
-          return "<Ignore>"
-        end, { expr = true })
+        end)
 
         map("n", "[g", function()
           if vim.wo.diff then
-            return "[c"
+            vim.cmd.normal({ "[c", bang = true })
+          else
+            gitsigns.nav_hunk("prev")
           end
-          vim.schedule(function()
-            gs.prev_hunk()
-          end)
-          return "<Ignore>"
-        end, { expr = true })
+        end)
+
+        map("n", "]G", function()
+          if vim.wo.diff then
+            vim.cmd.normal({ "]c", bang = true })
+          else
+            gitsigns.nav_hunk("next", { target = "staged" })
+          end
+        end)
+
+        map("n", "[G", function()
+          if vim.wo.diff then
+            vim.cmd.normal({ "[c", bang = true })
+          else
+            gitsigns.nav_hunk("prev", { target = "staged" })
+          end
+        end)
 
         -- Actions
         map("n", "gs", gs.stage_hunk, { desc = "Stage Hunk" })
