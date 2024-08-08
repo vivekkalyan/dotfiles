@@ -47,6 +47,7 @@ alias -s {jpg,jpeg,png}="sxiv"
 # Run commands using shortcuts
 bindkey -s '^g' 'git status^M'
 bindkey -s '^v' 'nvim^M'
+bindkey -s '^t' 'tmux ls^Mtmux-sessionizer^M'
 
 # Programs
 alias g="git"

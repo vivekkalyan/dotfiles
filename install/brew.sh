@@ -16,6 +16,7 @@ apps=(
   curl
   eza
   fd
+  fzf
   git
   hledger
   make
