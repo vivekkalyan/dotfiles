@@ -18,10 +18,10 @@ return {
     formatters_by_ft = {
       lua = { "stylua" },
       python = { "ruff_format" },
-      javascript = { "prettier" },
-      javascriptreact = { "prettier" },
-      typescript = { "prettier" },
-      typescriptreact = { "prettier" },
+      javascript = { "biome" },
+      javascriptreact = { "biome" },
+      typescript = { "biome" },
+      typescriptreact = { "biome" },
     },
     -- only format changed lines on save
     format_on_save = function(bufnr)
