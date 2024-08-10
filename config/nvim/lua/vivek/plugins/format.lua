@@ -22,6 +22,7 @@ return {
       javascriptreact = { "biome" },
       typescript = { "biome" },
       typescriptreact = { "biome" },
+      rust = { "rustfmt" },
     },
     -- only format changed lines on save
     format_on_save = function(bufnr)
