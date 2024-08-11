@@ -13,7 +13,7 @@ return {
       ["<C-r>"] = "actions.refresh",
       ["-"] = "actions.parent",
       ["_"] = "actions.open_cwd",
-      ["`"] = "actions.tcd",
+      ["="] = "actions.tcd",
       ["gs"] = "actions.change_sort",
       ["gx"] = "actions.open_external",
       ["gh"] = "actions.toggle_hidden",
