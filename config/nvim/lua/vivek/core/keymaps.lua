@@ -33,9 +33,10 @@ keymap("v", "Q", ":norm @q<CR>", { silent = false })
 keymap("n", "<esc>", "<cmd>noh<cr><esc>", { silent = true })
 
 -- Save file
-keymap("n", "<C-s>", "<cmd>w<cr><esc>", { silent = true })
-keymap("i", "<C-s>", "<cmd>w<cr><esc>gi", { silent = true }) -- go back to insert mode with same position
-keymap("v", "<C-s>", "<cmd>w<cr><esc>gv", { silent = true }) -- go back to visual mode with same selection
+keymap("n", "<leader>w", "<cmd>w<cr><esc>", { silent = true, desc = "Write File" })
+-- disable <leader>w in insert mode because that clashes with typing ' w'
+-- keymap("i", "<leader>w", "<cmd>w<cr><esc>gi", { silent = true, desc = "Write File" }) -- go back to insert mode with same position
+keymap("v", "<leader>w", "<cmd>w<cr><esc>gv", { silent = true, desc = "Write File" }) -- go back to visual mode with same selection
 
 -- Move by visual line rather than physical line
 -- Move correctly when text is wrapped and using {count}j/k
