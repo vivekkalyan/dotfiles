@@ -54,3 +54,18 @@ vim.api.nvim_create_user_command("FormatEnable", function()
 end, {
   desc = "Re-enable autoformat-on-save",
 })
+
+vim.api.nvim_create_user_command("TreesitterDebug", function()
+  -- Open a new tab with current file
+  vim.cmd("tabnew")
+  vim.cmd("edit #")
+
+  -- Open Treesitter Inspector
+  vim.cmd("InspectTree")
+
+  -- Open Query Editor
+  vim.cmd("EditQuery")
+
+  -- Adjust split sizes
+  vim.cmd("wincmd =")
+end, {})
