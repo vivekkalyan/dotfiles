@@ -14,6 +14,7 @@ return {
   },
   config = function()
     local cmp = require("cmp")
+    local types = require("cmp.types")
 
     local luasnip = require("luasnip")
     vim.keymap.set({ "i", "s" }, "<C-k>", function()
@@ -40,6 +41,34 @@ return {
     require("luasnip.loaders.from_vscode").lazy_load()
 
     vim.api.nvim_set_hl(0, "CmpGhostText", { link = "Comment", default = true })
+
+    -- set priority in cmp ordering based on the kind of the item
+    local kind_priority_map = {
+      [types.lsp.CompletionItemKind.EnumMember] = 1,
+      [types.lsp.CompletionItemKind.Variable] = 2,
+      [types.lsp.CompletionItemKind.Text] = 100,
+    }
+
+    local compare_kind = function(entry1, entry2)
+      local kind1 = entry1:get_kind()
+      local kind2 = entry2:get_kind()
+      kind1 = kind_priority_map[kind1] or kind1
+      kind2 = kind_priority_map[kind2] or kind2
+      if kind1 ~= kind2 then
+        if kind1 == types.lsp.CompletionItemKind.Snippet then
+          return true
+        end
+        if kind2 == types.lsp.CompletionItemKind.Snippet then
+          return false
+        end
+        local diff = kind1 - kind2
+        if diff < 0 then
+          return true
+        elseif diff > 0 then
+          return false
+        end
+      end
+    end
 
     cmp.setup({
       completion = {
@@ -79,6 +108,20 @@ return {
           maxwidth = 50,
           ellipsis_char = "...",
         }),
+      },
+      sorting = {
+        priority_weight = 100,
+        comparators = {
+          cmp.config.compare.offset,
+          cmp.config.compare.exact,
+          cmp.config.compare.score,
+          compare_kind,
+          cmp.config.compare.recently_used,
+          cmp.config.compare.locality,
+          cmp.config.compare.sort_text,
+          cmp.config.compare.length,
+          cmp.config.compare.order,
+        },
       },
       experimental = {
         ghost_text = {
