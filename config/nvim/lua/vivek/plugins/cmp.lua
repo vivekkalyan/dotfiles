@@ -1,6 +1,6 @@
 return {
   "hrsh7th/nvim-cmp",
-  event = "InsertEnter",
+  event = { "InsertEnter", "CmdlineEnter" },
   dependencies = {
     "hrsh7th/cmp-buffer", -- source for text in buffer
     "hrsh7th/cmp-path", -- source for file system paths
@@ -129,8 +129,28 @@ return {
         },
       },
     })
+
+    -- use Insert instead of Select in cmdline
+    local cmdline_mappings = {
+      ["<C-n>"] = {
+        c = function(fallback)
+          if cmp.visible() then
+            return cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert })(fallback)
+          else
+            return cmp.mapping.complete({ reason = cmp.ContextReason.Auto })(fallback)
+          end
+        end,
+      },
+      ["<C-p>"] = {
+        c = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
+      },
+      ["<C-e>"] = {
+        c = cmp.mapping.abort(),
+      },
+    }
+
     cmp.setup.cmdline({ "/", "?" }, {
-      mapping = cmp.mapping.preset.cmdline(),
+      mapping = cmp.mapping.preset.cmdline(cmdline_mappings),
       sources = {
         { name = "buffer" },
       },
@@ -138,7 +158,7 @@ return {
 
     -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
     cmp.setup.cmdline(":", {
-      mapping = cmp.mapping.preset.cmdline(),
+      mapping = cmp.mapping.preset.cmdline(cmdline_mappings),
       sources = cmp.config.sources({
         { name = "path" },
       }, {
