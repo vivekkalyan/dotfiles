@@ -8,6 +8,9 @@ local keymap = vim.keymap.set
 keymap("n", "H", "^", { silent = true })
 keymap("n", "L", "$", { silent = true })
 keymap("v", "L", "g_", { silent = true })
+-- J/K to move up and down faster
+keymap({ "n", "v" }, "J", "5gj", { silent = true })
+keymap({ "n", "v" }, "K", "5gk", { silent = true })
 
 -- Yank to end of line
 keymap("n", "Y", "y$", { silent = true })
