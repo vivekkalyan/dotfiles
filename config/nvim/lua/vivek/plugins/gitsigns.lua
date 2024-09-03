@@ -109,6 +109,13 @@ return {
         map("n", "<leader>tb", gs.toggle_current_line_blame, { desc = "Toggle blame current line" })
         map("n", "<leader>td", gs.toggle_deleted, { desc = "Toggle show deleted lines" })
 
+        map("n", "<leader>gB", function()
+          gs.blame()
+        end, { desc = "Blame buffer" })
+        map("n", "<leader>gb", function()
+          gs.blame_line({ full = true })
+        end, { desc = "Blame Line" })
+
         -- Text object
         map({ "o", "x" }, "ig", ":<C-U>Gitsigns select_hunk<CR>")
       end,
