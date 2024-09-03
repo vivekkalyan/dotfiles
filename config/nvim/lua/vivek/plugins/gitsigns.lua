@@ -106,8 +106,8 @@ return {
           gs.reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
         end, { desc = "Reset Hunk" })
 
-        map("n", "<leader>tb", gs.toggle_current_line_blame)
-        map("n", "<leader>td", gs.toggle_deleted)
+        map("n", "<leader>tb", gs.toggle_current_line_blame, { desc = "Toggle blame current line" })
+        map("n", "<leader>td", gs.toggle_deleted, { desc = "Toggle show deleted lines" })
 
         -- Text object
         map({ "o", "x" }, "ig", ":<C-U>Gitsigns select_hunk<CR>")
