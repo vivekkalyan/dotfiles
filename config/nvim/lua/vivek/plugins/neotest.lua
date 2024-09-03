@@ -7,6 +7,7 @@ return {
     "nvim-treesitter/nvim-treesitter",
     -- language runners
     "nvim-neotest/neotest-python",
+    "mrcjkb/rustaceanvim",
   },
   keys = {
     {
@@ -79,6 +80,7 @@ return {
         require("neotest-python")({
           runner = "pytest",
         }),
+        require("rustaceanvim.neotest"),
       },
     })
   end,

@@ -6,6 +6,7 @@ return {
     { "antosha417/nvim-lsp-file-operations", config = true },
     "kosayoda/nvim-lightbulb",
     "mizlan/delimited.nvim",
+    "mrcjkb/rustaceanvim",
   },
   config = function()
     -- import lspconfig plugin
@@ -131,10 +132,19 @@ return {
     })
 
     -- configure rust server
-    lspconfig["rust_analyzer"].setup({
-      capabilities = capabilities,
-      on_attach = on_attach,
-    })
+    vim.g.rustaceanvim = {
+      server = {
+        on_attach = on_attach,
+        default_settings = {
+          -- rust-analyzer language server configuration
+          ["rust-analyzer"] = {
+            diagnostics = {
+              enable = true,
+            },
+          },
+        },
+      },
+    }
 
     -- configure taplo server
     lspconfig["taplo"].setup({
