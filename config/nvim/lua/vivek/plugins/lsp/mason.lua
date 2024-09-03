@@ -31,6 +31,7 @@ return {
         "pyright",
         "ruff_lsp",
         "rust_analyzer",
+        "taplo",
         "tsserver",
       },
       -- auto-install configured servers (with lspconfig)
