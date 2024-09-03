@@ -56,7 +56,7 @@ return {
           if cmp.visible() then
             cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
           else
-            cmp.complete()
+            cmp.complete({ reason = cmp.ContextReason.Auto })
           end
         end),
         ["<C-b>"] = cmp.mapping.scroll_docs(-4),
