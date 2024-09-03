@@ -5,9 +5,9 @@ vim.g.mapleader = " "
 local keymap = vim.keymap.set
 
 -- H/L to move to start/end of sentences
-keymap("n", "H", "^", { silent = true })
-keymap("n", "L", "$", { silent = true })
-keymap("v", "L", "g_", { silent = true })
+keymap({ "n", "o", "v" }, "H", "g^", { silent = true })
+keymap({ "n", "o", "v" }, "L", "g_", { silent = true })
+
 -- J/K to move up and down faster
 keymap({ "n", "v" }, "J", "5gj", { silent = true })
 keymap({ "n", "v" }, "K", "5gk", { silent = true })
