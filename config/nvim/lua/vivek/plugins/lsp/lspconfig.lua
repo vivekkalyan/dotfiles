@@ -141,6 +141,8 @@ return {
             diagnostics = {
               enable = true,
             },
+            -- add clippy to diagnostics
+            checkOnSave = true,
           },
         },
       },
