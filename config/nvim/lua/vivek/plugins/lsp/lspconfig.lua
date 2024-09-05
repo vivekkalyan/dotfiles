@@ -90,7 +90,7 @@ return {
       opts.desc = "Set diagnostics to location list"
       keymap.set("n", "<leader>cl", vim.diagnostic.setloclist, opts) -- show diagnostics for line
 
-      opts.desc = "Show documentation for what is under cursor"
+      opts.desc = "Show documentation"
       keymap.set("n", "<leader>ck", function()
         if
           client.name == "taplo"
@@ -104,7 +104,7 @@ return {
         end
       end, opts) -- show documentation for what is under cursor
 
-      opts.desc = "Show documentation for what is under cursor"
+      opts.desc = "Show signature help"
       keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, opts) -- show documentation for what is under cursor
 
       if client.name == "ruff_lsp" then
