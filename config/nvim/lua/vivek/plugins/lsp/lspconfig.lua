@@ -91,7 +91,18 @@ return {
       keymap.set("n", "<leader>cl", vim.diagnostic.setloclist, opts) -- show diagnostics for line
 
       opts.desc = "Show documentation for what is under cursor"
-      keymap.set("n", "K", vim.lsp.buf.hover, opts) -- show documentation for what is under cursor
+      keymap.set("n", "<leader>ck", function()
+        if
+          client.name == "taplo"
+          and vim.fn.expand("%:t") == "Cargo.toml"
+          and pcall(require, "crates") -- this depends on saecki/crates.nvim
+          and require("crates").popup_available()
+        then
+          require("crates").show_popup()
+        else
+          vim.lsp.buf.hover()
+        end
+      end, opts) -- show documentation for what is under cursor
 
       opts.desc = "Show documentation for what is under cursor"
       keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, opts) -- show documentation for what is under cursor
