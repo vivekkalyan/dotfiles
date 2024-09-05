@@ -55,7 +55,13 @@ return {
       keymap.set("n", "<leader>fS", "<cmd>Telescope lsp_workspace_symbols<CR>", opts) -- show lsp workspace symbols
 
       opts.desc = "See available code actions"
-      keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts) -- see available code actions, in visual mode will apply to selection
+      keymap.set({ "n", "v" }, "<leader>ca", function()
+        if client.name == "rust-analyzer" then
+          vim.cmd.RustLsp("codeAction") -- supports rust-analyzer's grouping
+        else
+          vim.lsp.buf.code_action()
+        end
+      end, opts) -- see available code actions, in visual mode will apply to selection
 
       opts.desc = "Organise imports"
       keymap.set("n", "<leader>co", function()
