@@ -105,7 +105,7 @@ return {
       end, opts) -- show documentation for what is under cursor
 
       opts.desc = "Show signature help"
-      keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, opts) -- show documentation for what is under cursor
+      keymap.set("n", "<leader>cs", vim.lsp.buf.signature_help, opts) -- show documentation for what is under cursor
 
       if client.name == "ruff_lsp" then
         -- Disable hover in favor of Pyright
