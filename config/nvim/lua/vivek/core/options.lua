@@ -62,14 +62,50 @@ local options = {
   undofile = true, -- enable persistent undo
   updatetime = 300, -- faster completion (4000ms default)
   writebackup = false, -- if a file is being edited by another program (or was written to file while editing with another program), it is not allowed to be edited
+
+  -- session options (using persistence.nvim to save session information)
+  sessionoptions = {
+    "blank",
+    "buffers",
+    "curdir",
+    "folds",
+    "globals",
+    "help",
+    "localoptions",
+    "skiprtp",
+    "tabpages",
+    "terminal",
+    "winsize",
+  },
 }
 
 for k, v in pairs(options) do
   vim.opt[k] = v
 end
+vim.diagnostic.config({
+  virtual_lines = false,
+  virtual_text = {
+    spacing = 3,
+    prefix = " ",
+    severity_sort = true,
+    source = "if_many",
+  },
+})
 
 -- statusline
 vim.cmd([[set statusline=[%n]\ %<%f\ %m%r%#StatusLineNC#%=%-14.(%*%l,%c%V%)]]) -- set status line
 vim.cmd([[set nrformats+=bin]]) -- allow C-A, C-X for binary
 vim.cmd([[set iskeyword+=-]]) -- make word definition include -
 vim.cmd([[set formatoptions+=n]]) -- smart auto-indenting inside numbered lists
+
+vim.g.floating_window_border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" }
+vim.g.floating_window_border_dark = {
+  { "╭", "FloatBorderDark" },
+  { "─", "FloatBorderDark" },
+  { "╮", "FloatBorderDark" },
+  { "│", "FloatBorderDark" },
+  { "╯", "FloatBorderDark" },
+  { "─", "FloatBorderDark" },
+  { "╰", "FloatBorderDark" },
+  { "│", "FloatBorderDark" },
+}
