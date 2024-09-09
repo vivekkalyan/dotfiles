@@ -4,7 +4,6 @@ return {
     event = { "BufReadPre", "BufNewFile" },
     build = ":TSUpdate",
     dependencies = {
-      "windwp/nvim-ts-autotag",
       "JoosepAlviste/nvim-ts-context-commentstring",
     },
     config = function()
@@ -43,7 +42,7 @@ return {
         indent = { enable = true },
         -- enable autotagging (w/ nvim-ts-autotag plugin)
         autotag = {
-          enable = true,
+          enable = false,
         },
         -- enable incremental selection
         incremental_selection = {
