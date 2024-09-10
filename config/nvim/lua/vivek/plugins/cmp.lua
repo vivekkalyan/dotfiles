@@ -45,7 +45,9 @@ return {
     -- set priority in cmp ordering based on the kind of the item
     local kind_priority_map = {
       [types.lsp.CompletionItemKind.EnumMember] = 1,
-      [types.lsp.CompletionItemKind.Variable] = 2,
+      [types.lsp.CompletionItemKind.Method] = 2,
+      [types.lsp.CompletionItemKind.Variable] = 3,
+      [types.lsp.CompletionItemKind.Snippet] = 99,
       [types.lsp.CompletionItemKind.Text] = 100,
     }
 
@@ -55,12 +57,6 @@ return {
       kind1 = kind_priority_map[kind1] or kind1
       kind2 = kind_priority_map[kind2] or kind2
       if kind1 ~= kind2 then
-        if kind1 == types.lsp.CompletionItemKind.Snippet then
-          return true
-        end
-        if kind2 == types.lsp.CompletionItemKind.Snippet then
-          return false
-        end
         local diff = kind1 - kind2
         if diff < 0 then
           return true
