@@ -176,6 +176,18 @@ return {
       },
     }
 
+    -- configure svelte
+    lspconfig["svelte"].setup({
+      -- lazyvim has this, but is it needed?
+      -- capabilities = {
+      --   workspace = {
+      --     didChangeWatchedFiles = false,
+      --   },
+      -- },
+      capabilities = capabilities,
+      on_attach = on_attach,
+    })
+
     -- configure taplo server
     lspconfig["taplo"].setup({
       capabilities = capabilities,
