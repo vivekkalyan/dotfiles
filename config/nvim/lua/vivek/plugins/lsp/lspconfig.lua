@@ -162,6 +162,8 @@ return {
     -- configure rust server
     vim.g.rustaceanvim = {
       server = {
+        -- TODO: Fix this https://github.com/hrsh7th/cmp-nvim-lsp/issues/72
+        capabilities = vim.lsp.protocol.make_client_capabilities(),
         on_attach = on_attach,
         default_settings = {
           -- rust-analyzer language server configuration
