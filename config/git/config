@@ -85,10 +85,12 @@
   # Make sure to save un-added files
   # https://git-scm.com/docs/git-stash
 
-  l = log --pretty=oneline -n 20 --abbrev-commit
+  l = log --abbrev-commit --date=short --pretty=format:'%C(cyan)%ad %C(bold green)%h%Creset - %s%C(bold yellow)%d%Creset %C(dim white)- %aN%Creset' -n 20
   # View abbreviated SHA, description of the latest 20 commits
-  ll = log --pretty=oneline --graph --abbrev-commit
-  lll = log --graph --abbrev-commit --decorate --all --pretty=format:'%C(bold green)%h%C(reset) %C(white)%s%C(reset) - %C(cyan)%aD%C(reset) %C(yellow)(%ar)%C(reset)%C(bold yellow)%d%C(reset)'' %C(dim white)- %an%C(reset)'
+  ll = log --graph --topo-order --decorate --all --boundary --date=short --abbrev-commit \
+  --pretty=format:'%C(cyan)%ad %C(bold green)%h%Creset - %s %C(magenta)(%ar)%C(reset)%C(bold yellow)%d%Creset %C(dim white)- %aN%Creset'
+  lll = log --graph --abbrev-commit --decorate --all \
+  --pretty=format:'%C(cyan)%aD%C(reset) %C(bold green)%h%C(reset) %C(white)%s%C(reset) %C(magenta)(%ar)%C(reset)%C(bold yellow)%d%C(reset)'' %C(dim white)- %an%C(reset)'
   # A nice, colorful, graphical representation of log
   # https://git-scm.com/docs/git-log
   # --all: shows all branches
