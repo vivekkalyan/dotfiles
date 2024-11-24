@@ -27,14 +27,19 @@
   # Detect whitespace errors when applying a patch
 
 [alias]
+  # https://github.com/GitAlias/gitalias/
   # a = !sh -c 'cd -- ${GIT_PREFIX:-.} && git add -- "$@" && git status' --
   # https://stackoverflow.com/a/53654984
   # aa = "!git add --all && git status && :"
   a = add -v
   aa = add --all -v
+  au = add --update -v
   c = commit
   cm = commit -m
+  ca = commit --amend
+  cam = commit --amend -m
   co = checkout
+  cob = checkout -b
   df = diff --word-diff
   dfs = diff --word-diff --staged
   f = fetch
@@ -44,12 +49,14 @@
   rba = rebase --abort
   rbc = rebase --continue
   rbi = rebase --interactive
+  rbiu = rebase --interactive @{upstream}
   rbs = rebase --skip
   rbm = rebase origin/master
   reset = reset HEAD $@
   s = status
   ss = status .
   p = push
+  pf = push --force
   pm = push origin master
 
   tags = tag -l
