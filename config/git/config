@@ -78,6 +78,9 @@
   # Reset last commit
   # https://git-scm.com/docs/git-reset#git-reset-emgitresetemltmodegtltcommitgt
 
+  unadd = reset HEAD
+  # Reset something that has been added
+
   stash-all = stash save --include-untracked
   # Make sure to save un-added files
   # https://git-scm.com/docs/git-stash
