@@ -74,8 +74,8 @@
   # Clean up any remote tracking references that no longer exist on remote
   # https://git-scm.com/docs/git-fetch#git-fetch--p
 
-  undo = reset --soft HEAD~
-  # Undo last commit
+  uncommit = reset --soft HEAD~
+  # Reset last commit
   # https://git-scm.com/docs/git-reset#git-reset-emgitresetemltmodegtltcommitgt
 
   stash-all = stash save --include-untracked
