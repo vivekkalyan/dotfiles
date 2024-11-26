@@ -113,7 +113,7 @@ return {
       opts.desc = "Show signature help"
       keymap.set("n", "<leader>cs", vim.lsp.buf.signature_help, opts) -- show documentation for what is under cursor
 
-      if client.name == "ruff_lsp" then
+      if client.name == "ruff" then
         -- Disable hover in favor of Pyright
         client.server_capabilities.hoverProvider = false
       end
@@ -154,7 +154,7 @@ return {
       },
     })
 
-    lspconfig["ruff_lsp"].setup({
+    lspconfig["ruff"].setup({
       capabilities = capabilities,
       on_attach = on_attach,
     })
