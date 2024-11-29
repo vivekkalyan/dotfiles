@@ -36,6 +36,7 @@ return {
       vim.cmd([[colorscheme catppuccin-mocha]])
     end,
   },
+  { "rebelot/kanagawa.nvim", lazy = true },
   { "romainl/Apprentice", lazy = true },
   { "AlexvZyl/nordic.nvim", lazy = true },
   { "savq/melange-nvim", lazy = true },
