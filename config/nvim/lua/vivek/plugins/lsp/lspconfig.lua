@@ -5,7 +5,7 @@ return {
     "hrsh7th/cmp-nvim-lsp",
     { "antosha417/nvim-lsp-file-operations", config = true },
     "kosayoda/nvim-lightbulb",
-    "mizlan/delimited.nvim",
+    -- "mizlan/delimited.nvim",
     "mrcjkb/rustaceanvim",
   },
   config = function()
@@ -24,7 +24,7 @@ return {
     })
 
     -- import delimited plugin
-    local delimited = require("delimited")
+    -- local delimited = require("delimited")
 
     local keymap = vim.keymap -- for conciseness
     local opts = { noremap = true, silent = true }
@@ -83,15 +83,16 @@ return {
       keymap.set("n", "<leader>cD", "<cmd>Telescope diagnostics bufnr=0<CR>", opts) -- show  diagnostics for file
 
       -- keep this instead of bracketed.mini because it highlights diagnostic
-      opts.desc = "Go to previous diagnostic"
-      keymap.set("n", "[d", function()
-        delimited.goto_prev({ float = false })
-      end, opts) -- jump to previous diagnostic in buffer
-
-      opts.desc = "Go to next diagnostic"
-      keymap.set("n", "]d", function()
-        delimited.goto_next({ float = false })
-      end, opts) -- jump to next diagnostic in buffer
+      -- this doesn't work because it uses vim.diagnostic.jump, which my current machine doesnt have for some reason
+      -- opts.desc = "Go to previous diagnostic"
+      -- keymap.set("n", "[d", function()
+      --   delimited.goto_prev({ float = false })
+      -- end, opts) -- jump to previous diagnostic in buffer
+      --
+      -- opts.desc = "Go to next diagnostic"
+      -- keymap.set("n", "]d", function()
+      --   delimited.goto_next({ float = false })
+      -- end, opts) -- jump to next diagnostic in buffer
 
       opts.desc = "Set diagnostics to location list"
       keymap.set("n", "<leader>cl", vim.diagnostic.setloclist, opts) -- show diagnostics for line
