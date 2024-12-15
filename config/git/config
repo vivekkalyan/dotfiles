@@ -67,6 +67,8 @@
   amend = commit --amend --reuse-message=HEAD
   # Add on to last commit
 
+  init-empty = "!f() { git init && git commit --allow-empty --allow-empty-message --message 'Initial Commit'; }; f"
+
   show-ignored = "! git clean -ndX | perl -pe 's/Would remove/Ignored:/'"
   # show all ignored files
 
