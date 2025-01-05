@@ -2,7 +2,7 @@ return {
   "neovim/nvim-lspconfig",
   event = { "BufReadPre", "BufNewFile" },
   dependencies = {
-    "hrsh7th/cmp-nvim-lsp",
+    "saghen/blink.cmp",
     { "antosha417/nvim-lsp-file-operations", config = true },
     "kosayoda/nvim-lightbulb",
     -- "mizlan/delimited.nvim",
@@ -12,8 +12,8 @@ return {
     -- import lspconfig plugin
     local lspconfig = require("lspconfig")
 
-    -- import cmp-nvim-lsp plugin
-    local cmp_nvim_lsp = require("cmp_nvim_lsp")
+    -- import blink plugin
+    local cmp_blink = require("blink.cmp")
 
     -- import nvim-lightbulb
     local lightbulb = require("nvim-lightbulb")
@@ -121,7 +121,7 @@ return {
     end
 
     -- used to enable autocompletion (assign to every lsp server config)
-    local capabilities = cmp_nvim_lsp.default_capabilities()
+    local capabilities = cmp_blink.get_lsp_capabilities()
 
     -- configure astro
     lspconfig["astro"].setup({
@@ -169,8 +169,7 @@ return {
     -- configure rust server
     vim.g.rustaceanvim = {
       server = {
-        -- TODO: Fix this https://github.com/hrsh7th/cmp-nvim-lsp/issues/72
-        capabilities = vim.lsp.protocol.make_client_capabilities(),
+        capabilities = capabilities,
         on_attach = on_attach,
         default_settings = {
           -- rust-analyzer language server configuration

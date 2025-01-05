@@ -31,6 +31,9 @@ return {
             }
           end,
         },
+        integrations = {
+          blink_cmp = true,
+        },
       })
       -- load colorscheme
       vim.cmd([[colorscheme catppuccin-mocha]])
