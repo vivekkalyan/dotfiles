@@ -6,6 +6,7 @@ apps=(
   docker
   flux
   font-meslo-lg-nerd-font
+  ghostty
   karabiner-elements
   linear-linear
   obsidian
