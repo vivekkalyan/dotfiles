@@ -1,0 +1,5 @@
+font-family = "MesloLGS Nerd Font Mono"
+font-size = 16
+theme = catppuccin-mocha
+background-opacity = 0.95
+background-blur-radius = 20
