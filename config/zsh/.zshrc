@@ -31,7 +31,7 @@ for DOTFILE in "$DOTFILES_DIR"/system/{path,alias,rvm,functions}; do
   [ -r "$DOTFILE" ] && source "$DOTFILE"
 done
 
-for DOTFILE in "$DOTFILES_DIR"/system/{async,prompt,fasd,fzf,history}.zsh; do
+for DOTFILE in "$DOTFILES_DIR"/system/{async,prompt,fzf,history}.zsh; do
   [ -r "$DOTFILE" ] && source "$DOTFILE"
 done
 
@@ -94,4 +94,5 @@ export LEDGER_FILE
 unset DOTFILE
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+eval "$(zoxide init zsh)"
 eval "$($(which mise) activate zsh)"

@@ -30,7 +30,6 @@ zathura
 zathura-pdf-mupdf
 bat
 ctags
-fasd
 fd
 ffmpeg
 fzf
@@ -42,6 +41,7 @@ python-pip
 ripgrep
 sqlite
 tldr
+zoxide
 
 unzip
 xclip

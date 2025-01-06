@@ -26,6 +26,7 @@ apps=(
   ripgrep
   supabase/tap/supabase
   uv
+  zoxide
 )
 
 brew install "${apps[@]}"
