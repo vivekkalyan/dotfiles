@@ -22,24 +22,24 @@ return {
           text = "<",
         },
       },
-      -- signs_staged = {
-      --   add = {
-      --     text = "+",
-      --   },
-      --   change = {
-      --     text = ">",
-      --   },
-      --   delete = {
-      --     text = "-",
-      --   },
-      --   topdelete = {
-      --     text = "^",
-      --   },
-      --   changedelete = {
-      --     text = "<",
-      --   },
-      -- },
-      signs_staged_enable = false,
+      signs_staged = {
+        add = {
+          text = "+",
+        },
+        change = {
+          text = ">",
+        },
+        delete = {
+          text = "-",
+        },
+        topdelete = {
+          text = "^",
+        },
+        changedelete = {
+          text = "<",
+        },
+      },
+      signs_staged_enable = true,
       preview_config = {
         -- Options passed to nvim_open_win
         border = "none",
