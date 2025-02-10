@@ -41,7 +41,7 @@ fi
 # Check if the commit is the last commit
 if [[ "$commit_hash" == "$(git rev-parse HEAD)" ]]; then
     # Use amend for the last commit
-    GIT_COMMITTER_DATE="$new_date" git commit --amend --no-edit --date="$new_date"
+    GIT_COMMITTER_DATE="$new_date" git commit --amend --no-edit --allow-empty --date="$new_date"
 else
     # Use filter-branch for older commits
       git filter-branch -f --env-filter "
