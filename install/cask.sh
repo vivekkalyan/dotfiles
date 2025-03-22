@@ -9,6 +9,7 @@ apps=(
   ghostty
   karabiner-elements
   linear-linear
+  notion
   obsidian
   spotify
   telegram
