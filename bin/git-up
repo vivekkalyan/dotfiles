@@ -9,7 +9,7 @@
 set -e
 
 # always use rebase workflow
-PULL_ARGS="--rebase --autostash $@"
+PULL_ARGS="--rebase --prune --autostash $@"
 
 OLD_HEAD="$(git rev-parse HEAD)"
 
