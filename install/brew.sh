@@ -24,6 +24,7 @@ apps=(
   neovim
   pre-commit
   ripgrep
+  rsync
   supabase/tap/supabase
   uv
   zoxide
