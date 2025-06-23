@@ -156,6 +156,10 @@
   # "push the current branch back to the branch whose changes are usually integrated into the current branch"
   # "refuse to push if the upstream branch’s name is different from the local one"
   # https://git-scm.com/docs/git-config#git-config-pushdefault
+  autoSetupRemote = true
+  # when you execute git push on a local branch that does not yet have an upstream tracking branch configured, Git will automatically:
+  # - Create a corresponding branch on the remote repository (if it doesn't exist).
+  # - Set the newly created remote branch as the upstream for your local branch.
 [pull]
   # rebase = true
   # https://git-scm.com/docs/git-config/1.8.1.6#git-config-pullrebase
