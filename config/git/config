@@ -73,6 +73,33 @@
   show-ignored = "! git clean -ndX | perl -pe 's/Would remove/Ignored:/'"
   # show all ignored files
 
+  default = !git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@'
+  # Get default branch
+
+  bclean = "!f() { \
+    echo 'Looking for local branches whose upstream is gone...'; \
+    GONE_BRANCHES=$(git branch -vv | grep ': gone]' | awk '{print $1}'); \
+    CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD); \
+    echo \"Current branch is '$CURRENT_BRANCH'. It will not be deleted.\"; \
+    BRANCHES_TO_DELETE=$(echo \"$GONE_BRANCHES\" | grep -v \"^$CURRENT_BRANCH$\"); \
+    if [ -n \"$BRANCHES_TO_DELETE\" ]; then \
+        echo 'Found branches whose upstream is gone:'; \
+        echo \"$BRANCHES_TO_DELETE\"; \
+        echo \"$BRANCHES_TO_DELETE\" | xargs git branch -D; \
+        echo 'Deletion attempt finished. Check output for errors (e.g., unmerged changes).'; \
+    else \
+        echo 'No local branches found with gone upstreams (excluding current branch).'; \
+    fi; \
+    }; f \"$@\""
+
+  bdone = "!f() { \
+      DEFAULT_BRANCH=$(git default); \
+      TARGET_BRANCH=${1:-$DEFAULT_BRANCH}; \
+      if [ -z \"$TARGET_BRANCH\" ]; then echo 'Error: Could not determine target branch.'; return 1; fi; \
+      echo \"Checking out '$TARGET_BRANCH', pulling updates, and cleaning merged branches...\"; \
+      git checkout \"$TARGET_BRANCH\" && git up && git bclean \"$TARGET_BRANCH\"; \
+      }; f \"$@\""
+
   prune = fetch --prune
   # Clean up any remote tracking references that no longer exist on remote
   # https://git-scm.com/docs/git-fetch#git-fetch--p
