@@ -34,6 +34,7 @@
   a = add -v
   aa = add --all -v
   au = add --update -v
+  b = branch -a
   c = commit
   cm = commit -m
   ca = commit --amend
