@@ -26,6 +26,7 @@ apps=(
   ripgrep
   rsync
   supabase/tap/supabase
+  tmux
   typst
   uv
   zoxide

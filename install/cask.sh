@@ -3,6 +3,7 @@
 apps=(
   alacritty # can remove if ghostty works well
   bruno
+  claude
   cursor
   docker
   flux
@@ -15,6 +16,7 @@ apps=(
   msty
   notion
   obsidian
+  orion
   raycast
   spotify
   telegram
