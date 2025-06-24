@@ -34,19 +34,19 @@ return {
 
       -- set keybinds
       opts.desc = "Show LSP references"
-      keymap.set("n", "gr", "<cmd>Telescope lsp_references<CR>", opts) -- show definition, references
-
-      opts.desc = "Go to declaration"
-      keymap.set("n", "gD", vim.lsp.buf.declaration, opts) -- go to declaration
+      keymap.set("n", "gr", "<cmd>Telescope lsp_references<CR>", opts) -- show all places where symbol is used
 
       opts.desc = "Show LSP definitions"
-      keymap.set("n", "gd", "<cmd>Telescope lsp_definitions<CR>", opts) -- show lsp definitions
+      keymap.set("n", "gd", "<cmd>Telescope lsp_definitions<CR>", opts) -- show where symbol is defined
+
+      opts.desc = "Go to declaration"
+      keymap.set("n", "gD", vim.lsp.buf.declaration, opts) -- show where symbol is declared (without implementation)
 
       opts.desc = "Show LSP implementations"
-      keymap.set("n", "gI", "<cmd>Telescope lsp_implementations<CR>", opts) -- show lsp implementations
+      keymap.set("n", "gI", "<cmd>Telescope lsp_implementations<CR>", opts) -- show all implementations of interface/abstract class
 
       opts.desc = "Show LSP type definitions"
-      keymap.set("n", "gy", "<cmd>Telescope lsp_type_definitions<CR>", opts) -- show lsp type definitions
+      keymap.set("n", "gy", "<cmd>Telescope lsp_type_definitions<CR>", opts) -- show where type of symbol is defined
 
       opts.desc = "Show LSP Document Symbols"
       keymap.set("n", "<leader>fs", "<cmd>Telescope lsp_document_symbols<CR>", opts) -- show lsp document symbols
@@ -98,7 +98,7 @@ return {
       keymap.set("n", "<leader>cl", vim.diagnostic.setloclist, opts) -- show diagnostics for line
 
       opts.desc = "Show documentation"
-      keymap.set("n", "<leader>ck", function()
+      keymap.set("n", "K", function()
         if
           client.name == "taplo"
           and vim.fn.expand("%:t") == "Cargo.toml"
@@ -109,10 +109,10 @@ return {
         else
           vim.lsp.buf.hover()
         end
-      end, opts) -- show documentation for what is under cursor
+      end, opts) -- shows documentation for symbol under the cursor
 
       opts.desc = "Show signature help"
-      keymap.set("n", "<leader>cs", vim.lsp.buf.signature_help, opts) -- show documentation for what is under cursor
+      keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, opts) -- shows function/method signature information while typing arguments
 
       if client.name == "ruff" then
         -- Disable hover in favor of Pyright
