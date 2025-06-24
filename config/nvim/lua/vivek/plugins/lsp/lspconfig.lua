@@ -140,6 +140,41 @@ return {
       on_attach = on_attach,
     }
 
+    vim.lsp.config["harper_ls"] = {
+      filetypes = { "markdown" },
+      capabilities = capabilities,
+      on_attach = on_attach,
+      settings = {
+        ["harper-ls"] = {
+          userDictPath = "",
+          fileDictPath = "",
+          linters = {
+            SpellCheck = true,
+            SpelledNumbers = false,
+            AnA = true,
+            SentenceCapitalization = true,
+            UnclosedQuotes = true,
+            WrongQuotes = false,
+            LongSentences = true,
+            RepeatedWords = true,
+            Spaces = true,
+            Matcher = true,
+            CorrectNumberSuffix = true,
+          },
+          codeActions = {
+            ForceStable = false,
+          },
+          markdown = {
+            IgnoreLinkTitle = false,
+          },
+          diagnosticSeverity = "hint",
+          isolateEnglish = false,
+          dialect = "British",
+          maxFileLength = 120000,
+        },
+      },
+    }
+
     -- configure lua server
     vim.lsp.config["lua_ls"] = {
       capabilities = capabilities,
