@@ -135,19 +135,19 @@ return {
     local capabilities = cmp_blink.get_lsp_capabilities()
 
     -- configure astro
-    lspconfig["astro"].setup({
+    vim.lsp.config["astro"] = {
       capabilities = capabilities,
       on_attach = on_attach,
-    })
+    }
 
-    -- configure lua server (with special settings)
-    lspconfig["lua_ls"].setup({
+    -- configure lua server
+    vim.lsp.config["lua_ls"] = {
       capabilities = capabilities,
       on_attach = on_attach,
-    })
+    }
 
     -- configure python server
-    lspconfig["pyright"].setup({
+    vim.lsp.config["pyright"] = {
       capabilities = capabilities,
       on_attach = on_attach,
       settings = {
@@ -162,12 +162,12 @@ return {
           },
         },
       },
-    })
+    }
 
-    lspconfig["ruff"].setup({
+    vim.lsp.config["ruff"] = {
       capabilities = capabilities,
       on_attach = on_attach,
-    })
+    }
 
     -- configure rust server
     vim.g.rustaceanvim = {
@@ -188,7 +188,7 @@ return {
     }
 
     -- configure svelte
-    lspconfig["svelte"].setup({
+    vim.lsp.config["svelte"] = {
       -- lazyvim has this, but is it needed?
       -- capabilities = {
       --   workspace = {
@@ -197,16 +197,16 @@ return {
       -- },
       capabilities = capabilities,
       on_attach = on_attach,
-    })
+    }
 
     -- configure taplo server
-    lspconfig["taplo"].setup({
+    vim.lsp.config["taplo"] = {
       capabilities = capabilities,
       on_attach = on_attach,
-    })
+    }
 
     -- configure typescript server
-    lspconfig["ts_ls"].setup({
+    vim.lsp.config["ts_ls"] = {
       capabilities = capabilities,
       on_attach = on_attach,
       settings = {
@@ -214,6 +214,6 @@ return {
           completeFunctionCalls = true,
         },
       },
-    })
+    }
   end,
 }
