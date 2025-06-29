@@ -15,28 +15,35 @@ return {
           lookahead = true,
 
           keymaps = {
-            -- You can use the capture groups defined in textobjects.scm
-            ["a="] = { query = "@assignment.outer", desc = "a assignment" },
+            -- Assignment
+            ["a="] = { query = "@assignment.outer", desc = "outer assignment" },
             ["i="] = { query = "@assignment.inner", desc = "inner assignment" },
 
-            ["a,"] = { query = "@parameter.outer", desc = "a parameter/field" },
-            ["i,"] = { query = "@parameter.inner", desc = "inner parameter/field" },
+            -- Parameters/Arguments
+            ["a,"] = { query = "@parameter.outer", desc = "outer parameter" },
+            ["i,"] = { query = "@parameter.inner", desc = "inner parameter" },
 
-            ["ai"] = { query = "@conditional.outer", desc = "a conditional" },
+            -- Conditionals
+            ["ai"] = { query = "@conditional.outer", desc = "outer conditional" },
             ["ii"] = { query = "@conditional.inner", desc = "inner conditional" },
 
-            ["al"] = { query = "@loop.outer", desc = "a loop" },
+            -- Loops
+            ["al"] = { query = "@loop.outer", desc = "outer loop" },
             ["il"] = { query = "@loop.inner", desc = "inner loop" },
 
-            ["ak"] = { query = "@block.outer", desc = "a block" },
+            -- Blocks
+            ["ak"] = { query = "@block.outer", desc = "outer block" },
             ["ik"] = { query = "@block.inner", desc = "inner block" },
 
-            ["af"] = { query = "@function.outer", desc = "a function" },
+            -- Functions
+            ["af"] = { query = "@function.outer", desc = "outer function" },
             ["if"] = { query = "@function.inner", desc = "inner function" },
 
-            ["ac"] = { query = "@class.outer", desc = "a class" },
+            -- Classes
+            ["ac"] = { query = "@class.outer", desc = "outer class" },
             ["ic"] = { query = "@class.inner", desc = "inner class" },
 
+            -- Numbers
             ["in"] = { query = "@number.inner", desc = "inner number" },
           },
           -- set selection mode for each query
