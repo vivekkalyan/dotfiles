@@ -11,6 +11,7 @@ return {
       local treesitter = require("nvim-treesitter.configs")
 
       -- configure treesitter
+      ---@diagnostic disable-next-line: missing-fields
       treesitter.setup({
         -- ensure these language parsers are installed
         ensure_installed = {
