@@ -98,6 +98,15 @@ return {
             ["[A"] = { query = "@parameter.inner", desc = "Previous argument end" },
           },
         },
+        lsp_interop = {
+          enable = true,
+          border = "none",
+          floating_preview_opts = {},
+          peek_definition_code = {
+            ["gp"] = "@function.outer",
+            ["gP"] = "@class.outer",
+          },
+        },
       },
     })
   end,
