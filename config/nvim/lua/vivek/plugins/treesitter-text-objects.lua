@@ -38,6 +38,8 @@ return {
             -- Functions
             ["af"] = { query = "@function.outer", desc = "outer function" },
             ["if"] = { query = "@function.inner", desc = "inner function" },
+            ["au"] = { query = "@call.outer", desc = "outer function call" },
+            ["iu"] = { query = "@call.inner", desc = "inner function call" },
 
             -- Classes
             ["ac"] = { query = "@class.outer", desc = "outer class" },
