@@ -6,8 +6,7 @@ return {
   },
   config = function()
     -- If treesitter is already loaded, we need to run config again for textobjects
-    local Config = require("lazy.core.config")
-    if Config.plugins["nvim-treesitter"] and Config.plugins["nvim-treesitter"]._.loaded then
+    if require("vivek.util").is_loaded("nvim-treesitter") then
       ---@diagnostic disable-next-line: missing-fields
       require("nvim-treesitter.configs").setup({
         textobjects = {
