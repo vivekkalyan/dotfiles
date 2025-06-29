@@ -43,7 +43,7 @@ return {
     },
 
     sources = {
-      default = { "lazydev", "lsp", "path", "snippets", "buffer" },
+      default = { "lazydev", "ecolog", "lsp", "path", "snippets", "buffer" },
       providers = {
         lazydev = {
           name = "LazyDev",
@@ -51,6 +51,7 @@ return {
           -- make lazydev completions top priority (see `:h blink.cmp`)
           score_offset = 100,
         },
+        ecolog = { name = "ecolog", module = "ecolog.integrations.cmp.blink_cmp" },
       },
     },
 
