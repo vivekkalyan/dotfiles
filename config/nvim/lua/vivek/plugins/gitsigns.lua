@@ -117,7 +117,7 @@ return {
         end, { desc = "Blame Line" })
 
         -- Text object
-        map({ "o", "x" }, "ig", ":<C-U>Gitsigns select_hunk<CR>")
+        map({ "o", "x" }, "ig", ":<C-U>Gitsigns select_hunk<CR>", { desc = "git hunk" })
       end,
     })
   end,
