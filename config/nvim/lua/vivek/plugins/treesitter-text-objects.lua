@@ -20,7 +20,8 @@ return {
             keymaps = {
               -- Assignment
               ["a="] = { query = "@assignment.outer", desc = "outer assignment" },
-              ["i="] = { query = "@assignment.inner", desc = "inner assignment" },
+              ["i=h"] = { query = "@assignment.lhs", desc = "lhs assignment" },
+              ["i=l"] = { query = "@assignment.rhs", desc = "lhs assignment" },
 
               -- Parameters/Arguments
               ["a,"] = { query = "@parameter.outer", desc = "outer parameter" },
