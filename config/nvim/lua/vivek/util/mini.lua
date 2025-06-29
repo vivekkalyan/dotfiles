@@ -22,27 +22,34 @@ end
 function M.ai_whichkey(opts)
   local objects = {
     { " ", desc = "whitespace" },
-    { '"', desc = '" string' },
-    { "'", desc = "' string" },
-    { "(", desc = "() block" },
-    { ")", desc = "() block with ws" },
-    { "<", desc = "<> block" },
-    { ">", desc = "<> block with ws" },
+    { '"', desc = 'string "' },
+    { "'", desc = "string '" },
+    { "(", desc = "parentheses" },
+    { ")", desc = "parentheses (whitespace)" },
+    { "<", desc = "angle brackets" },
+    { ">", desc = "angle brackets (whitespace)" },
     { "?", desc = "user prompt" },
-    { "U", desc = "use/call without dot" },
-    { "[", desc = "[] block" },
-    { "]", desc = "[] block with ws" },
+    { "[", desc = "square brackets" },
+    { "]", desc = "square brackets (whitespace)" },
     { "_", desc = "underscore" },
-    { "`", desc = "` string" },
+    { "`", desc = "string `" },
     { "a", desc = "argument" },
-    { "b", desc = ")]} block" },
-    { "e", desc = "CamelCase / snake_case" },
-    { "g", desc = "entire file" },
-    { "q", desc = "quote `\"'" },
+    { "b", desc = "brackets )]} " },
+    { "q", desc = "quotes `'\"" },
+    { "{", desc = "curly braces" },
+    { "}", desc = "curly braces (whitespace)" },
+  }
+
+  -- Objects that don't show inner/outer in description
+  local same_desc_objects = {
+    { "e", desc = "word part" },
     { "t", desc = "tag" },
-    { "U", desc = "function use without ." },
-    { "{", desc = "{} block" },
-    { "}", desc = "{} with ws" },
+    { "U", desc = "function call (without .)" },
+  }
+
+  -- Objects only for around (not inside)
+  local around_only_objects = {
+    { "g", desc = "entire buffer" },
   }
 
   ---@type wk.Spec[]
@@ -52,21 +59,44 @@ function M.ai_whichkey(opts)
     around = "a",
     inside = "i",
   }, opts.mappings or {})
+  -- Remove goto mappings as they're not needed for text objects
   mappings.goto_left = nil
   mappings.goto_right = nil
-
+  -- Build the which-key specs
   for name, prefix in pairs(mappings) do
-    name = name:gsub("^around_", ""):gsub("^inside_", "")
-    ret[#ret + 1] = { prefix, group = name }
+    local type_name = name:gsub("^around_", ""):gsub("^inside_", "")
+    local is_inside = prefix:sub(1, 1) == "i"
+    local prefix_type = is_inside and "inner" or "outer"
+
+    -- Add group for the prefix
+    ret[#ret + 1] = { prefix, group = type_name }
+
+    -- Add standard objects with inner/outer prefix
     for _, obj in ipairs(objects) do
-      local desc = obj.desc
-      if prefix:sub(1, 1) == "i" then
-        desc = desc:gsub(" with ws", "")
+      ret[#ret + 1] = {
+        prefix .. obj[1],
+        desc = prefix_type .. " " .. obj.desc,
+      }
+    end
+
+    -- Add objects with same description for both
+    for _, obj in ipairs(same_desc_objects) do
+      ret[#ret + 1] = {
+        prefix .. obj[1],
+        desc = obj.desc,
+      }
+    end
+
+    -- Add around-only objects (skip for inside)
+    if not is_inside then
+      for _, obj in ipairs(around_only_objects) do
+        ret[#ret + 1] = {
+          prefix .. obj[1],
+          desc = obj.desc,
+        }
       end
-      ret[#ret + 1] = { prefix .. obj[1], desc = obj.desc }
     end
   end
   require("which-key").add(ret, { notify = false })
 end
-
 return M

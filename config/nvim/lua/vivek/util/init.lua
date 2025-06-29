@@ -24,4 +24,6 @@ function M.on_load(name, fn)
   end
 end
 
+M.mini = require("vivek.util.mini")
+
 return M
