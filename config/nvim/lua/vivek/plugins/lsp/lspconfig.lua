@@ -141,7 +141,7 @@ return {
     }
 
     vim.lsp.config["harper_ls"] = {
-      filetypes = { "markdown" },
+      filetypes = { "markdown", "typst" },
       capabilities = capabilities,
       on_attach = on_attach,
       settings = {
