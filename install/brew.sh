@@ -19,6 +19,7 @@ apps=(
   fzf
   git
   hledger
+  imagemagick
   make
   mise
   neovim

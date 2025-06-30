@@ -8,6 +8,7 @@ return {
         easing = "linear",
       },
     },
+    image = { enabled = true },
     notifier = { enabled = true },
     scroll = {
       animate = {
