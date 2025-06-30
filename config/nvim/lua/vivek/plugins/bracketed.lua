@@ -1,5 +1,6 @@
 return {
   "echasnovski/mini.bracketed",
+  event = "VeryLazy",
   version = false,
   opts = {
     -- First-level elements are tables describing behavior of a target:
