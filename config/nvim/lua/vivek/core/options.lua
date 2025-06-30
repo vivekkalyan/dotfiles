@@ -7,6 +7,9 @@ local options = {
   laststatus = 2, -- always show status bar
   clipboard = "unnamed", -- use system clipboard
   virtualedit = "block", -- enable block visual selection to not be limited to eol
+  confirm = true, -- ask to save changes before exiting modified buffer
+  wildmode = "longest:full,full", -- better completion
+  mouse = "a", -- mouse support
 
   -- Formatting
   tabstop = 2, -- nunber of visual spaces per tab
@@ -37,6 +40,7 @@ local options = {
   showmatch = true, -- highlight matching [{()}]
   termguicolors = true, -- enable 24-bit colors
   list = true, -- show whitespace
+  conceallevel = 2, -- hide markup characters
   listchars = "tab:▷┅,trail:•", -- WHITE RIGHT-POINTING TRIANGLE (U+25B7, UTF-8: E2 96 B7)
   -- BOX DRAWINGS HEAVY TRIPLE DASH HORIZONTAL (U+2505, UTF-8: E2 94 85)
   -- BULLET (U+2022, UTF-8: E2 80 A2)
@@ -53,6 +57,7 @@ local options = {
   smartcase = true, -- ... unless we type a capital
   incsearch = true, -- Incremental searching
   hlsearch = true, -- Highlight matches when searching
+  inccommand = "split", -- show live preview of substitutions
 
   backup = false, -- creates a backup file
   completeopt = { "menuone", "noselect" }, -- mostly just for cmp
@@ -60,6 +65,7 @@ local options = {
   timeout = true, -- enable timeout for waiting for a mapped sequence to complete
   timeoutlen = 1000, -- time to wait for a mapped sequence to complete
   undofile = true, -- enable persistent undo
+  undolevels = 10000, -- increase default undo levels
   updatetime = 300, -- faster completion (4000ms default)
   writebackup = false, -- if a file is being edited by another program (or was written to file while editing with another program), it is not allowed to be edited
 

@@ -21,6 +21,7 @@ return {
         easing = "linear",
       },
     },
+    quickfile = { enabled = true },
     words = { enabled = true },
   },
 }
