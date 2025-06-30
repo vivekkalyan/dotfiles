@@ -12,6 +12,14 @@ return {
       mode = "",
       desc = "Code Format buffer",
     },
+    {
+      "<leader>cF",
+      function()
+        require("conform").format({ formatters = { "injected" }, timeout_ms = 3000 })
+      end,
+      mode = { "n", "v" },
+      desc = "Format Injected Langs",
+    },
   },
   -- Everything in opts will be passed to setup()
   opts = {
@@ -23,6 +31,9 @@ return {
       typescript = { "biome" },
       typescriptreact = { "biome" },
       rust = { "rustfmt" },
+    },
+    formatters = {
+      injected = { options = { ignore_errors = true } },
     },
     -- only format changed lines on save
     format_on_save = function(bufnr)
