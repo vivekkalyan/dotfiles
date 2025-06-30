@@ -33,6 +33,9 @@ return {
         },
         integrations = {
           blink_cmp = true,
+          neogit = true,
+          nvim_surround = true,
+          which_key = true,
         },
       })
       -- load colorscheme
