@@ -78,7 +78,7 @@ return {
       local cwd = vim.fn.getcwd()
 
       -- Search patterns from your config
-      local patterns = { ".env", ".env.*", "*.env*", "**/.env" }
+      local patterns = { ".env", ".env.*", "*.env*", "*/.env", "*/*/.env" }
 
       for _, pattern in ipairs(patterns) do
         local files = vim.fn.glob(cwd .. "/" .. pattern, false, true)
@@ -155,7 +155,7 @@ return {
     -- true by default, enables built-in types (database_url, url, etc.)
     types = true,
     path = vim.fn.getcwd(), -- Path to search for .env files
-    env_file_patterns = { ".env", ".env.*", "*.env*", "**/.env" },
+    env_file_patterns = { ".env", ".env.*", "*.env*", "*/.env", "*/*/.env" },
     preferred_environment = "development", -- Optional: prioritize specific env files
     -- Controls how environment variables are extracted from code and how cmp works
     provider_patterns = true, -- true by default, when false will not check provider patterns
