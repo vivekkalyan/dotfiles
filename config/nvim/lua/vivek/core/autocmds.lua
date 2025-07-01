@@ -34,20 +34,20 @@ vim.api.nvim_create_autocmd("BufReadPost", {
   end,
 })
 
--- wrap and check for spell in text filetypes
+-- wrap and check for spell in writing filetypes
 vim.api.nvim_create_autocmd("FileType", {
   group = vim.api.nvim_create_augroup("wrap_spell", { clear = true }),
-  pattern = { "gitcommit", "markdown" },
+  pattern = { "gitcommit", "markdown", "text", "typst" },
   callback = function()
     vim.opt_local.wrap = true
     vim.opt_local.spell = true
   end,
 })
 
--- create keymap to spell correct in markdown filetypes
+-- create keymap to spell correct in writing filetypes
 vim.api.nvim_create_autocmd("FileType", {
   group = vim.api.nvim_create_augroup("spell_correct", { clear = true }),
-  pattern = { "gitcommit", "markdown" },
+  pattern = { "gitcommit", "markdown", "text", "typst" },
   callback = function(event)
     vim.keymap.set("i", "z=", "<C-g>u<Esc>[S1z=`]a<C-g>u", { buffer = event.buf })
   end,
