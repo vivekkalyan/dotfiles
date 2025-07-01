@@ -33,8 +33,16 @@ return {
         },
         integrations = {
           blink_cmp = true,
+          dashboard = true,
+          gitsigns = true,
+          mason = true,
+          mini = true,
           neogit = true,
+          neotest = true,
           nvim_surround = true,
+          snacks = true,
+          telescope = true,
+          treesitter = true,
           which_key = true,
         },
       })
