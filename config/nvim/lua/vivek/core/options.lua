@@ -28,7 +28,9 @@ local options = {
 
   -- Folding
   foldlevelstart = 99, -- dont fold by default
-  foldmethod = "indent", -- fold based on indent level
+  foldmethod = "expr", -- fold using treesitter
+  foldexpr = "v:lua.require'vivek.util.fold'.foldexpr()", -- fold using treesitter
+  foldtext = "",
 
   -- UI Config
   relativenumber = true, -- set relative numbered lines
@@ -50,7 +52,14 @@ local options = {
   splitright = true, -- open vertical split to the right of current window
   switchbuf = "usetab", -- try to reuse windows/tabs when switching buffers
   hidden = true, -- allow switching modified buffers
-  fillchars = "vert:┃,fold: ", -- solid line to seperate windows, space for folding
+  fillchars = {
+    foldopen = "",
+    foldclose = "",
+    fold = " ",
+    foldsep = " ",
+    diff = "╱",
+    vert = "┃",
+  },
 
   -- Search
   ignorecase = true, -- Ignore case when typing
