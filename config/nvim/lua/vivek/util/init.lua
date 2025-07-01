@@ -44,6 +44,4 @@ function M.opts(name)
   return Plugin.values(plugin, "opts", false)
 end
 
-M.mini = require("vivek.util.mini")
-
 return M
