@@ -40,6 +40,10 @@ keymap("i", ",", ",<c-g>u")
 keymap("i", ".", ".<c-g>u")
 keymap("i", ";", ";<c-g>u")
 
+-- Comment below/above
+keymap("n", "gco", "o<esc>Vcx<esc><cmd>normal gcc<cr>fxa<bs>", { desc = "Add Comment Below" })
+keymap("n", "gcO", "O<esc>Vcx<esc><cmd>normal gcc<cr>fxa<bs>", { desc = "Add Comment Above" })
+
 -- Save file
 keymap("n", "<leader>w", "<cmd>w<cr><esc>", { silent = true, desc = "Write File" })
 -- disable <leader>w in insert mode because that clashes with typing ' w'
