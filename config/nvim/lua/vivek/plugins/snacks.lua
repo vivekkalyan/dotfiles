@@ -34,7 +34,27 @@ return {
       },
       refresh = 50, -- refresh at most every 50ms
     },
+    toggle = { enabled = true },
     quickfile = { enabled = true },
     words = { enabled = true },
   },
+  config = function(_, opts)
+    require("snacks").setup(opts)
+    Snacks.toggle.animate():map("<leader>ua")
+    Snacks.toggle.treesitter({ name = " Treesitter Highlighting" }):map("<leader>tt")
+    Snacks.toggle.diagnostics({ name = " Diagnostics" }):map("<leader>ud")
+    Snacks.toggle.line_number():map("<leader>ul")
+    Snacks.toggle.option("spell", { name = "󰓆 Spell Checking" }):map("<leader>us")
+    Snacks.toggle.option("wrap", { name = "󰖶 Wrap Long Lines" }):map("<leader>uw")
+    Snacks.toggle
+      .option(
+        "conceallevel",
+        { off = 0, on = vim.o.conceallevel > 0 and vim.o.conceallevel or 2, name = "Conceal Level" }
+      )
+      :map("<leader>uc")
+    Snacks.toggle
+      .option("background", { off = "light", on = "dark", name = "Dark Background" })
+      :map("<leader>ub")
+    Snacks.toggle.zoom():map("<leader>uz")
+  end,
 }
