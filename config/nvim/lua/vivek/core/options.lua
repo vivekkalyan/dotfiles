@@ -98,6 +98,8 @@ vim.diagnostic.config({
   },
 })
 
+vim.opt.statuscolumn = [[%!v:lua.require'snacks.statuscolumn'.get()]]
+
 -- statusline
 vim.cmd([[set statusline=[%n]\ %<%f\ %m%r%#StatusLineNC#%=%-14.(%*%l,%c%V%)]]) -- set status line
 vim.cmd([[set nrformats+=bin]]) -- allow C-A, C-X for binary
