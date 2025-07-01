@@ -35,6 +35,11 @@ keymap("v", "Q", ":norm @q<CR>", { silent = false })
 -- Clear search with <esc>
 keymap("n", "<esc>", "<cmd>noh<cr><esc>", { silent = true })
 
+-- Add undo break-points
+keymap("i", ",", ",<c-g>u")
+keymap("i", ".", ".<c-g>u")
+keymap("i", ";", ";<c-g>u")
+
 -- Save file
 keymap("n", "<leader>w", "<cmd>w<cr><esc>", { silent = true, desc = "Write File" })
 -- disable <leader>w in insert mode because that clashes with typing ' w'
