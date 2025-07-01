@@ -38,7 +38,7 @@ return {
     -- only format changed lines on save
     format_on_save = function(bufnr)
       -- Disable with a global or buffer-local variable
-      if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
+      if vim.g.autoformat == false or vim.b[bufnr].autoformat == false then
         return
       end
       local ignore_filetypes = { "lua" }

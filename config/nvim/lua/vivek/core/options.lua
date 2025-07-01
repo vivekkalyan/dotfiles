@@ -126,3 +126,6 @@ vim.g.floating_window_border_dark = {
   { "╰", "FloatBorderDark" },
   { "│", "FloatBorderDark" },
 }
+
+-- auto format option for format plugin
+vim.g.autoformat = true

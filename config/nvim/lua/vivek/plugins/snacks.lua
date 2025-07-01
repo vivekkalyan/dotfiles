@@ -40,6 +40,11 @@ return {
   },
   config = function(_, opts)
     require("snacks").setup(opts)
+
+    local format = require("vivek.util.format")
+    format.snacks_toggle():map("<leader>uf")
+    format.snacks_toggle(true):map("<leader>uF")
+
     Snacks.toggle.animate():map("<leader>ua")
     Snacks.toggle.treesitter({ name = " Treesitter Highlighting" }):map("<leader>tt")
     Snacks.toggle.diagnostics({ name = " Diagnostics" }):map("<leader>ud")
