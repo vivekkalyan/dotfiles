@@ -41,6 +41,53 @@ return {
     local keymap = vim.keymap -- for conciseness
     local opts = { noremap = true, silent = true }
 
+    vim.diagnostic.config({
+      underline = true,
+      update_in_insert = false,
+      virtual_text = {
+        spacing = 2,
+        source = "if_many",
+        -- prefix = "●",
+        prefix = function(diagnostic)
+          local icons = require("vivek.core.init").icons.diagnostics
+          for d, icon in pairs(icons) do
+            if diagnostic.severity == vim.diagnostic.severity[d:upper()] then
+              return icon
+            end
+          end
+        end,
+      },
+      severity_sort = true,
+      signs = {
+        text = {
+          [vim.diagnostic.severity.ERROR] = require("vivek.core.init").icons.diagnostics.Error,
+          [vim.diagnostic.severity.WARN] = require("vivek.core.init").icons.diagnostics.Warn,
+          [vim.diagnostic.severity.HINT] = require("vivek.core.init").icons.diagnostics.Hint,
+          [vim.diagnostic.severity.INFO] = require("vivek.core.init").icons.diagnostics.Info,
+        },
+      },
+      float = {
+        focusable = true,
+        style = "minimal",
+        border = "rounded",
+        source = "if_many",
+        header = "",
+        prefix = "",
+        severity_sort = true,
+        -- Show severity icons in the floating window
+        format = function(diagnostic)
+          local icons = {
+            [vim.diagnostic.severity.ERROR] = require("vivek.core.init").icons.diagnostics.Error,
+            [vim.diagnostic.severity.WARN] = require("vivek.core.init").icons.diagnostics.Warn,
+            [vim.diagnostic.severity.HINT] = require("vivek.core.init").icons.diagnostics.Hint,
+            [vim.diagnostic.severity.INFO] = require("vivek.core.init").icons.diagnostics.Info,
+          }
+          local icon = icons[diagnostic.severity] or ""
+          return string.format("%s %s", icon, diagnostic.message)
+        end,
+      },
+    })
+
     local on_attach = function(client, bufnr)
       opts.buffer = bufnr
 
