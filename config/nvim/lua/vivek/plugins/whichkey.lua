@@ -8,9 +8,18 @@ return {
   config = function()
     local whichkey = require("which-key")
     whichkey.add({
+      { "<leader>c", group = "code" },
+      { "<leader>d", group = "debug" },
+      { "<leader>e", group = "env" },
       { "<leader>f", group = "find" },
       { "<leader>g", group = "git" },
       { "<leader>t", group = "test" },
+      { "<leader>u", group = "toggle" },
+      { "<leader>q", group = "quit/buffer" },
+      { "[", group = "prev" },
+      { "]", group = "next" },
+      { "g", group = "goto" },
+      { "z", group = "fold" },
     })
   end,
 }
