@@ -61,5 +61,8 @@ return {
       .option("background", { off = "light", on = "dark", name = "Dark Background" })
       :map("<leader>ub")
     Snacks.toggle.zoom():map("<leader>uz")
+    if vim.lsp.inlay_hint then
+      Snacks.toggle.inlay_hints():map("<leader>uh")
+    end
   end,
 }
