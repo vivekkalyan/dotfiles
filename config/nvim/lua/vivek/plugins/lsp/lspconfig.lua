@@ -96,6 +96,18 @@ return {
         vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
       end
 
+      -- Enable code lens if the server supports it
+      if client.supports_method("textDocument/codeLens") then
+        vim.lsp.codelens.refresh()
+        vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "InsertLeave" }, {
+          buffer = bufnr,
+          callback = function()
+            vim.lsp.codelens.refresh({ bufnr = bufnr })
+          end,
+        })
+        vim.lsp.codelens.refresh({ bufnr = bufnr })
+      end
+
       -- set keybinds
       opts.desc = "Show LSP references"
       keymap.set("n", "gr", "<cmd>Telescope lsp_references<CR>", opts) -- show all places where symbol is used
@@ -126,6 +138,14 @@ return {
           vim.lsp.buf.code_action()
         end
       end, opts) -- see available code actions, in visual mode will apply to selection
+
+      opts.desc = "Run CodeLens"
+      keymap.set("n", "<leader>cl", vim.lsp.codelens.run, opts)
+
+      opts.desc = "Refresh CodeLens"
+      keymap.set("n", "<leader>cL", function()
+        vim.lsp.codelens.refresh({ bufnr = bufnr })
+      end, opts)
 
       opts.desc = "Organise imports"
       keymap.set("n", "<leader>co", function()
@@ -159,7 +179,7 @@ return {
       -- end, opts) -- jump to next diagnostic in buffer
 
       opts.desc = "Set diagnostics to location list"
-      keymap.set("n", "<leader>cl", vim.diagnostic.setloclist, opts) -- show diagnostics for line
+      keymap.set("n", "<leader>cd", vim.diagnostic.setloclist, opts) -- show diagnostics for line
 
       opts.desc = "Show documentation"
       keymap.set("n", "K", function()
@@ -280,6 +300,15 @@ return {
             },
             -- add clippy to diagnostics
             checkOnSave = true,
+            lens = {
+              enable = true,
+              run = {
+                enable = true,
+              },
+              debug = {
+                enable = true,
+              },
+            },
             inlayHints = {
               bindingModeHints = {
                 enable = false,
