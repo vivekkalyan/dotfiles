@@ -91,6 +91,11 @@ return {
     local on_attach = function(client, bufnr)
       opts.buffer = bufnr
 
+      -- Enable inlay hints if the server supports it
+      if client.supports_method("textDocument/inlayHint") then
+        vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+      end
+
       -- set keybinds
       opts.desc = "Show LSP references"
       keymap.set("n", "gr", "<cmd>Telescope lsp_references<CR>", opts) -- show all places where symbol is used
@@ -227,6 +232,15 @@ return {
     vim.lsp.config["lua_ls"] = {
       capabilities = capabilities,
       on_attach = on_attach,
+      settings = {
+        Lua = {
+          hint = {
+            enable = true,
+            arrayIndex = "Disable",
+            semicolon = "All",
+          },
+        },
+      },
     }
 
     -- configure python server
@@ -266,6 +280,38 @@ return {
             },
             -- add clippy to diagnostics
             checkOnSave = true,
+            inlayHints = {
+              bindingModeHints = {
+                enable = false,
+              },
+              chainingHints = {
+                enable = true,
+              },
+              closingBraceHints = {
+                enable = true,
+                minLines = 25,
+              },
+              closureReturnTypeHints = {
+                enable = "never",
+              },
+              lifetimeElisionHints = {
+                enable = "never",
+                useParameterNames = false,
+              },
+              maxLength = 25,
+              parameterHints = {
+                enable = true,
+              },
+              reborrowHints = {
+                enable = "never",
+              },
+              renderColons = true,
+              typeHints = {
+                enable = true,
+                hideClosureInitialization = false,
+                hideNamedConstructor = false,
+              },
+            },
           },
         },
       },
@@ -281,6 +327,35 @@ return {
       -- },
       capabilities = capabilities,
       on_attach = on_attach,
+      settings = {
+        svelte = {
+          enable_ts_plugin = true,
+        },
+        typescript = {
+          inlayHints = {
+            parameterNames = {
+              enabled = "all",
+              suppressWhenArgumentMatchesName = true,
+            },
+            parameterTypes = {
+              enabled = true,
+            },
+            variableTypes = {
+              enabled = true,
+              suppressWhenTypeMatchesName = true,
+            },
+            propertyDeclarationTypes = {
+              enabled = true,
+            },
+            functionLikeReturnTypes = {
+              enabled = true,
+            },
+            enumMemberValues = {
+              enabled = true,
+            },
+          },
+        },
+      },
     }
 
     -- configure taplo server
@@ -296,6 +371,30 @@ return {
       settings = {
         completions = {
           completeFunctionCalls = true,
+        },
+        typescript = {
+          inlayHints = {
+            includeInlayParameterNameHints = "all",
+            includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+            includeInlayFunctionParameterTypeHints = true,
+            includeInlayVariableTypeHints = true,
+            includeInlayVariableTypeHintsWhenTypeMatchesName = false,
+            includeInlayPropertyDeclarationTypeHints = true,
+            includeInlayFunctionLikeReturnTypeHints = true,
+            includeInlayEnumMemberValueHints = true,
+          },
+        },
+        javascript = {
+          inlayHints = {
+            includeInlayParameterNameHints = "all",
+            includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+            includeInlayFunctionParameterTypeHints = true,
+            includeInlayVariableTypeHints = true,
+            includeInlayVariableTypeHintsWhenTypeMatchesName = false,
+            includeInlayPropertyDeclarationTypeHints = true,
+            includeInlayFunctionLikeReturnTypeHints = true,
+            includeInlayEnumMemberValueHints = true,
+          },
         },
       },
     }
