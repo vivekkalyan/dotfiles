@@ -205,7 +205,12 @@ return {
     end
 
     -- used to enable autocompletion (assign to every lsp server config)
-    local capabilities = cmp_blink.get_lsp_capabilities()
+    local capabilities = vim.tbl_deep_extend("force", {}, cmp_blink.get_lsp_capabilities(), {
+      general = {
+        -- positionEncodings = { "utf-8", "utf-16", "utf-32" } <-- this is the default
+        positionEncodings = { "utf-16" }, -- force all clients to use UTF-16
+      },
+    })
 
     -- configure astro
     vim.lsp.config["astro"] = {
