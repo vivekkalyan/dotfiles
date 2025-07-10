@@ -46,7 +46,7 @@ return {
     format.snacks_toggle(true):map("<leader>uF")
 
     Snacks.toggle.animate():map("<leader>ua")
-    Snacks.toggle.treesitter({ name = " Treesitter Highlighting" }):map("<leader>tt")
+    Snacks.toggle.treesitter({ name = " Treesitter Highlighting" }):map("<leader>ut")
     Snacks.toggle.diagnostics({ name = " Diagnostics" }):map("<leader>ud")
     Snacks.toggle.line_number():map("<leader>ul")
     Snacks.toggle.option("spell", { name = "󰓆 Spell Checking" }):map("<leader>us")
