@@ -1,0 +1,75 @@
+#!/bin/sh
+
+# This script renames a given file to its creation (birth) Unix timestamp,
+# reusing the original file's extension.
+
+# --- Usage and Error Handling ---
+
+# Check if a filename argument is provided
+if [ -z "$1" ]; then
+    echo "Usage: $0 <original_filename>"
+    echo "Example: $0 my_document.txt"
+    exit 1
+fi
+
+# Store the original filename from the first argument
+ORIGINAL_FILE="$1"
+
+# Check if the original file exists
+if [ ! -f "$ORIGINAL_FILE" ]; then
+    echo "Error: File '$ORIGINAL_FILE' not found."
+    exit 1
+fi
+
+# --- Retrieve Creation Timestamp ---
+
+# Get the birth time (creation time) in Unix timestamp format.
+# %W is the format specifier for birth time in seconds since Epoch.
+# This relies on your filesystem (e.g., ext4, XFS, Btrfs) supporting 'crtime' or 'btime'
+# and your 'stat' utility being recent enough (GNU coreutils 8.31+).
+CREATION_TIMESTAMP=$(stat --format=%W "$ORIGINAL_FILE" 2>/dev/null)
+
+# Check if the timestamp was successfully retrieved.
+# A timestamp of 0 or an empty string usually indicates that the creation time
+# is not available on the current filesystem or for this specific file.
+if [ -z "$CREATION_TIMESTAMP" ] || [ "$CREATION_TIMESTAMP" -eq 0 ]; then
+    echo "Error: Could not retrieve creation time (birth time) for '$ORIGINAL_FILE'."
+    echo "This might be due to your filesystem not supporting 'crtime'/'btime' (e.g., older filesystems),"
+    echo "or the 'stat' command not being able to access it."
+    echo "Please ensure your filesystem (like ext4, XFS) and 'stat' version are up-to-date."
+    exit 1
+fi
+
+# --- Construct New Filename ---
+
+# Extract the original file's extension
+# This handles cases with no extension or multiple dots in the filename
+EXTENSION="${ORIGINAL_FILE##*.}"
+# If the original file had no dot or the dot was at the beginning (e.g., ".bashrc"),
+# then EXTENSION will be the full filename or empty.
+# We only want it if it's a true extension (i.e., not the same as the full filename itself)
+if [[ "$EXTENSION" == "$ORIGINAL_FILE" ]] || [[ -z "$EXTENSION" ]]; then
+    EXTENSION="" # No valid extension found
+else
+    EXTENSION=".${EXTENSION}" # Prepend dot for the new filename
+fi
+
+# Define the new filename using the timestamp and the extracted extension
+NEW_FILENAME="${CREATION_TIMESTAMP}${EXTENSION}"
+
+# --- Rename the File ---
+
+echo "Attempting to rename '$ORIGINAL_FILE' to '$NEW_FILENAME'..."
+
+# Perform the rename operation
+mv "$ORIGINAL_FILE" "$NEW_FILENAME"
+
+# Check the exit status of the 'mv' command
+if [ $? -eq 0 ]; then
+    echo "Success: '$ORIGINAL_FILE' has been renamed to '$NEW_FILENAME'."
+else
+    echo "Error: Failed to rename '$ORIGINAL_FILE' to '$NEW_FILENAME'."
+    echo "Possible reasons: insufficient permissions, target file already exists, or other system errors."
+    exit 1
+fi
+
