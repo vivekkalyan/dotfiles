@@ -12,10 +12,24 @@
     configuration = { pkgs, ... }: {
       # List packages installed in system profile. To search by name, run:
       # $ nix-env -qaP | grep wget
-      environment.systemPackages =
-        [ pkgs.vim
-        ];
-
+      environment.systemPackages = with pkgs; [
+        curl
+        eza
+        fd
+        fzf
+        git
+        hledger
+        gnumake
+        mise
+        neovim
+        pre-commit
+        ripgrep
+        rsync
+        tmux
+        typst
+        uv
+        zoxide
+      ];
       # Necessary for using flakes on this system.
       nix.settings.experimental-features = "nix-command flakes";
 
