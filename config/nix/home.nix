@@ -44,6 +44,17 @@
     #   org.gradle.console=verbose
     #   org.gradle.daemon.idletimeout=3600000
     # '';
+    ".config/git/config".source = ../git/config;
+    ".config/git/config-os" = {
+      text = ''
+        [core]
+          # It gets the path to the git package and builds the full script path.
+          pager = ${pkgs.git}/share/git/contrib/diff-highlight/diff-highlight | less --tabs=4 -RFX
+
+        [interactive]
+          diffFilter = ${pkgs.git}/share/git/contrib/diff-highlight/diff-highlight
+      '';
+    };
   };
 
   # Home Manager can also manage your environment variables through
