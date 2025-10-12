@@ -111,6 +111,7 @@ in
     host = "0.0.0.0"; # Makes it accessible on your network
     openFirewall = true; # Auto-opens the port
     package = pkgs.unstable.immich;
+    mediaLocation = "/srv/photos";
   };
 
   # Open ports in the firewall.
