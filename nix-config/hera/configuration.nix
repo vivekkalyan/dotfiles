@@ -20,6 +20,14 @@ in
     };
   };
 
+  fileSystems."/srv" = {
+    device = "/dev/disk/by-label/media";
+    fsType = "ext4";
+    options = [ "noatime" ];  # use weekly fstrim instead of mount-time discard
+  };
+
+  services.fstrim.enable = true;  # weekly TRIM for SSDs
+
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
