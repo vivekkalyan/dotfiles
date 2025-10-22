@@ -112,6 +112,9 @@ in
     openFirewall = true; # Auto-opens the port
     package = pkgs.unstable.immich;
     mediaLocation = "/srv/photos";
+    machine-learning.environment = {
+      HF_XET_CACHE = "/var/cache/immich/huggingface-xet";
+    };
   };
 
   # Open ports in the firewall.
