@@ -2,6 +2,7 @@ return {
   "folke/snacks.nvim",
   opts = {
     bigfile = { enabled = true },
+    gitbrowse = { enabled = true },
     indent = {
       animate = {
         duration = { step = 15, total = 150 },
@@ -44,6 +45,22 @@ return {
     local format = require("vivek.util.format")
     format.snacks_toggle():map("<leader>uf")
     format.snacks_toggle(true):map("<leader>uF")
+
+    -- Gitbrowse
+    vim.keymap.set({ "n", "v" }, "<leader>gy", function()
+      local Snacks = require("snacks")
+      Snacks.gitbrowse({
+        what = "permalink",
+        open = function(url)
+          vim.fn.setreg("+", url)
+          vim.notify("Copied GitHub URL: " .. url, vim.log.levels.INFO)
+        end,
+      })
+    end, { desc = "Copy GitHub permalink to clipboard" })
+
+    vim.keymap.set("n", "<leader>go", function()
+      Snacks.gitbrowse.open()
+    end, { desc = "Open in GitHub" })
 
     Snacks.toggle.animate():map("<leader>ua")
     Snacks.toggle.treesitter({ name = " Treesitter Highlighting" }):map("<leader>ut")
