@@ -14,7 +14,7 @@ alias lsd='eza --color=auto --all --only-dirs --long --group --header --modified
 alias cp="cp -iv"
 alias mkdir="mkdir -pv"
 alias mv="mv -iv"
-alias rm="rm -Iv"
+alias rm="rm -I"
 alias rsync="rsync -avP"
 
 # Navigation up directories
