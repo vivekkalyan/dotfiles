@@ -11,6 +11,7 @@ return {
     },
     image = { enabled = true },
     notifier = { enabled = true },
+    rename = { enabled = true },
     scroll = {
       animate = {
         duration = { step = 15, total = 150 },

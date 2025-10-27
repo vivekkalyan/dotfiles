@@ -158,6 +158,11 @@ return {
       opts.desc = "Smart code rename"
       keymap.set("n", "<leader>cr", vim.lsp.buf.rename, opts) -- smart rename
 
+      opts.desc = "Smart File Rename"
+      keymap.set("n", "<leader>cR", function()
+        Snacks.rename.rename_file()
+      end, opts) -- smart file rename
+
       opts.desc = "Show line diagnostics"
       vim.keymap.set("n", "<C-w>d", function()
         vim.diagnostic.open_float({ scope = "cursor" })
@@ -209,6 +214,12 @@ return {
       general = {
         -- positionEncodings = { "utf-8", "utf-16", "utf-32" } <-- this is the default
         positionEncodings = { "utf-16" }, -- force all clients to use UTF-16
+      },
+      workspace = {
+        fileOperations = {
+          didRename = true,
+          willRename = true,
+        },
       },
     })
 
