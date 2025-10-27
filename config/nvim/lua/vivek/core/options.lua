@@ -67,6 +67,8 @@ local options = {
   incsearch = true, -- Incremental searching
   hlsearch = true, -- Highlight matches when searching
   inccommand = "split", -- show live preview of substitutions
+  grepformat = "%f:%l:%c:%m", -- format for grep output from rg
+  grepprg = "rg --vimgrep", -- use rg for grep
 
   backup = false, -- creates a backup file
   completeopt = { "menuone", "noselect" }, -- mostly just for cmp
