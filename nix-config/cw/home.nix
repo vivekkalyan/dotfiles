@@ -8,7 +8,20 @@ in {
   home.stateVersion = "25.05";
 
   home.packages = with pkgs; [
-    git ripgrep fd jq tmux fzf bat eza keepassxc mise
+    curl
+    eza
+    fd
+    fzf
+    git
+    gnumake
+    jq
+    mise
+    neovim
+    ripgrep
+    tmux
+    typst
+    uv
+    zoxide
   ];
 
   # PATH: nix, personal bin, and mise shims
@@ -18,27 +31,34 @@ in {
     "${homeDir}/.local/share/mise/shims"
   ];
 
-  xdg.configFile."mise/config.toml" = {
-    source = oos "${homeDir}/personal/dotfiles/config/mise/config.toml";
+  xdg.configFile."mise" = {
+    source = oos "${homeDir}/personal/dotfiles/config/mise";
   };
   xdg.configFile."nvim" = {
     source = oos "${homeDir}/personal/dotfiles/config/nvim";
   };
-  xdg.configFile."tmux/tmux.conf" = {
-    source = oos "${homeDir}/personal/dotfiles/config/tmux/tmux.conf";
+  xdg.configFile."ghostty" = {
+    source = oos "${homeDir}/personal/dotfiles/config/ghostty";
+  };
+  xdg.configFile."karabiner" = {
+    source = oos "${homeDir}/personal/dotfiles/config/karabiner";
+  };
+  xdg.configFile."tmux" = {
+    source = oos "${homeDir}/personal/dotfiles/config/tmux";
   };
   xdg.configFile."git/config" = {
     source = oos "${homeDir}/personal/dotfiles/config/git/config";
   };
   xdg.configFile."git/config-os" = {
-    source = oos "${homeDir}/personal/dotfiles/config/git/config-darwin";
-  };
+      text = ''
+        [core]
+          # It gets the path to the git package and builds the full script path.
+          pager = ${pkgs.git}/share/git/contrib/diff-highlight/diff-highlight | less --tabs=4 -RFX
 
-  # Optional: enable HM's mise module if present
-  programs.mise.enable = true;
-
-  # Safe program enables; avoid zsh/tmux here while linking their dotfiles
-  programs.neovim.enable = true;
+        [interactive]
+          diffFilter = ${pkgs.git}/share/git/contrib/diff-highlight/diff-highlight
+      '';
+    };
 
   # Link .app bundles from nix profile into ~/Applications
   home.activation.linkNixApps = lib.hm.dag.entryAfter [ "writeBoundary" ] ''

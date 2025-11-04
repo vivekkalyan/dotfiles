@@ -35,6 +35,9 @@
           home-manager.useUserPackages = true;
           home-manager.users.vkalyan = import ./home.nix;
 
+          # disable nix
+          nix.enable = false;
+
           # Install macOS apps (e.g., Raycast) via Homebrew casks
           homebrew.enable = true;
           homebrew.onActivation = {
@@ -43,11 +46,20 @@
             cleanup = "zap";
           };
           homebrew.casks = [
+            "codex"
+	    "flux-app"
+	    "font-meslo-lg-nerd-font"
+            "ghostty"
+            "karabiner-elements"
+            "macwhisper"
+            "obsidian"
             "raycast"
+            "todoist-app"
+            "zen"
           ];
 
           # Dock size (pixels).
-          system.defaults.dock.tilesize = 24;
+          system.defaults.dock.tilesize = 16;
         }
       ];
     };
