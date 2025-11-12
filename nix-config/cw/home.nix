@@ -22,6 +22,10 @@ in {
     typst
     uv
     zoxide
+    # for skypilot[kubernetes]
+    kubectl
+    netcat-gnu
+    socat
   ];
 
   # PATH: nix, personal bin, and mise shims
