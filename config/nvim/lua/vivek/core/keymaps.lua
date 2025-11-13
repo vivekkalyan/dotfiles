@@ -83,6 +83,10 @@ keymap("v", ">", ">gv", { silent = true })
 keymap("c", "<C-a>", "<Home>", { silent = true })
 keymap("c", "<C-e>", "<End>", { silent = true })
 
+-- Terminal
+keymap("n", [[<C-\>]], ":terminal<CR>", { silent = true, desc = "Open Terminal" })
+keymap("t", [[<C-\>]], [[<C-\><C-n>]], { silent = true, desc = "Terminal → Normal" })
+
 -- window
 local status_ok, window = pcall(require, "vivek.window")
 if status_ok then
