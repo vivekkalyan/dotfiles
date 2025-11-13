@@ -50,6 +50,12 @@ in {
   xdg.configFile."tmux" = {
     source = oos "${homeDir}/personal/dotfiles/config/tmux";
   };
+  xdg.configFile."zsh" = {
+    source = oos "${homeDir}/personal/dotfiles/config/zsh";
+  };
+  home.file.".zshenv" = {
+    source = oos "${homeDir}/personal/dotfiles/config/zsh/zshenv";
+  };
   xdg.configFile."git/config" = {
     source = oos "${homeDir}/personal/dotfiles/config/git/config";
   };
