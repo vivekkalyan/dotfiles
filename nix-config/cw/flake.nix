@@ -46,11 +46,14 @@
             cleanup = "zap";
           };
           homebrew.casks = [
+            "claude-code"
             "codex"
-	    "flux-app"
-	    "font-meslo-lg-nerd-font"
+            "cursor"
+            "flux-app"
+            "font-meslo-lg-nerd-font"
             "ghostty"
             "karabiner-elements"
+            "keepassxc"
             "macwhisper"
             "obsidian"
             "raycast"
