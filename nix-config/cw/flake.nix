@@ -52,6 +52,7 @@
             "flux-app"
             "font-meslo-lg-nerd-font"
             "ghostty"
+            "inkscape"
             "karabiner-elements"
             "keepassxc"
             "macwhisper"
