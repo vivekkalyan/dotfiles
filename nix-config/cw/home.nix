@@ -15,6 +15,7 @@ in {
     git
     gnumake
     jq
+    llama-cpp
     mise
     neovim
     ripgrep

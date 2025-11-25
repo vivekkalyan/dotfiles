@@ -64,6 +64,21 @@
 
           # Dock size (pixels).
           system.defaults.dock.tilesize = 16;
+
+          # llama-server for local LLM inference (used by llama.vim)
+          launchd.user.agents.llama-server = {
+            serviceConfig = {
+              Label = "com.llama.server";
+              ProgramArguments = [
+                "${pkgs.llama-cpp}/bin/llama-server"
+                "--fim-qwen-7b-default"
+              ];
+              RunAtLoad = true;
+              KeepAlive = true;
+              StandardOutPath = "/tmp/llama-server.log";
+              StandardErrorPath = "/tmp/llama-server.err";
+            };
+          };
         }
       ];
     };
