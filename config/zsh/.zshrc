@@ -93,6 +93,5 @@ export LEDGER_FILE
 # Clean up
 unset DOTFILE
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 eval "$(zoxide init zsh)"
 eval "$($(which mise) activate zsh)"
