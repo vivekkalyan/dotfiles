@@ -7,14 +7,12 @@ else
   export OS=$(uname -s)
 fi
 
-# Get the .zshrc file path (~/.config/zsh/.zshrc)
+# Get path to this file, resolve the symlink chain, then go up two levels
+# ~/.config/zsh/.zprofile -> nix store -> dotfiles/config/zsh/.zprofile
 SOURCE=${(%):-%N}
-# Get the config dir (~/.config)
-CONFIG_DIR="$( dirname $( dirname $SOURCE ) )"
-# Get the real path of config dir (resolve symlinks)
-DOTFILES_CONFIG_DIR="$(readlink -f $CONFIG_DIR)"
-# Get the dotfiles directory (parent folder)
-export DOTFILES_DIR="$(dirname $DOTFILES_CONFIG_DIR)"
+ZSH_CONFIG_DIR="$(dirname $SOURCE)"
+REAL_ZSH_CONFIG_DIR="$(readlink -f $ZSH_CONFIG_DIR)"
+export DOTFILES_DIR="$(dirname $(dirname $REAL_ZSH_CONFIG_DIR))"
 
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_CACHE_HOME="$HOME/.cache"
