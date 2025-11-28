@@ -82,9 +82,13 @@ globalias() {
 zle -N globalias
 bindkey " " globalias # space key to expand globalalias
 
-# fzf completions
-source /usr/share/fzf/key-bindings.zsh
-source /usr/share/fzf/completion.zsh
+# fzf completions and key bindings (find path dynamically for nix/homebrew/linux)
+if [[ -n "${commands[fzf]}" ]]; then
+  _fzf_base="$(dirname $(dirname $(readlink -f ${commands[fzf]})))/share/fzf"
+  [[ -f "$_fzf_base/key-bindings.zsh" ]] && source "$_fzf_base/key-bindings.zsh"
+  [[ -f "$_fzf_base/completion.zsh" ]] && source "$_fzf_base/completion.zsh"
+  unset _fzf_base
+fi
 
 # hledger
 LEDGER_FILE=$HOME/personal/finance/2022.journal
