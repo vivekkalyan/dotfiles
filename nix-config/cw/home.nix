@@ -8,6 +8,7 @@ in {
   home.stateVersion = "25.05";
 
   home.packages = with pkgs; [
+    coreutils
     curl
     eza
     fd
