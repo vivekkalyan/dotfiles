@@ -31,15 +31,12 @@ for DOTFILE in "$DOTFILES_DIR"/system/{path,alias,rvm,functions}; do
   [ -r "$DOTFILE" ] && source "$DOTFILE"
 done
 
+# Set LSCOLORS (after path is set so dircolors command is available)
+command -v dircolors &>/dev/null && eval "$(dircolors "$DOTFILES_DIR"/system/dircolors)"
+
 for DOTFILE in "$DOTFILES_DIR"/system/{async,prompt,fzf,history}.zsh; do
   [ -r "$DOTFILE" ] && source "$DOTFILE"
 done
-
-# Set base16-shell colors
-# source "$DOTFILES_DIR"/system/base16-tomorrow-night.sh
-
-# Set LSCOLORS (needs to be after setting path on osx)
-eval "$("dircolors" "$DOTFILES_DIR"/system/dircolors)"
 
 # Default Editor
 export EDITOR=$(which nvim)
