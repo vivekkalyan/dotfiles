@@ -3,7 +3,11 @@
 if [[ $# -eq 1 ]]; then
     selected=$1
 else
-    selected=$(find ~/personal ~/handshakes ~/cartograph -mindepth 1 -maxdepth 1 -type d | fzf)
+    dirs=()
+    for d in ~/personal ~/handshakes ~/cartograph; do
+        [[ -d "$d" ]] && dirs+=("$d")
+    done
+    selected=$(find "${dirs[@]}" -mindepth 1 -maxdepth 1 -type d | fzf)
 fi
 
 if [[ -z $selected ]]; then
