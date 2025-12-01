@@ -65,6 +65,15 @@
           # Dock size (pixels).
           system.defaults.dock.tilesize = 16;
 
+          # Disable ctrl+up (Mission Control) and ctrl+down (Application Windows)
+          # These conflict with terminal/editor keybindings
+          # ID 32 = Mission Control, ID 33 = Application Windows
+          system.defaults.CustomUserPreferences."com.apple.symbolichotkeys" = {
+            AppleSymbolicHotKeys = {
+              "32" = { enabled = false; };
+              "33" = { enabled = false; };
+            };
+          };
           # llama-server for local LLM inference (used by llama.vim)
           launchd.user.agents.llama-server = {
             serviceConfig = {
