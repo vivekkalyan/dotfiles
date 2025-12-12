@@ -15,6 +15,7 @@ in {
     fzf
     git
     gnumake
+    hledger
     jq
     llama-cpp
     mise
