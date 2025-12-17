@@ -69,11 +69,13 @@
           # ID 32 = Mission Control (ctrl+up)
           # ID 33 = Application Windows (ctrl+down)
           # ID 60 = Select previous input source (ctrl+space)
+          # ID 64 = Show Spotlight search (cmd+space)
           system.defaults.CustomUserPreferences."com.apple.symbolichotkeys" = {
             AppleSymbolicHotKeys = {
               "32" = { enabled = false; };
               "33" = { enabled = false; };
               "60" = { enabled = false; };
+              "64" = { enabled = false; };
             };
           };
           # llama-server for local LLM inference (used by llama.vim)
