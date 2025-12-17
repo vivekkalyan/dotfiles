@@ -59,6 +59,9 @@ in {
   home.file.".zshenv" = {
     source = oos "${homeDir}/personal/dotfiles/config/zsh/zshenv";
   };
+  home.file.".claude/settings.json" = {
+    source = oos "${homeDir}/personal/dotfiles/config/claude/settings.json";
+  };
   xdg.configFile."git/config" = {
     source = oos "${homeDir}/personal/dotfiles/config/git/config";
   };

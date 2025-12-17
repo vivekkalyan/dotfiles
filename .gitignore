@@ -16,6 +16,5 @@ config/git/config-os
 
 config/.wrangler/
 config/amp/
-config/claude/
 config/gcloud/
 config/wandb/
