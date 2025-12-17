@@ -26,6 +26,18 @@ zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 
 bindkey -e # emacs bindings
 
+# fzf completions and key bindings (find path dynamically for nix/homebrew/linux)
+# NOTE: must be sourced before alias file so bindkey overrides work
+if [[ -n "${commands[fzf]}" ]]; then
+  _fzf_base="$(dirname $(dirname $(readlink -f ${commands[fzf]})))/share/fzf"
+  [[ -f "$_fzf_base/key-bindings.zsh" ]] && source "$_fzf_base/key-bindings.zsh"
+  [[ -f "$_fzf_base/completion.zsh" ]] && source "$_fzf_base/completion.zsh"
+  unset _fzf_base
+  # Rebind fzf file widget from Ctrl-T to Ctrl-F
+  bindkey -r '^T'
+  bindkey '^F' fzf-file-widget
+fi
+
 # Load the shell dotfiles, and then some:
 for DOTFILE in "$DOTFILES_DIR"/system/{path,alias,rvm,functions}; do
   [ -r "$DOTFILE" ] && source "$DOTFILE"
@@ -78,14 +90,6 @@ globalias() {
 }
 zle -N globalias
 bindkey " " globalias # space key to expand globalalias
-
-# fzf completions and key bindings (find path dynamically for nix/homebrew/linux)
-if [[ -n "${commands[fzf]}" ]]; then
-  _fzf_base="$(dirname $(dirname $(readlink -f ${commands[fzf]})))/share/fzf"
-  [[ -f "$_fzf_base/key-bindings.zsh" ]] && source "$_fzf_base/key-bindings.zsh"
-  [[ -f "$_fzf_base/completion.zsh" ]] && source "$_fzf_base/completion.zsh"
-  unset _fzf_base
-fi
 
 # hledger
 LEDGER_FILE=$HOME/personal/finance/2022.journal
