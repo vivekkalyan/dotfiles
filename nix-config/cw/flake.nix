@@ -54,7 +54,6 @@
             "ghostty"
             "inkscape"
             "karabiner-elements"
-            "keepassxc"
             "macwhisper"
             "obsidian"
             "raycast"

@@ -17,6 +17,7 @@ in {
     gnumake
     hledger
     jq
+    keepassxc
     llama-cpp
     mise
     neovim
