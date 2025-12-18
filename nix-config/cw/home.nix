@@ -66,6 +66,9 @@ in {
   home.file.".claude/commands" = {
     source = oos "${homeDir}/personal/dotfiles/config/claude/commands";
   };
+  home.file.".claude/statusline-command.sh" = {
+    source = oos "${homeDir}/personal/dotfiles/config/claude/statusline-command.sh";
+  };
   xdg.configFile."git/config" = {
     source = oos "${homeDir}/personal/dotfiles/config/git/config";
   };

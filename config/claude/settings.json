@@ -25,5 +25,9 @@
         "WebFetch(domain:pypi.org)",
         "WebSearch"
       ]
-    }
+    },
+  "statusLine": {
+    "type": "command",
+    "command": "/Users/vkalyan/.claude/statusline-command.sh"
+  }
 }
