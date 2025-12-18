@@ -48,6 +48,7 @@ alias -s {jpg,jpeg,png}="sxiv"
 bindkey -s '^g' 'git status^M'
 bindkey -s '^v' 'nvim^M'
 bindkey -s '^t' 'tmux ls^Mtmux-sessionizer^M'
+bindkey -s '^\\' 'claude^M'
 
 # Programs
 alias g="git"
