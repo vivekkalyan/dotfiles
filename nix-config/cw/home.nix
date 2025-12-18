@@ -63,6 +63,9 @@ in {
   home.file.".claude/settings.json" = {
     source = oos "${homeDir}/personal/dotfiles/config/claude/settings.json";
   };
+  home.file.".claude/commands" = {
+    source = oos "${homeDir}/personal/dotfiles/config/claude/commands";
+  };
   xdg.configFile."git/config" = {
     source = oos "${homeDir}/personal/dotfiles/config/git/config";
   };
