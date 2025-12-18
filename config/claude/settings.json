@@ -6,30 +6,30 @@
     "pr": ""
   },
   "permissions": {
-      "allow": [
-        "Bash(bun:*)",
-        "Bash(cat:*)",
-        "Bash(curl:*)",
-        "Bash(find:*)",
-        "Bash(grep:*)",
-        "Bash(head:*)",
-        "Bash(hledger:*)",
-        "Bash(ls:*)",
-        "Bash(make:*)",
-        "Bash(mkdir:*)",
-        "Bash(tree:*)",
-        "Bash(uv pip list:*)",
-        "Bash(uv run:*)",
-        "Bash(uv sync:*)",
-        "Bash(xargs:*)",
-        "WebFetch(domain:arxiv.org)",
-        "WebFetch(domain:docs.vllm.ai)",
-        "WebFetch(domain:docs.wandb.ai)",
-        "WebFetch(domain:github.com)",
-        "WebFetch(domain:pypi.org)",
-        "WebSearch"
-      ]
-    },
+    "allow": [
+      "Bash(bun:*)",
+      "Bash(cat:*)",
+      "Bash(curl:*)",
+      "Bash(find:*)",
+      "Bash(grep:*)",
+      "Bash(head:*)",
+      "Bash(hledger:*)",
+      "Bash(ls:*)",
+      "Bash(make:*)",
+      "Bash(mkdir:*)",
+      "Bash(tree:*)",
+      "Bash(uv pip list:*)",
+      "Bash(uv run:*)",
+      "Bash(uv sync:*)",
+      "Bash(xargs:*)",
+      "WebFetch(domain:arxiv.org)",
+      "WebFetch(domain:docs.vllm.ai)",
+      "WebFetch(domain:docs.wandb.ai)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:pypi.org)",
+      "WebSearch"
+    ]
+  },
   "statusLine": {
     "type": "command",
     "command": "/Users/vkalyan/.claude/statusline-command.sh"
