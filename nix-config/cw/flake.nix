@@ -46,6 +46,7 @@
             cleanup = "zap";
           };
           homebrew.casks = [
+            "claude"
             "claude-code"
             "codex"
             "cursor"
