@@ -8,12 +8,11 @@
 
 set -e
 
-# always use rebase workflow
-PULL_ARGS="--rebase --prune --autostash $@"
-
 OLD_HEAD="$(git rev-parse HEAD)"
 
-git pull $PULL_ARGS
+# fetch and prune separately to avoid race condition with rebase
+git fetch --prune
+git pull --rebase --autostash "$@"
 
 NEW_HEAD="$(git rev-parse HEAD)"
 
