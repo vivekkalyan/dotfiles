@@ -57,7 +57,8 @@
   s = status
   ss = status .
   p = push
-  pf = push --force
+  # --force-with-lease only pushes if the remote branch is in the state you expect (based on the last fetch).
+  pf = push --force-with-lease
   pm = push origin master
 
   tags = tag -l
