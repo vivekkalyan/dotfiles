@@ -1,0 +1,288 @@
+#!/usr/bin/env -S uv run --script
+# /// script
+# requires-python = ">=3.10"
+# ///
+"""
+Extract and chunk Claude Code session transcripts for analysis.
+
+Usage: claude-extract-sessions [--output <dir>] [cwd]
+  --output <dir>  Output directory (default: ./session-analysis)
+  cwd             Working directory to extract sessions for (default: current)
+
+Outputs:
+  - chunk-NNN.txt files containing formatted transcripts
+  - manifest.json with metadata about sessions and chunks
+"""
+
+import json
+import os
+import sys
+from datetime import datetime
+from pathlib import Path
+
+MAX_CHARS_PER_CHUNK = 100_000
+
+
+def cwd_to_session_dir(cwd: str) -> str:
+    """Convert a cwd path to Claude's session directory name."""
+    normalized = os.path.abspath(cwd)
+    encoded = normalized.replace("/", "-")
+    return f"-{encoded[1:]}"  # Remove leading slash, prefix with -
+
+
+def extract_text_content(content) -> str:
+    """Extract text from message content (string or array format)."""
+    if isinstance(content, str):
+        return content
+    if not isinstance(content, list):
+        return ""
+
+    texts = []
+    for item in content:
+        if isinstance(item, dict):
+            if item.get("type") == "text" and item.get("text"):
+                texts.append(item["text"])
+            elif item.get("type") == "tool_use":
+                tool_name = item.get("name", "unknown")
+                texts.append(f"[TOOL: {tool_name}]")
+            elif item.get("type") == "tool_result":
+                # Skip verbose tool results, just mark that it happened
+                pass
+    return "\n".join(texts)
+
+
+def parse_session(file_path: Path) -> tuple[list[str], str | None]:
+    """
+    Parse a session JSONL file and extract messages.
+    Returns (messages, earliest_timestamp).
+    """
+    messages = []
+    earliest_timestamp = None
+
+    try:
+        with open(file_path, "r", encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    entry = json.loads(line)
+                except json.JSONDecodeError:
+                    continue
+
+                entry_type = entry.get("type")
+                if entry_type not in ("user", "assistant"):
+                    continue
+
+                message = entry.get("message", {})
+                role = message.get("role", entry_type)
+                content = message.get("content", "")
+                timestamp = entry.get("timestamp")
+
+                if timestamp and (earliest_timestamp is None or timestamp < earliest_timestamp):
+                    earliest_timestamp = timestamp
+
+                text = extract_text_content(content)
+                if not text.strip():
+                    continue
+
+                messages.append(f"[{role.upper()}]\n{text}")
+    except Exception as e:
+        print(f"Warning: Failed to parse {file_path}: {e}", file=sys.stderr)
+        return [], None
+
+    return messages, earliest_timestamp
+
+
+def format_session(filename: str, messages: list[str], timestamp: str | None) -> str:
+    """Format a session's messages into a transcript block."""
+    ts_str = f" (timestamp: {timestamp[:10]})" if timestamp else ""
+    header = f"=== SESSION: {filename}{ts_str} ==="
+    body = "\n---\n".join(messages)
+    footer = "=== END SESSION ==="
+    return f"{header}\n{body}\n{footer}"
+
+
+def main():
+    args = sys.argv[1:]
+
+    # Parse arguments
+    output_dir = Path("./session-analysis")
+    cwd = os.getcwd()
+
+    i = 0
+    while i < len(args):
+        if args[i] == "--output" and i + 1 < len(args):
+            output_dir = Path(args[i + 1])
+            i += 2
+        elif not args[i].startswith("-"):
+            cwd = args[i]
+            i += 1
+        else:
+            i += 1
+
+    cwd = os.path.abspath(cwd)
+
+    # Find session directory
+    sessions_base = Path.home() / ".claude" / "projects"
+    session_dir_name = cwd_to_session_dir(cwd)
+    session_dir = sessions_base / session_dir_name
+
+    if not session_dir.exists():
+        print(f"No sessions found for {cwd}", file=sys.stderr)
+        print(f"Expected: {session_dir}", file=sys.stderr)
+        sys.exit(1)
+
+    # List session files (exclude agent-* and empty files)
+    session_files = []
+    for f in session_dir.glob("*.jsonl"):
+        if f.name.startswith("agent-"):
+            continue
+        if f.stat().st_size == 0:
+            continue
+        session_files.append(f)
+
+    session_files.sort(key=lambda f: f.stat().st_mtime)
+
+    if not session_files:
+        print(f"No non-empty session files found in {session_dir}", file=sys.stderr)
+        sys.exit(1)
+
+    print(f"Found {len(session_files)} session files in {session_dir}")
+
+    # Parse all sessions
+    transcripts = []
+    session_metadata = []
+
+    for session_file in session_files:
+        messages, timestamp = parse_session(session_file)
+        if messages:
+            transcript = format_session(session_file.name, messages, timestamp)
+            transcripts.append({
+                "filename": session_file.name,
+                "timestamp": timestamp,
+                "content": transcript,
+                "char_count": len(transcript),
+                "message_count": len(messages)
+            })
+            session_metadata.append({
+                "filename": session_file.name,
+                "timestamp": timestamp,
+                "message_count": len(messages),
+                "char_count": len(transcript)
+            })
+
+    if not transcripts:
+        print("No messages found in any session files", file=sys.stderr)
+        sys.exit(1)
+
+    # Sort by timestamp (most recent last for recency weighting)
+    transcripts.sort(key=lambda t: t["timestamp"] or "")
+
+    # Create output directory
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    # Chunk transcripts
+    chunks = []
+    current_chunk = []
+    current_size = 0
+    chunk_index = 0
+
+    for t in transcripts:
+        content = t["content"]
+        content_size = len(content)
+
+        # If adding this would exceed limit, write current chunk
+        if current_chunk and current_size + content_size + 2 > MAX_CHARS_PER_CHUNK:
+            chunk_filename = f"chunk-{chunk_index:03d}.txt"
+            chunk_path = output_dir / chunk_filename
+            chunk_content = "\n\n".join(c["content"] for c in current_chunk)
+            chunk_path.write_text(chunk_content, encoding="utf-8")
+
+            chunks.append({
+                "filename": chunk_filename,
+                "char_count": len(chunk_content),
+                "session_count": len(current_chunk),
+                "sessions": [c["filename"] for c in current_chunk]
+            })
+            print(f"Wrote {chunk_filename} ({len(chunk_content)} chars, {len(current_chunk)} sessions)")
+
+            current_chunk = []
+            current_size = 0
+            chunk_index += 1
+
+        # Handle oversized single transcript
+        if content_size > MAX_CHARS_PER_CHUNK:
+            # Write any pending content first
+            if current_chunk:
+                chunk_filename = f"chunk-{chunk_index:03d}.txt"
+                chunk_path = output_dir / chunk_filename
+                chunk_content = "\n\n".join(c["content"] for c in current_chunk)
+                chunk_path.write_text(chunk_content, encoding="utf-8")
+
+                chunks.append({
+                    "filename": chunk_filename,
+                    "char_count": len(chunk_content),
+                    "session_count": len(current_chunk),
+                    "sessions": [c["filename"] for c in current_chunk]
+                })
+                print(f"Wrote {chunk_filename} ({len(chunk_content)} chars, {len(current_chunk)} sessions)")
+
+                current_chunk = []
+                current_size = 0
+                chunk_index += 1
+
+            # Write oversized transcript to its own chunk
+            chunk_filename = f"chunk-{chunk_index:03d}.txt"
+            chunk_path = output_dir / chunk_filename
+            chunk_path.write_text(content, encoding="utf-8")
+
+            chunks.append({
+                "filename": chunk_filename,
+                "char_count": content_size,
+                "session_count": 1,
+                "sessions": [t["filename"]],
+                "oversized": True
+            })
+            print(f"Wrote {chunk_filename} ({content_size} chars) - OVERSIZED")
+            chunk_index += 1
+            continue
+
+        current_chunk.append(t)
+        current_size += content_size + 2  # +2 for separator
+
+    # Write remaining content
+    if current_chunk:
+        chunk_filename = f"chunk-{chunk_index:03d}.txt"
+        chunk_path = output_dir / chunk_filename
+        chunk_content = "\n\n".join(c["content"] for c in current_chunk)
+        chunk_path.write_text(chunk_content, encoding="utf-8")
+
+        chunks.append({
+            "filename": chunk_filename,
+            "char_count": len(chunk_content),
+            "session_count": len(current_chunk),
+            "sessions": [c["filename"] for c in current_chunk]
+        })
+        print(f"Wrote {chunk_filename} ({len(chunk_content)} chars, {len(current_chunk)} sessions)")
+
+    # Write manifest
+    manifest = {
+        "cwd": cwd,
+        "session_dir": str(session_dir),
+        "extracted_at": datetime.now().isoformat(),
+        "total_sessions": len(session_metadata),
+        "total_chunks": len(chunks),
+        "sessions": session_metadata,
+        "chunks": chunks
+    }
+
+    manifest_path = output_dir / "manifest.json"
+    manifest_path.write_text(json.dumps(manifest, indent=2), encoding="utf-8")
+
+    print(f"\nCreated {len(chunks)} chunk(s) in {output_dir}")
+    print(f"Manifest written to {manifest_path}")
+
+
+if __name__ == "__main__":
+    main()
