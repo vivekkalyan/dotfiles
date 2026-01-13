@@ -1,0 +1,27 @@
+#!/bin/sh
+#
+# Usage: init-agents
+#
+# Creates AGENTS.md and CLAUDE.md files in the current directory.
+# CLAUDE.md references AGENTS.md via @AGENTS.md
+
+set -e
+
+if [ -f "CLAUDE.md" ] && [ ! -f "AGENTS.md" ]; then
+  # CLAUDE.md exists but AGENTS.md doesn't - move content from CLAUDE.md to AGENTS.md
+  mv CLAUDE.md AGENTS.md
+  echo "@AGENTS.md" > CLAUDE.md
+  echo "Moved CLAUDE.md to AGENTS.md, created new CLAUDE.md"
+elif [ -f "AGENTS.md" ] && [ ! -f "CLAUDE.md" ]; then
+  # AGENTS.md exists but CLAUDE.md doesn't - just create CLAUDE.md
+  echo "@AGENTS.md" > CLAUDE.md
+  echo "Created CLAUDE.md"
+elif [ -f "AGENTS.md" ] && [ -f "CLAUDE.md" ]; then
+  echo "Both AGENTS.md and CLAUDE.md already exist"
+  exit 1
+else
+  # Neither exists - create both
+  touch AGENTS.md
+  echo "@AGENTS.md" > CLAUDE.md
+  echo "Created AGENTS.md and CLAUDE.md"
+fi
