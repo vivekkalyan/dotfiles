@@ -92,6 +92,9 @@
           # Disable autocorrect
           system.defaults.NSGlobalDomain.NSAutomaticSpellingCorrectionEnabled = false;
 
+          # Save screenshots to clipboard
+          system.defaults.screencapture.target = "clipboard";
+
           # llama-server for local LLM inference (used by llama.vim)
           launchd.user.agents.llama-server = {
             serviceConfig = {
