@@ -78,6 +78,17 @@
               "64" = { enabled = false; };
             };
           };
+
+          # Keyboard repeat settings (lower = faster)
+          # KeyRepeat: delay between repeated characters (default: 6, range: 1-15)
+          # InitialKeyRepeat: delay before repeat starts (default: 25, range: 15-120)
+          system.defaults.NSGlobalDomain.KeyRepeat = 2;
+          system.defaults.NSGlobalDomain.InitialKeyRepeat = 15;
+
+          # Mouse sensitivity (higher = more sensitive, range: -1.0 to 1.0)
+          # Using CustomUserPreferences for settings not directly exposed by nix-darwin
+          system.defaults.CustomUserPreferences."com.apple.mouse".scaling = 1.0;
+
           # llama-server for local LLM inference (used by llama.vim)
           launchd.user.agents.llama-server = {
             serviceConfig = {
