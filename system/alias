@@ -49,6 +49,7 @@ bindkey -s '^g' 'git status^M'
 bindkey -s '^v' 'nvim^M'
 bindkey -s '^t' 'tmux ls^Mtmux-sessionizer^M'
 bindkey -s '^\\' 'claude^M'
+bindkey -s '^]' 'codex --yolo^M'
 
 # Programs
 alias g="git"
