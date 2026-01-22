@@ -89,6 +89,9 @@
           # Using CustomUserPreferences for settings not directly exposed by nix-darwin
           system.defaults.CustomUserPreferences."com.apple.mouse".scaling = 1.0;
 
+          # Disable autocorrect
+          system.defaults.NSGlobalDomain.NSAutomaticSpellingCorrectionEnabled = false;
+
           # llama-server for local LLM inference (used by llama.vim)
           launchd.user.agents.llama-server = {
             serviceConfig = {
