@@ -1,5 +1,0 @@
---extra=+f
---recurse=yes
---exclude=.git
---exclude=node_modules/*
---python-kinds=-iv

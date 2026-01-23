@@ -27,8 +27,6 @@
         pre-commit
         ripgrep
         rsync
-        taskwarrior3
-        taskwarrior-tui
         tmux
         typst
         uv

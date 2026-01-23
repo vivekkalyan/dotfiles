@@ -49,10 +49,7 @@ git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 # symlinks
 # ln -sfv "$DOTFILES_DIR/startup/.bash_profile" ~
 sudo -u $real_user ln -sfv "$DOTFILES_DIR/startup/zshrc" "$USER_HOME/.zshrc"
-sudo -u $real_user ln -sfv "$DOTFILES_DIR/startup/vimrc" "$USER_HOME/.vimrc"
-sudo -u $real_user ln -sfv "$DOTFILES_DIR/startup/spacemacs" "$USER_HOME/.spacemacs"
 sudo -u $real_user ln -sfv "$DOTFILES_DIR/startup/tmux.conf" "$USER_HOME/.tmux.conf"
-sudo -u $real_user ln -sfv "$DOTFILES_DIR/startup/ctags" "$USER_HOME/.ctags"
 
 sudo -u $real_user ln -sfv "$DOTFILES_DIR/git/gitconfig" "$USER_HOME/.gitconfig"
 sudo -u $real_user ln -sfv "$DOTFILES_DIR/git/gitignore" "$USER_HOME/.gitignore"
@@ -66,8 +63,6 @@ sudo -u $real_user ln -sfv "$DOTFILES_DIR/system/prompt.zsh" /usr/local/share/zs
 sudo -u $real_user ln -sfv "$DOTFILES_DIR/system/async.zsh" /usr/local/share/zsh/site-functions/async
 
 sudo -u $real_user ln -sfv "$DOTFILES_DIR/system/dunstrc" $USER_HOME/.config/dunstrc
-sudo -u $real_user ln -sfv "$DOTFILES_DIR/system/taskrc" $USER_HOME/.taskrc
-sudo -u $real_user ln -sfv "$DOTFILES_DIR/vim/*" $USER_HOME/.vim/
 
 if [[ "$OS" = "macOS" ]]; then
     sudo sh -c 'echo $(brew --prefix)/bin/zsh >> /etc/shells' && \

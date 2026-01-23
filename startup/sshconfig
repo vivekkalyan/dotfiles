@@ -1,3 +1,0 @@
-# ~/.ssh/config
-Host github.com
-    IdentityFile ~/.ssh/github

@@ -29,7 +29,6 @@ fasd
 zathura
 zathura-pdf-mupdf
 bat
-ctags
 fd
 ffmpeg
 fzf
