@@ -31,12 +31,12 @@ return {
         "astro",
         "harper_ls",
         "lua_ls",
-        "pyright",
         "ruff",
         "rust_analyzer",
         "svelte",
         "taplo",
         "ts_ls",
+        "ty",
       },
       -- auto-install configured servers (with lspconfig)
       automatic_installation = true, -- not the same as ensure_installed

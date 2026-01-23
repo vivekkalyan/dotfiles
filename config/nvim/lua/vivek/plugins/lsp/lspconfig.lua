@@ -279,25 +279,6 @@ return {
       },
     }
 
-    -- configure python server
-    vim.lsp.config["pyright"] = {
-      capabilities = capabilities,
-      on_attach = on_attach,
-      settings = {
-        pyright = {
-          -- Using Ruff's import organizer
-          disableOrganizeImports = true,
-        },
-        python = {
-          analysis = {
-            autoSearchPaths = true,
-            diagnosticMode = "openFilesOnly",
-            useLibraryCodeForTypes = true,
-          },
-        },
-      },
-    }
-
     vim.lsp.config["ruff"] = {
       capabilities = capabilities,
       on_attach = on_attach,
@@ -442,6 +423,12 @@ return {
           },
         },
       },
+    }
+
+    -- configure ty server
+    vim.lsp.config["ty"] = {
+      capabilities = capabilities,
+      on_attach = on_attach,
     }
   end,
 }
