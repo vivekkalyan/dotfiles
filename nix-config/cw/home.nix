@@ -21,6 +21,7 @@ in {
     llama-cpp
     mise
     neovim
+    prek
     ripgrep
     tmux
     typst
