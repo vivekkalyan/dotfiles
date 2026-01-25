@@ -48,7 +48,7 @@ return {
     format.snacks_toggle(true):map("<leader>uF")
 
     -- Gitbrowse
-    vim.keymap.set({ "n", "v" }, "<leader>gy", function()
+    vim.keymap.set({ "n", "v" }, "<leader>yg", function()
       local Snacks = require("snacks")
       Snacks.gitbrowse({
         what = "permalink",
