@@ -13,6 +13,7 @@ return {
       { "<leader>e", group = "env" },
       { "<leader>f", group = "find" },
       { "<leader>g", group = "git" },
+      { "<leader>y", group = "yank" },
       { "<leader>t", group = "test" },
       { "<leader>u", group = "toggle" },
       { "<leader>q", group = "quit/buffer" },

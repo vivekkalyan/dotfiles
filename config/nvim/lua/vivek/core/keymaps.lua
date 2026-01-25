@@ -50,6 +50,27 @@ keymap("n", "<leader>w", "<cmd>w<cr><esc>", { silent = true, desc = "Write File"
 -- keymap("i", "<leader>w", "<cmd>w<cr><esc>gi", { silent = true, desc = "Write File" }) -- go back to insert mode with same position
 keymap("v", "<leader>w", "<cmd>w<cr><esc>gv", { silent = true, desc = "Write File" }) -- go back to visual mode with same selection
 
+-- Copy file paths
+keymap("n", "<leader>yp", function()
+  local path = vim.fn.expand("%:.")
+  if path == "" then
+    vim.notify("No file name for current buffer", vim.log.levels.WARN)
+    return
+  end
+  vim.fn.setreg("+", path)
+  vim.notify("Copied relative path: " .. path, vim.log.levels.INFO)
+end, { desc = "Copy file relative path" })
+
+keymap("n", "<leader>yP", function()
+  local path = vim.fn.expand("%:p")
+  if path == "" then
+    vim.notify("No file name for current buffer", vim.log.levels.WARN)
+    return
+  end
+  vim.fn.setreg("+", path)
+  vim.notify("Copied full path: " .. path, vim.log.levels.INFO)
+end, { desc = "Copy file full path" })
+
 -- Move by visual line rather than physical line
 -- Move correctly when text is wrapped and using {count}j/k
 keymap("n", "j", function()
