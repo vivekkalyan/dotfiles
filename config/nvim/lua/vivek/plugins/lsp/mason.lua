@@ -1,6 +1,6 @@
 return {
   "williamboman/mason.nvim",
-  event = "VeryLazy",
+  event = "VimEnter",
   dependencies = {
     "williamboman/mason-lspconfig.nvim",
     "WhoIsSethDaniel/mason-tool-installer.nvim",
@@ -52,6 +52,9 @@ return {
         -- linters
         "ruff",
       },
+      start_delay = 1000, -- defer installs so UI isn't blocked on startup
     })
+
+    mason_tool_installer.run_on_start()
   end,
 }
