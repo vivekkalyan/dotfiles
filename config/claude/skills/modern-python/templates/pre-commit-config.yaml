@@ -1,0 +1,56 @@
+# Pre-commit configuration for modern Python projects
+# Install: prek install
+# Run: prek run --all-files
+# See references/prek.md for more details
+
+default_language_version:
+  python: python3.12
+
+repos:
+  # Ruff - linting and formatting (replaces black, isort, flake8, pylint)
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.8.0  # Replace with latest version
+    hooks:
+      - id: ruff
+        args: [--fix]
+      - id: ruff-format
+
+  # Built-in hooks (Rust-native for speed)
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0  # Replace with latest version
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-toml
+      - id: check-merge-conflict
+      - id: check-added-large-files
+        args: [--maxkb=1000]
+
+  # Shell script validation
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: v0.10.0.1  # Replace with latest version
+    hooks:
+      - id: shellcheck
+        args: [--severity=error]
+
+  # Secret detection
+  # Initialize baseline first: detect-secrets scan > .secrets.baseline
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.5.0  # Replace with latest version
+    hooks:
+      - id: detect-secrets
+        args: [--baseline, .secrets.baseline]
+
+  # GitHub Actions linting
+  - repo: https://github.com/rhysd/actionlint
+    rev: v1.7.4  # Replace with latest version
+    hooks:
+      - id: actionlint
+
+  # GitHub Actions security auditing
+  - repo: https://github.com/woodruffw/zizmor
+    rev: v1.0.0  # Replace with latest version
+    hooks:
+      - id: zizmor
+        args: [--persona=auditor, --min-confidence=medium]

@@ -70,6 +70,9 @@ in {
   home.file.".claude/hooks" = {
     source = oos "${homeDir}/personal/dotfiles/config/claude/hooks";
   };
+  home.file.".claude/skills" = {
+    source = oos "${homeDir}/personal/dotfiles/config/claude/skills";
+  };
   home.file.".claude/statusline-command.sh" = {
     source = oos "${homeDir}/personal/dotfiles/config/claude/statusline-command.sh";
   };
