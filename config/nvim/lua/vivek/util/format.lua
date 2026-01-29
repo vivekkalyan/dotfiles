@@ -36,6 +36,7 @@ end
 
 ---@param buf? boolean
 function M.snacks_toggle(buf)
+  local Snacks = require("snacks")
   return Snacks.toggle({
     name = "Auto Format (" .. (buf and "Buffer" or "Global") .. ")",
     get = function()

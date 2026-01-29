@@ -160,7 +160,7 @@ return {
 
       opts.desc = "Smart File Rename"
       keymap.set("n", "<leader>cR", function()
-        Snacks.rename.rename_file()
+        require("snacks").rename.rename_file()
       end, opts) -- smart file rename
 
       opts.desc = "Show line diagnostics"

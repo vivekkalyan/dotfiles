@@ -41,7 +41,8 @@ return {
     words = { enabled = true },
   },
   config = function(_, opts)
-    require("snacks").setup(opts)
+    local Snacks = require("snacks")
+    Snacks.setup(opts)
 
     local format = require("vivek.util.format")
     format.snacks_toggle():map("<leader>uf")
@@ -49,7 +50,6 @@ return {
 
     -- Gitbrowse
     vim.keymap.set({ "n", "v" }, "<leader>yg", function()
-      local Snacks = require("snacks")
       Snacks.gitbrowse({
         what = "permalink",
         open = function(url)
