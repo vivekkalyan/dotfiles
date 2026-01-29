@@ -99,15 +99,6 @@ local options = {
 for k, v in pairs(options) do
   vim.opt[k] = v
 end
-vim.diagnostic.config({
-  virtual_lines = false,
-  virtual_text = {
-    spacing = 3,
-    prefix = " ",
-    severity_sort = true,
-    source = "if_many",
-  },
-})
 
 vim.opt.statuscolumn = [[%!v:lua.require'snacks.statuscolumn'.get()]]
 
