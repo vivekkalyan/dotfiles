@@ -11,5 +11,13 @@ return {
       javascriptreact = { "eslint_d" },
       typescriptreact = { "eslint_d" },
     }
+
+    local group = vim.api.nvim_create_augroup("nvim_lint", { clear = true })
+    vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
+      group = group,
+      callback = function()
+        lint.try_lint()
+      end,
+    })
   end,
 }
