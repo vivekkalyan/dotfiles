@@ -45,8 +45,18 @@ return {
       if vim.tbl_contains(ignore_filetypes, vim.bo[bufnr].filetype) then
         return { timeout_ms = 500, lsp_fallback = true }
       end
-      local lines =
-        vim.fn.system("git diff --unified=0 " .. vim.fn.bufname(bufnr)):gmatch("[^\n\r]+")
+      local filepath = vim.api.nvim_buf_get_name(bufnr)
+      if filepath == "" then
+        return { timeout_ms = 500, lsp_fallback = true }
+      end
+
+      local diff_cmd = "git diff --unified=0 -- " .. vim.fn.shellescape(filepath)
+      local diff = vim.fn.system(diff_cmd)
+      if vim.v.shell_error ~= 0 then
+        return { timeout_ms = 500, lsp_fallback = true }
+      end
+
+      local lines = diff:gmatch("[^\n\r]+")
       local ranges = {}
       for line in lines do
         if line:find("^@@") then
@@ -66,8 +76,11 @@ return {
           end
         end
       end
+      if vim.tbl_isempty(ranges) then
+        return { timeout_ms = 500, lsp_fallback = true }
+      end
       local format = require("conform").format
-      for _, range in pairs(ranges) do
+      for _, range in ipairs(ranges) do
         format({ range = range })
       end
     end,
