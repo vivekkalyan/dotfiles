@@ -91,11 +91,6 @@ return {
     local on_attach = function(client, bufnr)
       opts.buffer = bufnr
 
-      -- Enable inlay hints if the server supports it
-      if client.supports_method("textDocument/inlayHint") then
-        vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
-      end
-
       -- Enable code lens if the server supports it
       if client.supports_method("textDocument/codeLens") then
         vim.lsp.codelens.refresh()
