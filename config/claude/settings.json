@@ -1,31 +1,7 @@
 {
-  "model": "opus",
-  "alwaysThinkingEnabled": false,
   "attribution": {
     "commit": "",
     "pr": ""
-  },
-  "hooks": {
-    "PreToolUse": [
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "/Users/vkalyan/.claude/hooks/uv-python.sh"
-          }
-        ]
-      },
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "/Users/vkalyan/.claude/hooks/uv-sky.sh"
-          }
-        ]
-      }
-    ]
   },
   "permissions": {
     "allow": [
@@ -52,8 +28,32 @@
       "WebSearch"
     ]
   },
+  "model": "opus",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/vkalyan/.claude/hooks/uv-python.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/vkalyan/.claude/hooks/uv-sky.sh"
+          }
+        ]
+      }
+    ]
+  },
   "statusLine": {
     "type": "command",
     "command": "/Users/vkalyan/.claude/statusline-command.sh"
-  }
+  },
+  "alwaysThinkingEnabled": false
 }
