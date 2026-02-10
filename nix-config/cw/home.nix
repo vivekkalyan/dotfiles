@@ -13,6 +13,7 @@ in {
     eza
     fd
     fzf
+    gh
     git
     gnumake
     hledger
