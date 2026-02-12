@@ -6,3 +6,5 @@ config/gcloud/
 config/wandb/
 
 config/zsh/.zcompdump
+
+__pycache__/
