@@ -28,12 +28,18 @@ return {
               DelimitedWarn = { bg = colors.red },
               DelimitedInfo = { bg = colors.red },
               DelimitedHint = { bg = colors.red },
+              -- Stronger diff colors so changes stand out from folds
+              DiffAdd = { bg = "#2e4834" },
+              DiffChange = { bg = "#3e3422" },
+              DiffDelete = { bg = "#4e2a2a" },
+              DiffText = { bg = "#5a4a2a" },
             }
           end,
         },
         integrations = {
           blink_cmp = true,
           dashboard = true,
+          diffview = true,
           gitsigns = true,
           mason = true,
           mini = true,
