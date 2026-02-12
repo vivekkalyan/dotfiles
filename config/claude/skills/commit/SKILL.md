@@ -24,7 +24,8 @@ type: description
 ```
 
 - **Types**: feat, fix, docs, style, refactor, perf, test, build, ci, ops, chore
-- Imperative mood, present tense: "add feature" not "added feature"
+- Imperative mood, present tense: "Add feature" not "added feature"
+- **Always capitalize the first word** of the description: `feat: Add` not `feat: add`
 - Title under 72 characters
 - No body by default — only add one if the change is truly non-obvious
 - Use HEREDOC for the commit message:
