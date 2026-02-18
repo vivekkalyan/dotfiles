@@ -65,6 +65,9 @@ in {
   home.file.".claude/settings.json" = {
     source = oos "${homeDir}/personal/dotfiles/config/claude/settings.json";
   };
+  home.file.".claude/CLAUDE.md" = {
+    source = oos "${homeDir}/personal/dotfiles/config/claude/CLAUDE.md";
+  };
   home.file.".claude/commands" = {
     source = oos "${homeDir}/personal/dotfiles/config/claude/commands";
   };
@@ -79,6 +82,9 @@ in {
   };
   xdg.configFile."git/config" = {
     source = oos "${homeDir}/personal/dotfiles/config/git/config";
+  };
+  xdg.configFile."git/ignore" = {
+    source = oos "${homeDir}/personal/dotfiles/config/git/ignore";
   };
   xdg.configFile."git/config-os" = {
       text = ''

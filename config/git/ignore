@@ -21,3 +21,6 @@ venv
 node_modules
 .sass-cache
 **/.claude/settings.local.json
+
+# Agent working notes (local only, never committed)
+**/.agent-notes/
