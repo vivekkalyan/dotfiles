@@ -96,12 +96,42 @@
           system.defaults.screencapture.target = "clipboard";
 
           # llama-server for local LLM inference (used by llama.vim)
+          # Monitors power source: starts server on AC, stops on battery.
           launchd.user.agents.llama-server = {
             serviceConfig = {
               Label = "com.llama.server";
               ProgramArguments = [
-                "${pkgs.llama-cpp}/bin/llama-server"
-                "--fim-qwen-7b-default"
+                "${pkgs.writeShellScript "llama-power-wrapper" ''
+                  cleanup() { [ -n "$SERVER_PID" ] && kill "$SERVER_PID" 2>/dev/null; wait "$SERVER_PID" 2>/dev/null; }
+                  trap cleanup EXIT
+
+                  SERVER_PID=""
+                  start_server() {
+                    if [ -z "$SERVER_PID" ] || ! kill -0 "$SERVER_PID" 2>/dev/null; then
+                      ${pkgs.llama-cpp}/bin/llama-server --fim-qwen-7b-default &
+                      SERVER_PID=$!
+                      echo "Started llama-server (pid $SERVER_PID)"
+                    fi
+                  }
+                  stop_server() {
+                    if [ -n "$SERVER_PID" ] && kill -0 "$SERVER_PID" 2>/dev/null; then
+                      echo "Stopping llama-server (pid $SERVER_PID)"
+                      kill "$SERVER_PID" 2>/dev/null
+                      wait "$SERVER_PID" 2>/dev/null
+                      SERVER_PID=""
+                    fi
+                  }
+                  on_ac() { /usr/bin/pmset -g batt 2>/dev/null | head -1 | grep -q "AC Power"; }
+
+                  while true; do
+                    if on_ac; then
+                      start_server
+                    else
+                      stop_server
+                    fi
+                    sleep 30
+                  done
+                ''}"
               ];
               RunAtLoad = true;
               KeepAlive = true;
