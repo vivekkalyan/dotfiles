@@ -2,7 +2,7 @@
 
 `uv` is an extremely fast Python package and project manager written in Rust. It replaces pip, virtualenv, pip-tools, pipx, and pyenv.
 
-**Key principle:** Never manually activate or manage virtual environments—use `uv run` for all commands.
+**Key principle:** Always use `uv run` to execute commands. Never manually activate virtual environments.
 
 ## Installation
 
@@ -10,122 +10,75 @@
 # macOS/Linux
 curl -LsSf https://astral.sh/uv/install.sh | sh
 
+# Windows
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+
 # Homebrew
 brew install uv
 
-# Windows
-powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+# pipx
+pipx install uv
 ```
 
-## Project Initialization
+## Project Commands
+
+### Initialize Projects
+
+| Command | Description |
+|---------|-------------|
+| `uv init` | Create new project (application) |
+| `uv init --package` | Create distributable package with src/ layout |
+| `uv init --lib` | Create library package |
+| `uv init --script file.py` | Create script with PEP 723 metadata |
+
+### Dependency Management
+
+| Command | Description |
+|---------|-------------|
+| `uv add <pkg>` | Add dependency to project |
+| `uv add <pkg> --group dev` | Add to dependency group |
+| `uv add <pkg> --optional feature` | Add to optional dependency |
+| `uv remove <pkg>` | Remove dependency |
+| `uv lock` | Update lock file without installing |
+
+### Environment Management
+
+uv manages virtual environments automatically. Do not manually create or activate venvs.
+
+| Command | Description |
+|---------|-------------|
+| `uv sync` | Install dependencies (creates venv if needed) |
+| `uv sync --all-groups` | Install all dependency groups |
+| `uv sync --group dev` | Install specific group |
+| `uv sync --frozen` | Install from lock file exactly |
+
+### Running Code
+
+| Command | Description |
+|---------|-------------|
+| `uv run <cmd>` | Run command in project venv |
+| `uv run python script.py` | Run Python script |
+| `uv run pytest` | Run pytest |
+| `uv run --with pkg cmd` | Run with temporary dependency |
+
+### Building & Publishing
+
+| Command | Description |
+|---------|-------------|
+| `uv build` | Build wheel and sdist |
+| `uv build --wheel` | Build wheel only |
+| `uv build --sdist` | Build sdist only |
+| `uv publish` | Publish to PyPI |
+| `uv publish --token $TOKEN` | Publish with API token |
+
+## Tool Commands
+
+Run Python tools without installing globally:
 
 ```bash
-# Standard application
-uv init myapp
-cd myapp
-
-# Distributable package with src layout
-uv init --package mylib
-cd mylib
-
-# Library (no entry point)
-uv init --lib mylib
-
-# PEP 723 script
-uv init --script myscript.py --python 3.12
-```
-
-## Dependency Management
-
-```bash
-# Add runtime dependency
-uv add requests
-
-# Add specific version
-uv add "requests>=2.31,<3"
-
-# Add to dependency group
-uv add --group dev ruff
-uv add --group test pytest pytest-cov
-
-# Add optional feature
-uv add --optional cli click
-
-# Remove dependency
-uv remove requests
-
-# Update lock file
-uv lock
-
-# Upgrade all dependencies
-uv lock --upgrade
-
-# Upgrade specific package
-uv lock --upgrade-package requests
-```
-
-## Environment Sync
-
-```bash
-# Sync all default groups
-uv sync
-
-# Sync specific groups
-uv sync --group dev --group test
-
-# Sync without dev groups (production)
-uv sync --no-group dev
-
-# Frozen install (fail if lock outdated)
-uv sync --frozen
-
-# Locked install (use exact lock file)
-uv sync --locked
-```
-
-## Running Commands
-
-```bash
-# Run Python
-uv run python
-
-# Run module
-uv run python -m mymodule
-
-# Run script
-uv run python src/myproject/main.py
-
-# Run pytest
-uv run pytest
-
-# Run with extra dependency (not added to project)
-uv run --with httpx python -c "import httpx; print(httpx.__version__)"
-```
-
-## Python Version Management
-
-```bash
-# Install Python version
-uv python install 3.12
-
-# List installed versions
-uv python list
-
-# Pin project Python version
-uv python pin 3.12
-
-# Run with specific version
-uv run --python 3.12 python --version
-```
-
-## Tool Management
-
-```bash
-# Run tool without installing
-uvx ruff check .
-
-# Same as above (long form)
+# Run any tool
 uv tool run ruff check .
+uvx ruff check .  # shorthand
 
 # Install tool globally
 uv tool install ruff
@@ -137,35 +90,76 @@ uv tool list
 uv tool upgrade ruff
 ```
 
+## Python Version Management
+
+```bash
+# Install Python version
+uv python install 3.12
+
+# List available versions
+uv python list
+
+# Pin project to Python version
+uv python pin 3.12
+
+# Use specific version
+uv run --python 3.11 pytest
+```
+
+## Script Commands (PEP 723)
+
+```bash
+# Create script with inline metadata
+uv init --script myscript.py
+
+# Add dependency to script
+uv add --script myscript.py requests
+
+# Run script (auto-installs deps)
+uv run myscript.py
+```
+
 ## Common Workflows
 
-### Application Development
+### New Application Project
 
 ```bash
 uv init myapp
 cd myapp
 uv add fastapi uvicorn
-uv add --group dev ruff
-uv add --group test pytest httpx
-uv sync
-uv run uvicorn myapp:app --reload
+uv add --group dev ruff pytest
+uv sync --all-groups
+uv run uvicorn myapp:app
 ```
 
-### Library Development
+### New Library Package
 
 ```bash
 uv init --package mylib
 cd mylib
-uv add --group dev ruff
-uv add --group test pytest pytest-cov
-uv sync
+uv add --group dev ruff pytest pytest-cov
+uv add --group docs sphinx
+uv sync --all-groups
 uv run pytest
+uv build
 ```
 
-### One-off Script
+### Add Tool to Existing Project
 
 ```bash
+cd existing-project
+uv add --group dev ruff
+uv run ruff check .
+```
+
+### One-off Script Execution
+
+```bash
+# Run script with dependencies (no project needed)
 uv run --with requests --with beautifulsoup4 python scrape.py
+
+# Or use PEP 723 inline metadata
+uv run script_with_metadata.py
 ```
 
 ## Environment Variables
@@ -173,6 +167,34 @@ uv run --with requests --with beautifulsoup4 python scrape.py
 | Variable | Description |
 |----------|-------------|
 | `UV_CACHE_DIR` | Cache directory location |
+| `UV_NO_CACHE` | Disable caching |
 | `UV_PYTHON` | Default Python version |
-| `UV_PROJECT_ENVIRONMENT` | Custom venv location |
-| `UV_SYSTEM_PYTHON` | Allow system Python |
+| `UV_PROJECT` | Project directory path |
+| `UV_PROJECT_ENVIRONMENT` | Custom venv directory (e.g., `.venv-dev`) |
+| `UV_SYSTEM_PYTHON` | Use system Python |
+
+## Container/Host Development
+
+When developing on a host machine while also running in containers, you can use separate venvs to avoid rebuilding on each context switch:
+
+```bash
+# On host machine (add to shell profile or .envrc)
+export UV_PROJECT_ENVIRONMENT=.venv-dev
+
+# Now host uses .venv-dev, containers use default .venv
+uv sync  # creates .venv-dev on host
+```
+
+Add both to `.gitignore`:
+```
+.venv/
+.venv-dev/
+```
+
+This avoids rebuilding the venv when switching between host and container (different OS, Python versions, or native dependencies).
+
+## Performance Tips
+
+- uv caches aggressively; first install may be slower
+- Use `uv sync --frozen` in CI for reproducible builds
+- Use `uv cache clean` if cache grows too large

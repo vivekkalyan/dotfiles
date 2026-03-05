@@ -1,40 +1,71 @@
 # prek: Fast Pre-commit Hooks
 
-prek is a Rust-based alternative to pre-commit that's ~7x faster while remaining compatible with existing `.pre-commit-config.yaml` files.
+[prek](https://github.com/j178/prek) is a fast, Rust-native drop-in replacement for pre-commit. It uses the same `.pre-commit-config.yaml` format and is fully compatible with existing configurations.
 
-## Features
+## Why prek over pre-commit?
 
-- **7x faster** hook installation than pre-commit
-- **Single binary** - no Python runtime dependency
-- **Parallel execution** of repository cloning and hooks
-- **Automatic Python management** via uv
-- **Built-in hooks** for common operations (Rust-native, extra fast)
-- **Monorepo support** built-in
+| Feature | prek | pre-commit |
+|---------|------|------------|
+| Speed | ~7x faster hook installation | Slower |
+| Dependencies | Single binary, no runtime needed | Requires Python |
+| Disk usage | Shared toolchains between hooks | Isolated environments |
+| Parallelism | Parallel repo cloning and hook execution | Sequential |
+| Python management | Uses uv automatically | Manual Python setup |
+| Monorepo support | Built-in workspace mode | Not supported |
 
 ## Installation
 
-```bash
-# Homebrew (recommended)
-brew install prek
-
-# Cargo
-cargo install prek
-
-# Shell script
-curl -sSf https://raw.githubusercontent.com/astral-sh/prek/main/scripts/install.sh | sh
-```
+See [security-setup.md](./security-setup.md) for installation options.
 
 ## Quick Start
 
+### For Existing pre-commit Users
+
+prek is fully compatible with `.pre-commit-config.yaml`. Just replace commands:
+
 ```bash
-# Install hooks
+# Instead of: pre-commit install
 prek install
 
-# Run on all files
+# Instead of: pre-commit run --all-files
 prek run --all-files
 
-# Update hook versions
+# Instead of: pre-commit autoupdate
 prek auto-update
+```
+
+### New Setup
+
+1. Create `.pre-commit-config.yaml` (see [templates/pre-commit-config.yaml](../templates/pre-commit-config.yaml))
+
+2. Install and run:
+
+```bash
+# Install git hooks
+prek install
+
+# Run manually on all files
+prek run --all-files
+
+# Run specific hook
+prek run ruff
+```
+
+## Configuration
+
+### Using Built-in Hooks
+
+prek includes Rust-native implementations of common hooks for extra speed:
+
+```yaml
+repos:
+  - repo: builtin
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-json
+      - id: check-toml
 ```
 
 ## Commands
@@ -44,85 +75,66 @@ prek auto-update
 | `prek install` | Install git hooks |
 | `prek uninstall` | Remove git hooks |
 | `prek run` | Run hooks on staged files |
-| `prek run --all-files` | Run hooks on all files |
-| `prek run --files <path>` | Run hooks on specific files |
-| `prek run --from-ref <ref> --to-ref <ref>` | Run on changed files between refs |
+| `prek run --all-files` | Run on all files |
+| `prek run --last-commit` | Run on last commit's files |
+| `prek run HOOK [HOOK...]` | Run specific hook(s) |
+| `prek run -d src/` | Run on files in directory |
 | `prek auto-update` | Update hook versions |
-| `prek list-hooks` | List configured hooks |
-| `prek clean` | Clear cache |
+| `prek list` | List configured hooks |
+| `prek clean` | Remove cached environments |
 
-## Configuration
+## CI Configuration
 
-Use the same `.pre-commit-config.yaml` format as pre-commit.
-
-See [templates/pre-commit-config.yaml](../templates/pre-commit-config.yaml) for a recommended setup.
-
-### Built-in Hooks
-
-prek provides Rust-native implementations of common hooks for better performance:
+### GitHub Actions
 
 ```yaml
-- repo: https://github.com/pre-commit/pre-commit-hooks
-  rev: v5.0.0
-  hooks:
-    - id: trailing-whitespace    # Built-in
-    - id: end-of-file-fixer      # Built-in
-    - id: check-yaml             # Built-in
-    - id: check-toml             # Built-in
-    - id: check-merge-conflict   # Built-in
-    - id: check-added-large-files
-      args: [--maxkb=1000]
+name: Pre-commit
+on: [push, pull_request]
+
+jobs:
+  prek:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@<sha>  # <latest> https://github.com/actions/checkout/releases
+      - uses: j178/prek-action@<sha>  # <latest> https://github.com/j178/prek-action/releases
 ```
 
-## GitHub Actions
+Or manually:
 
 ```yaml
 - name: Install prek
   run: uv tool install prek
 
-- name: Run pre-commit hooks
+- name: Run hooks
   run: prek run --all-files
 ```
 
-Or use the dedicated action:
+## Makefile Integration
 
-```yaml
-- uses: astral-sh/prek-action@v1
-  with:
-    args: run --all-files
+```makefile
+.PHONY: hooks hooks-install
+
+hooks:
+	prek run --all-files
+
+hooks-install:
+	prek install
 ```
 
 ## Migration from pre-commit
 
-```bash
-# Install prek
-brew install prek
+1. Install prek: `uv tool install prek`
+2. Remove pre-commit: `pip uninstall pre-commit` or `uv tool uninstall pre-commit`
+3. Re-install hooks: `prek install`
+4. (Optional) Clean old environments: `rm -rf ~/.cache/pre-commit`
 
-# Uninstall pre-commit hooks
-pre-commit uninstall
-
-# Optionally remove pre-commit
-pip uninstall pre-commit
-
-# Install prek hooks
-prek install
-
-# Verify
-prek run --all-files
-```
-
-No configuration changes needed - prek reads the same `.pre-commit-config.yaml`.
+Your existing `.pre-commit-config.yaml` works unchanged.
 
 ## Best Practices
 
-1. **Run all-files in CI** - Catch issues not in staged changes
-2. **Pin hook versions** - Use specific revs, not branches
-3. **Use cooldown for updates** - Don't auto-update immediately
-4. **Leverage built-in hooks** - They're faster than Python equivalents
-5. **Initialize detect-secrets baseline** - Before first commit
-
-```bash
-# Initialize baseline for detect-secrets
-detect-secrets scan > .secrets.baseline
-git add .secrets.baseline
-```
+1. **Use `prek run --all-files` in CI** - Ensures all files are checked, not just changed ones
+2. **Pin hook versions** - Use specific `rev` values, not branches
+3. **Use `--cooldown-days` for auto-update** - Mitigates supply chain attacks: `prek auto-update --cooldown-days 7`
+4. **Prefer built-in hooks** - Use `repo: builtin` for common checks (faster, offline)
+5. **Run hooks before commit** - `prek install` sets this up automatically
+6. **Initialize detect-secrets baseline** - Run `detect-secrets scan > .secrets.baseline` before first commit

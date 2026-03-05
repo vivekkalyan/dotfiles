@@ -10,24 +10,16 @@ Dependabot is GitHub's native solution for managing dependency updates through a
 
 ## Setup
 
-Create `.github/dependabot.yml`:
+Copy [templates/dependabot.yml](../templates/dependabot.yml) to `.github/dependabot.yml`.
 
-```yaml
-version: 2
-updates:
-  - package-ecosystem: pip
-    directory: /
-    schedule:
-      interval: weekly
-    cooldown:
-      default-days: 7
-    groups:
-      dev:
-        patterns: ["*"]
-        update-types: ["minor", "patch"]
-```
+The template configures:
+- Weekly updates for pip and GitHub Actions
+- 7-day cooldown for newly released versions
+- Grouped PRs to reduce noise
 
-See [templates/dependabot.yml](../templates/dependabot.yml) for a complete configuration.
+## Supply Chain Protection
+
+A 7-day delay allows time for detection and removal of compromised packages before they enter your codebase.
 
 ## Configuration Options
 
@@ -41,14 +33,12 @@ schedule:
   timezone: "UTC"   # Optional timezone
 ```
 
-### Cooldown (Supply Chain Protection)
+### Cooldown
 
 ```yaml
 cooldown:
   default-days: 7  # Wait 7 days before updating to new releases
 ```
-
-**Why 7 days?** Attackers sometimes publish malicious versions of legitimate packages. A delay allows time for detection and removal before your project adopts them.
 
 ### Groups
 
@@ -56,14 +46,12 @@ Combine related updates into single PRs:
 
 ```yaml
 groups:
-  dev:
-    patterns: ["ruff", "pytest*", "mypy"]
-    update-types: ["minor", "patch"]
-
-  production:
-    patterns: ["*"]
-    update-types: ["patch"]
-    exclude-patterns: ["ruff", "pytest*", "mypy"]
+  dev-dependencies:
+    dependency-type: development
+    update-types: [minor, patch]
+  production-dependencies:
+    dependency-type: production
+    update-types: [patch]
 ```
 
 ### Ignore Rules
@@ -87,44 +75,6 @@ reviewers:
 labels:
   - dependencies
   - automated
-```
-
-## Complete Example
-
-```yaml
-version: 2
-updates:
-  # Python dependencies
-  - package-ecosystem: pip
-    directory: /
-    schedule:
-      interval: weekly
-      day: monday
-    cooldown:
-      default-days: 7
-    groups:
-      dev:
-        patterns: ["ruff", "pytest*", "hypothesis"]
-        update-types: ["minor", "patch"]
-      production:
-        patterns: ["*"]
-        update-types: ["patch"]
-    reviewers:
-      - your-team
-    labels:
-      - dependencies
-
-  # GitHub Actions
-  - package-ecosystem: github-actions
-    directory: /
-    schedule:
-      interval: weekly
-    cooldown:
-      default-days: 7
-    groups:
-      actions:
-        patterns: ["*"]
-        update-types: ["minor", "patch"]
 ```
 
 ## Dependabot vs pip-audit

@@ -1,28 +1,31 @@
 # PEP 723: Inline Script Metadata
 
-PEP 723 allows embedding dependency information directly in Python scripts, eliminating the need for separate configuration files.
+PEP 723 allows embedding dependency metadata directly in Python scripts, eliminating the need for separate `requirements.txt` or `pyproject.toml` files for simple scripts.
 
-## When to Use
+## When to Use PEP 723
 
-**Good for:**
+**Use for:**
 - Single-file scripts with external dependencies
-- Automation utilities
-- Self-contained tools
+- Quick automation scripts
+- Utility scripts shared between projects
+- Scripts that need to be self-contained
 
-**Use pyproject.toml instead for:**
-- Multi-file projects
-- Reusable libraries
-- Complex dependency configurations
+**Don't use for:**
+- Multi-file projects (use `pyproject.toml`)
+- Reusable packages/libraries
+- Projects requiring complex configuration
 
-## Basic Structure
+## Basic Syntax
+
+The metadata block uses TOML format embedded in a special comment:
 
 ```python
 #!/usr/bin/env -S uv run --script
 # /// script
-# requires-python = ">=3.12"
+# requires-python = ">=3.11"
 # dependencies = [
-#     "requests>=2.31",
-#     "rich>=13.0",
+#     "requests",
+#     "rich",
 # ]
 # ///
 
@@ -33,74 +36,155 @@ response = requests.get("https://api.example.com/data")
 print(response.json())
 ```
 
-## Creating Scripts
-
-```bash
-# Initialize a new script
-uv init --script myscript.py --python 3.12
-
-# Add dependencies to existing script
-uv add --script myscript.py requests rich
-```
-
 ## Running Scripts
 
 ```bash
-# Run with uv
-uv run myscript.py
+# With uv (recommended)
+uv run script.py
 
-# Run directly (with shebang)
-chmod +x myscript.py
-./myscript.py
+# Script handles its own dependencies automatically
+./script.py  # If shebang is set
+```
 
-# Run with specific Python version
-uv run --python 3.12 myscript.py
+## Metadata Fields
+
+### Required Python Version
+
+```python
+# /// script
+# requires-python = ">=3.11"
+# ///
+```
+
+### Dependencies
+
+```python
+# /// script
+# dependencies = [
+#     "requests",
+#     "click",
+#     "rich",
+# ]
+# ///
+```
+
+### Private Package Index
+
+```python
+# /// script
+# dependencies = ["httpx"]
+#
+# [tool.uv]
+# extra-index-url = ["https://pypi.company.com/simple/"]
+# ///
+```
+
+## Complete Example
+
+```python
+#!/usr/bin/env -S uv run --script
+# /// script
+# requires-python = ">=3.11"
+# dependencies = [
+#     "httpx",
+#     "rich",
+#     "typer",
+# ]
+# ///
+
+"""Fetch and display API data with nice formatting."""
+
+import httpx
+import typer
+from rich.console import Console
+from rich.table import Table
+
+console = Console()
+app = typer.Typer()
+
+
+@app.command()
+def fetch(url: str, format: str = "table"):
+    """Fetch data from URL and display it."""
+    with httpx.Client() as client:
+        response = client.get(url)
+        response.raise_for_status()
+        data = response.json()
+
+    if format == "table" and isinstance(data, list):
+        table = Table()
+        if data:
+            for key in data[0].keys():
+                table.add_column(key)
+            for item in data:
+                table.add_row(*[str(v) for v in item.values()])
+        console.print(table)
+    else:
+        console.print_json(data=data)
+
+
+if __name__ == "__main__":
+    app()
+```
+
+## Creating Scripts with uv
+
+```bash
+# Create new script with metadata
+uv init --script myscript.py
+
+# Add dependency to existing script
+uv add --script myscript.py requests
+
+# Remove dependency from script
+uv remove --script myscript.py requests
 ```
 
 ## Shebang Options
 
+### Basic (requires uv in PATH)
+
 ```python
-# Basic
 #!/usr/bin/env -S uv run --script
+```
 
-# Quiet mode (suppress uv output)
-#!/usr/bin/env -S uv run --quiet --script
+### With specific Python version
 
-# Specific Python version
+```python
 #!/usr/bin/env -S uv run --python 3.12 --script
 ```
 
-## Examples
+### Quiet mode (suppress uv output)
 
-### Data Processing
+```python
+#!/usr/bin/env -S uv run --quiet --script
+```
+
+## Examples by Use Case
+
+### Data Processing Script
 
 ```python
 #!/usr/bin/env -S uv run --script
 # /// script
-# requires-python = ">=3.12"
-# dependencies = [
-#     "pandas>=2.0",
-#     "pyarrow>=14.0",
-# ]
+# requires-python = ">=3.11"
+# dependencies = ["pandas", "openpyxl"]
 # ///
 
 import pandas as pd
+import sys
 
-df = pd.read_parquet("data.parquet")
+df = pd.read_excel(sys.argv[1])
 print(df.describe())
 ```
 
-### Web Scraping
+### Web Scraping Script
 
 ```python
 #!/usr/bin/env -S uv run --script
 # /// script
-# requires-python = ">=3.12"
-# dependencies = [
-#     "httpx>=0.27",
-#     "beautifulsoup4>=4.12",
-#     "lxml>=5.0",
-# ]
+# requires-python = ">=3.11"
+# dependencies = ["httpx", "beautifulsoup4", "lxml"]
 # ///
 
 import httpx
@@ -111,16 +195,13 @@ soup = BeautifulSoup(response.text, "lxml")
 print(soup.title.string)
 ```
 
-### CLI Tool
+### CLI Tool Script
 
 ```python
 #!/usr/bin/env -S uv run --script
 # /// script
-# requires-python = ">=3.12"
-# dependencies = [
-#     "typer>=0.12",
-#     "rich>=13.0",
-# ]
+# requires-python = ">=3.11"
+# dependencies = ["typer", "rich"]
 # ///
 
 import typer
@@ -141,43 +222,38 @@ if __name__ == "__main__":
 ```python
 #!/usr/bin/env -S uv run --script
 # /// script
-# requires-python = ">=3.12"
-# dependencies = [
-#     "httpx>=0.27",
-#     "asyncio>=3.4",
-# ]
+# requires-python = ">=3.11"
+# dependencies = ["httpx"]
 # ///
 
 import asyncio
 import httpx
 
-async def fetch_all(urls: list[str]) -> list[str]:
+async def main():
     async with httpx.AsyncClient() as client:
+        urls = ["https://api1.example.com", "https://api2.example.com"]
         tasks = [client.get(url) for url in urls]
         responses = await asyncio.gather(*tasks)
-        return [r.text for r in responses]
+        for r in responses:
+            print(r.status_code)
 
-if __name__ == "__main__":
-    urls = ["https://example.com", "https://example.org"]
-    results = asyncio.run(fetch_all(urls))
-    for result in results:
-        print(len(result))
+asyncio.run(main())
 ```
 
 ## Best Practices
 
-1. **Always specify requires-python** for reproducibility
-2. **Use version ranges** like `>=2.31` instead of exact pins
-3. **Keep scripts focused** on a single task
-4. **Include type hints** for clarity
-5. **Add docstrings** for documentation
+1. **Always specify `requires-python`** - Ensures compatibility
+2. **Pin major versions for Python** - Use `>=3.11` not `==3.11`
+3. **Omit version constraints for dependencies** - Use `uv add --script` to add dependencies; let uv select versions
+4. **Keep scripts focused** - One script, one purpose
+5. **Add docstring** - Document what the script does
+6. **Use type hints** - Improves readability and catches errors
 
 ## Limitations
 
-PEP 723 does NOT support:
-- Dependency groups
-- Editable installs
-- Local file dependencies
-- Complex extras
+- No support for dependency groups
+- No support for editable installs
+- No support for local dependencies (use relative imports)
+- No lockfile (versions may vary between runs)
 
-For these needs, use a full `pyproject.toml` project.
+For projects needing these features, use a full `pyproject.toml` setup instead.

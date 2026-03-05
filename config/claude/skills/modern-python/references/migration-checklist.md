@@ -1,183 +1,131 @@
 # Migration Checklist
 
-Migrate existing Python projects to modern tooling.
+Comprehensive checklist for migrating Python projects to modern tooling.
 
-## Pre-Migration
+## Before Migration
 
-- [ ] Decide on project layout: `src/` layout (recommended) or flat
-- [ ] Decide on lock strategy: commit `uv.lock` (apps) or gitignore (libraries)
-- [ ] Create backup branch: `git checkout -b pre-migration-backup`
+- [ ] **Determine layout**: `src/` or flat? Configure `[tool.uv.build-backend]` if flat
+- [ ] **Decide uv.lock strategy**: app (commit) vs library (.gitignore)
+- [ ] **Backup current state**: Create a branch or tag before starting
 
-## Remove Legacy Files
+## Cleanup Old Artifacts
 
-### Find and Remove
-
-```bash
-# Find legacy config files
-ls -la setup.py setup.cfg MANIFEST.in requirements*.txt Pipfile* poetry.lock .python-version
-
-# Find legacy tool configs in pyproject.toml
-grep -E "^\[tool\.(black|isort|flake8|mypy|pylint)\]" pyproject.toml
-
-# Find legacy pragmas in code
-rg "# pylint:|# noqa:|# type: ignore" --type py
-
-# Remove legacy files
-rm -f setup.py setup.cfg MANIFEST.in requirements*.txt Pipfile Pipfile.lock poetry.lock .python-version
-
-# Remove old virtual environments
-rm -rf venv .venv env .env
-```
-
-### Remove Legacy Dependencies
+Find and remove legacy linter comments:
 
 ```bash
-uv remove black isort flake8 pylint mypy pyright autoflake pyupgrade
+# Find files with old linter pragmas
+rg "# pylint:|# noqa:|# type: ignore" --files-with-matches
+
+# Find missing __init__.py files
+uv run ruff check --select=INP001 .
 ```
 
-## Update .gitignore
+Remove these files after migration:
+- [ ] `requirements.txt`, `requirements-dev.txt`
+- [ ] `setup.py`, `setup.cfg`, `MANIFEST.in`
+- [ ] `.flake8`, `mypy.ini`, `pyrightconfig.json`
+- [ ] `tox.ini` (if not needed)
+- [ ] `Pipfile`, `Pipfile.lock`
+- [ ] Old virtual environments (`venv/`, `.venv/`)
+
+## .gitignore Updates
+
+Add these entries:
 
 ```gitignore
 # Python
 __pycache__/
 *.py[cod]
-*.so
-.Python
-build/
-dist/
-*.egg-info/
-
-# Virtual environments (uv manages these)
 .venv/
 
-# Tool caches
+# Tools
 .ruff_cache/
-.pytest_cache/
-.coverage
-htmlcov/
+.ty/
 
-# Lock file (uncomment for libraries)
+# uv (for libraries only - apps should commit uv.lock)
 # uv.lock
 ```
 
-## Update pyproject.toml
+## pyproject.toml Sections to Remove
 
-### Remove Legacy Tool Sections
+- [ ] `[tool.black]`
+- [ ] `[tool.isort]`
+- [ ] `[tool.mypy]`
+- [ ] `[tool.pyright]`
+- [ ] `[tool.pylint]`
+- [ ] `[tool.flake8]` (if present)
 
-Delete these sections if present:
-- `[tool.black]`
-- `[tool.isort]`
-- `[tool.flake8]`
-- `[tool.mypy]`
-- `[tool.pylint]`
+## Post-Migration Easy Wins
 
-### Add Modern Configuration
-
-See [pyproject.md](pyproject.md) for complete configuration.
-
-## Modernize Code
-
-Run automatic fixes:
+Run these to modernize code automatically:
 
 ```bash
-# Upgrade Python syntax
-uv run ruff check . --select UP --fix
+# Pyupgrade modernization (typing, syntax)
+uv run ruff check --select=UP --fix .
 
-# Remove unnecessary return statements
-uv run ruff check . --select RET504 --fix
+# Unnecessary variable assignments before return
+uv run ruff check --select=RET504 --fix .
 
-# Simplify code
-uv run ruff check . --select SIM --fix
+# Simplifications (conditionals, comprehensions)
+uv run ruff check --select=SIM --fix .
 
-# Remove dead code
-uv run ruff check . --select ERA --fix --unsafe-fixes
+# Remove commented-out code
+uv run ruff check --select=ERA --fix .
 ```
 
-## Type Checking
+## CI Cleanup
 
-### Gradual Adoption
+- [ ] Remove scheduled CI triggers (activity without progress is theater)
+- [ ] Update CI to use `uv sync` and `uv run`
+- [ ] Pin GitHub Actions to SHA hashes
+- [ ] Set up security tooling (see [security-setup.md](./security-setup.md))
 
-Start with lenient rules:
+## Gradual ty Adoption
+
+For legacy codebases with many type errors, start lenient:
 
 ```toml
-[tool.ty]
-strict = false
+[tool.ty.terminal]
+error-on-warning = true
+
+[tool.ty.environment]
+python-version = "3.11"
+
+[tool.ty.rules]
+# Start with these ignored for legacy codebases
+possibly-missing-attribute = "ignore"
+unresolved-import = "ignore"
+invalid-argument-type = "ignore"
+not-subscriptable = "ignore"
+unresolved-attribute = "ignore"
 ```
 
-Then progressively enable:
+Remove rules as you fix errors. Track progress:
 
 ```bash
-# Check current state
-uv run ty check src/
-
-# Fix issues incrementally
-# Enable stricter rules as errors are resolved
+# Count remaining issues
+uv run ty check src/ 2>&1 | grep -c "error"
 ```
 
-## Security Setup
+## Supply Chain Security
 
-```bash
-# Install prek
-brew install prek
+- [ ] Add pip-audit to dependency groups
+- [ ] Configure Dependabot with 7-day cooldown
+- [ ] Pin exact versions in production (`==` not `>=`)
 
-# Copy template
-cp ~/.claude/skills/modern-python/templates/pre-commit-config.yaml .pre-commit-config.yaml
-
-# Initialize detect-secrets baseline
-detect-secrets scan > .secrets.baseline
-
-# Install hooks
-prek install
-
-# Run on all files
-prek run --all-files
-```
-
-## Update CI
-
-Replace old commands:
-
-| Old | New |
-|-----|-----|
-| `pip install -r requirements.txt` | `uv sync --frozen` |
-| `pip install -e .` | `uv sync` |
-| `python -m pytest` | `uv run pytest` |
-| `black --check .` | `uv run ruff format --check .` |
-| `flake8 .` | `uv run ruff check .` |
-| `mypy src/` | `uv run ty check src/` |
-
-Example GitHub Actions:
-
-```yaml
-- uses: astral-sh/setup-uv@v4
-
-- name: Install dependencies
-  run: uv sync --frozen
-
-- name: Lint
-  run: uv run ruff check .
-
-- name: Format check
-  run: uv run ruff format --check .
-
-- name: Type check
-  run: uv run ty check src/
-
-- name: Test
-  run: uv run pytest
-```
+See [security-setup.md](./security-setup.md) for pip-audit and Dependabot configuration.
 
 ## Verification
 
+After migration, verify everything works:
+
 ```bash
-# Sync dependencies
-uv sync
+# Install all dependencies
+uv sync --all-groups
 
 # Run linting
 uv run ruff check .
-
-# Run formatting
-uv run ruff format .
+uv run ruff format --check .
 
 # Run type checking
 uv run ty check src/
@@ -185,13 +133,9 @@ uv run ty check src/
 # Run tests
 uv run pytest
 
-# Run pre-commit hooks
-prek run --all-files
+# Security audit
+uv run pip-audit
+
+# Build package (if distributable)
+uv build
 ```
-
-## Final Cleanup
-
-- [ ] Remove migration backup branch after verification
-- [ ] Update README with new commands
-- [ ] Update CONTRIBUTING guide if present
-- [ ] Notify team of new workflow

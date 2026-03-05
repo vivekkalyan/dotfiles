@@ -1,24 +1,45 @@
 # Testing with pytest
 
+Configuration and best practices for pytest with coverage enforcement.
+
 ## Setup
+
+Add test dependencies:
 
 ```bash
 uv add --group test pytest pytest-cov hypothesis
 ```
 
-## Configuration
-
-Add to `pyproject.toml`:
+## pyproject.toml Configuration
 
 ```toml
-[tool.pytest.ini_options]
+[tool.pytest]
 testpaths = ["tests"]
 pythonpath = ["src"]
-addopts = "-ra --cov=myproject --cov-report=term-missing --cov-fail-under=80"
+addopts = [
+    "-ra",                      # Show summary of all test outcomes
+    "--strict-markers",         # Error on unknown markers
+    "--strict-config",          # Error on config issues
+    "--cov=myproject",          # Coverage for package
+    "--cov-report=term-missing", # Show missing lines
+    "--cov-fail-under=80",      # Minimum coverage
+]
+markers = [
+    "slow: marks tests as slow",
+    "integration: marks integration tests",
+]
+filterwarnings = [
+    "error",                    # Treat warnings as errors
+    "ignore::DeprecationWarning:third_party.*",
+]
 
 [tool.coverage.run]
 branch = true
 source = ["src/myproject"]
+omit = [
+    "*/__main__.py",
+    "*/conftest.py",
+]
 
 [tool.coverage.report]
 exclude_lines = [
@@ -26,8 +47,10 @@ exclude_lines = [
     "if TYPE_CHECKING:",
     "if __name__ == .__main__.:",
     "raise NotImplementedError",
+    "@abstractmethod",
 ]
-omit = ["*/__main__.py", "*/conftest.py"]
+fail_under = 80
+show_missing = true
 ```
 
 ## Project Structure
@@ -39,7 +62,8 @@ myproject/
 │       ├── __init__.py
 │       └── core.py
 ├── tests/
-│   ├── conftest.py
+│   ├── __init__.py
+│   ├── conftest.py          # Shared fixtures
 │   ├── test_core.py
 │   └── integration/
 │       └── test_api.py
@@ -52,65 +76,85 @@ myproject/
 # Run all tests
 uv run pytest
 
-# Verbose output
+# Run with verbose output
 uv run pytest -v
+
+# Run specific file
+uv run pytest tests/test_core.py
+
+# Run specific test
+uv run pytest tests/test_core.py::test_function_name
+
+# Run tests matching pattern
+uv run pytest -k "test_parse"
+
+# Run marked tests
+uv run pytest -m "not slow"
 
 # Stop on first failure
 uv run pytest -x
 
 # Run last failed
 uv run pytest --lf
-
-# Run specific file
-uv run pytest tests/test_core.py
-
-# Run specific test
-uv run pytest tests/test_core.py::test_function
-
-# Run by marker
-uv run pytest -m slow
-
-# Run matching pattern
-uv run pytest -k "test_user"
-
-# Show print output
-uv run pytest -s
-
-# Generate HTML coverage report
-uv run pytest --cov-report=html
 ```
 
-## Test Patterns
+## Coverage Commands
+
+```bash
+# Run with coverage
+uv run pytest --cov=myproject
+
+# Generate HTML report
+uv run pytest --cov=myproject --cov-report=html
+open htmlcov/index.html
+
+# Coverage without running tests (use existing data)
+uv run coverage report
+uv run coverage html
+```
+
+## Writing Tests
 
 ### Basic Test
 
 ```python
-def test_addition():
-    assert 1 + 1 == 2
+# tests/test_core.py
+from myproject.core import add_numbers
+
+def test_add_numbers():
+    assert add_numbers(2, 3) == 5
+
+def test_add_negative():
+    assert add_numbers(-1, 1) == 0
 ```
 
-### Fixtures
+### Using Fixtures
 
 ```python
+# tests/conftest.py
 import pytest
+from myproject.db import Database
 
 @pytest.fixture
-def sample_data():
-    return {"key": "value"}
+def db():
+    """Provide a test database."""
+    database = Database(":memory:")
+    database.init()
+    yield database
+    database.close()
 
-def test_with_fixture(sample_data):
-    assert sample_data["key"] == "value"
+@pytest.fixture
+def sample_data(db):
+    """Populate database with sample data."""
+    db.insert({"name": "test"})
+    return db
 ```
 
-### Fixture with Cleanup
-
 ```python
-@pytest.fixture
-def temp_file(tmp_path):
-    file = tmp_path / "test.txt"
-    file.write_text("content")
-    yield file
-    # Cleanup happens automatically with tmp_path
+# tests/test_db.py
+def test_query(sample_data):
+    result = sample_data.query("test")
+    assert result is not None
 ```
 
 ### Parametrized Tests
@@ -119,22 +163,27 @@ def temp_file(tmp_path):
 import pytest
 
 @pytest.mark.parametrize("input,expected", [
-    (1, 2),
-    (2, 4),
-    (3, 6),
+    ("hello", 5),
+    ("", 0),
+    ("test", 4),
 ])
-def test_double(input, expected):
-    assert input * 2 == expected
+def test_string_length(input, expected):
+    assert len(input) == expected
 ```
 
-### Exception Testing
+### Testing Exceptions
 
 ```python
 import pytest
+from myproject.core import divide
 
-def test_raises_error():
-    with pytest.raises(ValueError, match="invalid"):
-        raise ValueError("invalid input")
+def test_divide_by_zero():
+    with pytest.raises(ZeroDivisionError):
+        divide(1, 0)
+
+def test_divide_by_zero_message():
+    with pytest.raises(ZeroDivisionError, match="division by zero"):
+        divide(1, 0)
 ```
 
 ### Async Tests
@@ -148,70 +197,80 @@ import pytest
 
 @pytest.mark.asyncio
 async def test_async_function():
-    result = await some_async_function()
-    assert result == expected
+    result = await fetch_data()
+    assert result is not None
 ```
 
-### Property-Based Testing
+## Property-Based Testing with Hypothesis
+
+```bash
+uv add --group test hypothesis
+```
 
 ```python
-from hypothesis import given
-from hypothesis import strategies as st
+from hypothesis import given, strategies as st
+from myproject.core import reverse_string
+
+@given(st.text())
+def test_reverse_is_reversible(s):
+    assert reverse_string(reverse_string(s)) == s
 
 @given(st.integers(), st.integers())
-def test_addition_commutative(a, b):
-    assert a + b == b + a
+def test_add_commutative(a, b):
+    assert add(a, b) == add(b, a)
 ```
 
 ## Markers
-
-Define in `pyproject.toml`:
-
-```toml
-[tool.pytest.ini_options]
-markers = [
-    "slow: marks tests as slow",
-    "integration: marks tests as integration tests",
-]
-```
-
-Use in tests:
 
 ```python
 import pytest
 
 @pytest.mark.slow
 def test_slow_operation():
-    ...
+    # Long running test
+    pass
 
 @pytest.mark.integration
-def test_database_connection():
-    ...
+def test_api_call():
+    # Requires external service
+    pass
+
+@pytest.mark.skip(reason="Not implemented yet")
+def test_future_feature():
+    pass
+
+@pytest.mark.skipif(sys.platform == "win32", reason="Unix only")
+def test_unix_feature():
+    pass
 ```
 
-Run by marker:
-
-```bash
-uv run pytest -m "not slow"
-uv run pytest -m integration
-```
-
-## GitHub Actions
+## CI Configuration
 
 ```yaml
+# GitHub Actions
+- name: Checkout
+  uses: actions/checkout@<sha>  # <latest> https://github.com/actions/checkout/releases
+
 - name: Run tests
-  run: uv run pytest --cov-report=xml
+  run: |
+    uv sync --group test
+    uv run pytest --cov-report=xml
+
+- name: Security audit
+  run: |
+    uv sync --group audit
+    uv run pip-audit
 
 - name: Upload coverage
-  uses: codecov/codecov-action@v4
+  uses: codecov/codecov-action@<sha>  # <latest> https://github.com/codecov/codecov-action/releases
   with:
-    files: coverage.xml
+    files: ./coverage.xml
 ```
 
-## Makefile Targets
+## Makefile Target
 
 ```makefile
-.PHONY: test test-cov test-fast
+.PHONY: test
 
 test:
 	uv run pytest
@@ -221,5 +280,5 @@ test-cov:
 	open htmlcov/index.html
 
 test-fast:
-	uv run pytest -x --lf
+	uv run pytest -x -q --no-cov
 ```
