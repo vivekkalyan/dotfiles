@@ -106,9 +106,4 @@ in {
     done
   '';
 
-  # Homebrew-managed: hivemind (wandb/taps)
-  home.activation.hivemind = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    /opt/homebrew/bin/brew upgrade wandb/taps/hivemind 2>/dev/null || /opt/homebrew/bin/brew install wandb/taps/hivemind
-    /opt/homebrew/bin/brew services restart wandb/taps/hivemind
-  '';
 }
