@@ -111,13 +111,15 @@ Or manually:
 
 ## Makefile Integration
 
+Add these targets to the canonical template in [makefile.md](./makefile.md):
+
 ```makefile
 .PHONY: hooks hooks-install
 
-hooks:
+hooks: ## Run all pre-commit hooks
 	prek run --all-files
 
-hooks-install:
+hooks-install: ## Install pre-commit hooks
 	prek install
 ```
 

@@ -269,16 +269,15 @@ def test_unix_feature():
 
 ## Makefile Target
 
+Add optional testing targets to the canonical template in [makefile.md](./makefile.md):
+
 ```makefile
-.PHONY: test
+.PHONY: test-cov test-fast
 
-test:
-	uv run pytest
-
-test-cov:
+test-cov: ## Run tests with HTML coverage report
 	uv run pytest --cov-report=html
 	open htmlcov/index.html
 
-test-fast:
+test-fast: ## Run tests quickly, stop on first failure, no coverage
 	uv run pytest -x -q --no-cov
 ```

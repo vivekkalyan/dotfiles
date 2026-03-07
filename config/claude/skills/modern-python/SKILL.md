@@ -184,24 +184,7 @@ uv sync --group dev
 
 ### 4. Add Makefile
 
-```makefile
-.PHONY: dev lint format test build
-
-dev:
-	uv sync --all-groups
-
-lint:
-	uv run ruff format --check && uv run ruff check && uv run ty check src/
-
-format:
-	uv run ruff format .
-
-test:
-	uv run pytest
-
-build:
-	uv build
-```
+Use the canonical template in [makefile.md](./references/makefile.md). It includes shell safety defaults, a `help` target powered by `##` docs, and standard Python project targets.
 
 ## Migration Guide
 
