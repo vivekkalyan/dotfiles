@@ -79,14 +79,14 @@
 
   bclean = "!f() { \
     echo 'Looking for local branches whose upstream is gone...'; \
-    GONE_BRANCHES=$(git branch -vv | grep ': gone]' | awk '{print $1}'); \
+    GONE_BRANCHES=$(git for-each-ref --format='%(refname:lstrip=2)|%(upstream:track)' refs/heads | awk -F'|' '$2 == \"[gone]\" {print $1}'); \
     CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD); \
     echo \"Current branch is '$CURRENT_BRANCH'. It will not be deleted.\"; \
-    BRANCHES_TO_DELETE=$(echo \"$GONE_BRANCHES\" | grep -v \"^$CURRENT_BRANCH$\"); \
+    BRANCHES_TO_DELETE=$(printf '%s\n' \"$GONE_BRANCHES\" | grep -v \"^$CURRENT_BRANCH$\" || true); \
     if [ -n \"$BRANCHES_TO_DELETE\" ]; then \
         echo 'Found branches whose upstream is gone:'; \
         echo \"$BRANCHES_TO_DELETE\"; \
-        echo \"$BRANCHES_TO_DELETE\" | xargs git branch -D; \
+        printf '%s\n' \"$BRANCHES_TO_DELETE\" | xargs git branch -D; \
         echo 'Deletion attempt finished. Check output for errors (e.g., unmerged changes).'; \
     else \
         echo 'No local branches found with gone upstreams (excluding current branch).'; \
