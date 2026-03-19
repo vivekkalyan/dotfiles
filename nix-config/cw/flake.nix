@@ -38,6 +38,9 @@
           # disable nix
           nix.enable = false;
 
+          # Bellevue, Washington: Pacific Time with US locale/region defaults.
+          time.timeZone = "America/Los_Angeles";
+
           # Install macOS apps (e.g., Raycast) via Homebrew casks
           homebrew.enable = true;
           homebrew.onActivation = {
@@ -91,6 +94,18 @@
 
           # Disable autocorrect
           system.defaults.NSGlobalDomain.NSAutomaticSpellingCorrectionEnabled = false;
+
+          # Keep macOS language/region defaults aligned with the current location.
+          system.defaults.CustomUserPreferences.".GlobalPreferences" = {
+            Country = "US";
+            AppleLocale = "en_US";
+            AppleLanguages = [ "en-US" ];
+          };
+          system.defaults.CustomSystemPreferences."/Library/Preferences/.GlobalPreferences" = {
+            Country = "US";
+            AppleLocale = "en_US";
+            AppleLanguages = [ "en-US" ];
+          };
 
           # Save screenshots to clipboard
           system.defaults.screencapture.target = "clipboard";
