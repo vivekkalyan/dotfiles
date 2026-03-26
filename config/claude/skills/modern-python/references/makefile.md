@@ -15,25 +15,31 @@ SHELL := bash
 MAKEFLAGS += --warn-undefined-variables
 MAKEFLAGS += --no-builtin-rules
 
-.PHONY: help dev lint format test build
+.PHONY: help install install-hooks lint format typecheck hooks test
 
 help: ## Show available commands
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
-dev: ## Sync all dependency groups
+install: install-hooks ## Install all dependencies
 	uv sync --all-groups
 
-lint: ## Run linting and type checks
-	uv run ruff format --check && uv run ruff check && uv run ty check src/
+install-hooks: ## Install pre-commit hooks
+	prek install
 
-format: ## Format code
+lint: ## Lint code with ruff
+	uv run ruff check . --fix
+
+format: ## Format code with ruff
 	uv run ruff format .
 
-test: ## Run test suite
-	uv run pytest
+typecheck: ## Type-check code with ty
+	uv run ty check
 
-build: ## Build the package
-	uv build
+hooks: ## Run pre-commit hooks
+	prek run --all-files
+
+test: ## Run tests
+	uv run pytest
 ```
 
 ## Document Targets with `##`

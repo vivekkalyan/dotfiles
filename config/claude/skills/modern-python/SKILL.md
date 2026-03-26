@@ -66,7 +66,7 @@ What are you doing?
 | **uv** | Package/dependency management | pip, virtualenv, pip-tools, pipx, pyenv |
 | **ruff** | Linting AND formatting | flake8, black, isort, pyupgrade, pydocstyle |
 | **ty** | Type checking | mypy, pyright (faster alternative) |
-| **pytest** | Testing with coverage | unittest |
+| **pytest** | Testing | unittest |
 | **prek** | Pre-commit hooks ([setup](./references/prek.md)) | pre-commit (faster, Rust-native) |
 
 ### Security Tools
@@ -144,21 +144,18 @@ requires-python = ">=3.11"
 dependencies = []
 
 [dependency-groups]
-dev = [{include-group = "lint"}, {include-group = "test"}, {include-group = "audit"}]
-lint = ["ruff", "ty"]
-test = ["pytest", "pytest-cov"]
-audit = ["pip-audit"]
+dev = ["ruff", "ty", "pytest"]
 
 [tool.ruff]
 line-length = 100
-target-version = "py311"
+src = ["src", "tests"]
 
 [tool.ruff.lint]
-select = ["ALL"]
-ignore = ["D", "COM812", "ISC001"]
+select = ["E", "F", "W", "I", "UP", "B", "SIM", "RUF", "C4", "PT"]
 
-[tool.pytest]
-addopts = ["--cov=myproject", "--cov-fail-under=80"]
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = ["-q", "--strict-markers", "--strict-config"]
 
 [tool.ty.terminal]
 error-on-warning = true
@@ -282,9 +279,8 @@ See [uv-commands.md](./references/uv-commands.md) for complete reference.
 
 - [ ] Use `src/` layout for packages
 - [ ] Set `requires-python = ">=3.11"`
-- [ ] Configure ruff with `select = ["ALL"]` and explicit ignores
+- [ ] Configure ruff with selective rules (`["E", "F", "W", "I", "UP", "B", "SIM", "RUF", "C4", "PT"]`)
 - [ ] Use ty for type checking
-- [ ] Enforce test coverage minimum (80%+)
 - [ ] Use dependency groups instead of extras for dev tools
 - [ ] Add `uv.lock` to version control
 - [ ] Use PEP 723 for standalone scripts

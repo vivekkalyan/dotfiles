@@ -60,19 +60,7 @@ target-version = "py311"
 src = ["src"]
 
 [tool.ruff.lint]
-select = ["ALL"]
-ignore = [
-    "D",        # pydocstyle (enable selectively)
-    "COM812",   # trailing comma (conflicts with formatter)
-    "ISC001",   # implicit string concat (conflicts with formatter)
-]
-
-[tool.ruff.lint.per-file-ignores]
-"tests/**/*.py" = [
-    "S101",     # assert allowed in tests
-    "PLR2004",  # magic values allowed in tests
-    "ANN",      # annotations optional in tests
-]
+select = ["E", "F", "W", "I", "UP", "B", "SIM", "RUF", "C4", "PT"]
 
 [tool.ruff.format]
 quote-style = "double"
@@ -177,26 +165,18 @@ Development dependencies (PEP 735). Unlike optional-dependencies, these are NOT 
 
 ```toml
 [dependency-groups]
-dev = [{include-group = "lint"}, {include-group = "test"}, {include-group = "audit"}]
-lint = ["ruff", "ty"]
-test = ["pytest", "pytest-cov"]
-audit = ["pip-audit"]
-docs = ["sphinx", "myst-parser"]
+dev = ["ruff", "ty", "pytest"]
 ```
 
-Install with: `uv sync --group dev --group test`
+Install with: `uv sync --group dev`
 
-### [tool.uv]
-
-uv-specific configuration:
+For larger projects, you can split into sub-groups with `include-group` if CI benefits from selective installation:
 
 ```toml
-[tool.uv]
-# Default groups to install with `uv sync`
-default-groups = ["dev", "test"]
-
-# Python version management
-python-preference = "managed"
+[dependency-groups]
+dev = [{include-group = "lint"}, {include-group = "test"}]
+lint = ["ruff", "ty"]
+test = ["pytest"]
 ```
 
 ## Version Specifiers
@@ -228,8 +208,7 @@ dependencies = []  # Minimal runtime deps
 async = ["httpx"]
 
 [dependency-groups]
-dev = ["ruff", "ty"]
-test = ["pytest", "pytest-cov"]
+dev = ["ruff", "ty", "pytest"]
 ```
 
 ### Application Package

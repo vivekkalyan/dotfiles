@@ -7,23 +7,15 @@ Configuration and best practices for pytest with coverage enforcement.
 Add test dependencies:
 
 ```bash
-uv add --group test pytest pytest-cov hypothesis
+uv add --group test pytest
 ```
 
 ## pyproject.toml Configuration
 
 ```toml
-[tool.pytest]
+[tool.pytest.ini_options]
 testpaths = ["tests"]
-pythonpath = ["src"]
-addopts = [
-    "-ra",                      # Show summary of all test outcomes
-    "--strict-markers",         # Error on unknown markers
-    "--strict-config",          # Error on config issues
-    "--cov=myproject",          # Coverage for package
-    "--cov-report=term-missing", # Show missing lines
-    "--cov-fail-under=80",      # Minimum coverage
-]
+addopts = ["-q", "--strict-markers", "--strict-config"]
 markers = [
     "slow: marks tests as slow",
     "integration: marks integration tests",
@@ -32,6 +24,21 @@ filterwarnings = [
     "error",                    # Treat warnings as errors
     "ignore::DeprecationWarning:third_party.*",
 ]
+```
+
+## Coverage (Optional)
+
+Only set up coverage when explicitly needed. Add `pytest-cov`:
+
+```bash
+uv add --group test pytest-cov
+```
+
+Then extend your pytest config:
+
+```toml
+[tool.pytest.ini_options]
+addopts = ["-q", "--strict-markers", "--strict-config", "--cov=myproject", "--cov-report=term-missing", "--cov-fail-under=80"]
 
 [tool.coverage.run]
 branch = true

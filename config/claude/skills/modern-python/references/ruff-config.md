@@ -9,21 +9,15 @@ Add to `pyproject.toml`:
 ```toml
 [tool.ruff]
 line-length = 100
-target-version = "py311"
-src = ["src"]
+# target-version is inferred from requires-python, no need to set it
+src = ["src", "tests"]
 
 [tool.ruff.lint]
-select = ["ALL"]
-ignore = [
-    "D",        # pydocstyle
-    "COM812",   # trailing comma (formatter conflict)
-    "ISC001",   # string concat (formatter conflict)
-]
+select = ["E", "F", "W", "I", "UP", "B", "SIM", "RUF", "C4", "PT"]
 
 [tool.ruff.format]
 quote-style = "double"
 indent-style = "space"
-docstring-code-format = true
 ```
 
 ## Running Ruff
@@ -69,55 +63,36 @@ Using `select = ["ALL"]` enables all rules. Common categories:
 | `RUF` | Ruff-specific | Ruff's own rules |
 | `ANN` | flake8-annotations | Type annotation checks |
 
-## Recommended Ignores
-
-### Always Ignore (Formatter Conflicts)
-
-```toml
-ignore = [
-    "COM812",   # missing-trailing-comma
-    "ISC001",   # single-line-implicit-string-concatenation
-]
-```
-
-### Common Ignores
-
-```toml
-ignore = [
-    "D",        # Docstrings (enable selectively)
-    "ANN401",   # Dynamically typed Any
-    "TD002",    # Missing TODO author
-    "TD003",    # Missing TODO link
-    "FIX002",   # Line contains TODO
-]
-```
-
 ## Per-File Ignores
+
+Only needed if you add additional rule categories beyond the default select:
 
 ```toml
 [tool.ruff.lint.per-file-ignores]
-# Tests
-"tests/**/*.py" = [
-    "S101",     # assert usage
-    "PLR2004",  # magic values
-    "ANN",      # type annotations
-    "D",        # docstrings
-]
-
-# Scripts
-"scripts/**/*.py" = [
-    "T20",      # print statements
-    "INP001",   # implicit namespace package
-]
-
 # __init__.py
 "__init__.py" = [
     "F401",     # unused imports (re-exports)
 ]
+```
 
-# Migrations
-"**/migrations/*.py" = [
-    "ALL",      # ignore all
+## If Using `select = ["ALL"]`
+
+For non-ML projects that want exhaustive linting, use `select = ["ALL"]` with these ignores:
+
+```toml
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+    "D",        # pydocstyle
+    "COM812",   # trailing comma (formatter conflict)
+    "ISC001",   # string concat (formatter conflict)
+    "ANN",      # annotations — let ty handle type checking
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = [
+    "S101",     # assert usage
+    "PLR2004",  # magic values
 ]
 ```
 
@@ -163,8 +138,6 @@ quote-style = "double"           # or "single"
 indent-style = "space"           # or "tab"
 skip-magic-trailing-comma = false
 line-ending = "auto"             # or "lf", "crlf"
-docstring-code-format = true
-docstring-code-line-length = 80
 ```
 
 ## Type Checking
