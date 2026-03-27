@@ -7,12 +7,20 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     nix-darwin.url = "github:nix-darwin/nix-darwin/nix-darwin-25.11";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
   };
 
-  outputs = { self, nixpkgs, home-manager, nix-darwin, ... }:
+  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, nix-darwin, ... }:
   let
     system = "aarch64-darwin";
-    pkgs   = import nixpkgs { inherit system; };
+    unstable = import nixpkgs-unstable { inherit system; };
+    overlay = _final: _prev: {
+      prek = unstable.prek;
+    };
+    pkgs   = import nixpkgs {
+      inherit system;
+      overlays = [ overlay ];
+    };
   in {
     # Home Manager-only build
     homeConfigurations."cw" =
@@ -27,11 +35,13 @@
       modules = [
         home-manager.darwinModules.home-manager
         {
+          nixpkgs.overlays = [ overlay ];
           system.stateVersion = 6;
           system.primaryUser  = "vkalyan";
 
           # Run HM for this user
           users.users.vkalyan.home = "/Users/vkalyan";
+          home-manager.useGlobalPkgs    = true;
           home-manager.useUserPackages = true;
           home-manager.users.vkalyan = import ./home.nix;
 
