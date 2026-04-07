@@ -62,6 +62,7 @@
             "claude"
             "claude-code"
             "codex"
+            "codex-app"
             "cursor"
             "flux-app"
             "font-meslo-lg-nerd-font"
