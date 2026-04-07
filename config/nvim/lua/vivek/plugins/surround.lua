@@ -1,17 +1,17 @@
 return {
   "kylechui/nvim-surround",
   event = "VeryLazy",
-  -- remove some keymaps
-  opts = {
-    keymaps = {
-      normal = "ys",
-      normal_cur = "yss",
-      normal_line = "yS",
-      normal_cur_line = "ySS",
-      visual = "S",
-      delete = "ds",
-      change = "cs",
-      change_line = "cS",
-    },
-  },
+  init = function()
+    -- v4 moved keymap customization out of setup().
+    -- Keep the default normal-mode mappings, but drop insert-mode mappings
+    -- and the visual-line mapping (`gS`).
+    vim.g.nvim_surround_no_insert_mappings = true
+    vim.g.nvim_surround_no_visual_mappings = true
+  end,
+  config = function()
+    require("nvim-surround").setup({})
+    vim.keymap.set("x", "S", "<Plug>(nvim-surround-visual)", {
+      desc = "Add a surrounding pair around a visual selection",
+    })
+  end,
 }
