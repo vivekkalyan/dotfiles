@@ -99,4 +99,3 @@ export LEDGER_FILE
 unset DOTFILE
 
 eval "$(zoxide init zsh)"
-eval "$($(which mise) activate zsh)"

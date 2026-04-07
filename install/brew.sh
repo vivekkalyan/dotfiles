@@ -12,6 +12,7 @@ fi
 # Install packages
 
 apps=(
+  bun
   coreutils
   curl
   eza
@@ -21,8 +22,8 @@ apps=(
   hledger
   imagemagick
   make
-  mise
   neovim
+  node
   pre-commit
   ripgrep
   rsync

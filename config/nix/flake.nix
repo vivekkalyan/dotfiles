@@ -15,6 +15,7 @@
       # List packages installed in system profile. To search by name, run:
       # $ nix-env -qaP | grep wget
       environment.systemPackages = with pkgs; [
+        bun
         curl
         eza
         fd
@@ -22,8 +23,8 @@
         git
         hledger
         gnumake
-        mise
         neovim
+        nodejs_24
         pre-commit
         ripgrep
         rsync

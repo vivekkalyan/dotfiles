@@ -8,6 +8,7 @@ in {
   home.stateVersion = "25.05";
 
   home.packages = with pkgs; [
+    bun
     coreutils
     curl
     eza
@@ -20,8 +21,8 @@ in {
     jq
     keepassxc
     llama-cpp
-    mise
     neovim
+    nodejs_24
     prek
     ripgrep
     tmux
@@ -34,16 +35,11 @@ in {
     socat
   ];
 
-  # PATH: nix, personal bin, and mise shims
+  # PATH: nix-managed tools plus personal scripts.
   home.sessionPath = [
     "${homeDir}/.local/bin"
     "${homeDir}/.nix-profile/bin"
-    "${homeDir}/.local/share/mise/shims"
   ];
-
-  xdg.configFile."mise" = {
-    source = oos "${homeDir}/personal/dotfiles/config/mise";
-  };
   xdg.configFile."nvim" = {
     source = oos "${homeDir}/personal/dotfiles/config/nvim";
   };
