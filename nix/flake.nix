@@ -78,6 +78,21 @@
 
           # Dock size (pixels).
           system.defaults.dock.tilesize = 16;
+          system.defaults.dock.show-recents = false;
+          system.defaults.dock.persistent-apps = [
+            { app = "/System/Library/CoreServices/Finder.app"; }
+            { app = "/Applications/CoreWeave App Store.app"; }
+            { app = "/Applications/Ghostty.app"; }
+            { app = "/Applications/Safari.app"; }
+            { app = "/System/Applications/Calendar.app"; }
+            { app = "/Applications/Obsidian.app"; }
+            { app = "/Applications/Claude.app"; }
+            { app = "/Applications/Codex.app"; }
+            { app = "/Applications/Zen.app"; }
+          ];
+          system.defaults.dock.persistent-others = [
+            { folder = "/Users/vkalyan/Downloads"; }
+          ];
 
           # Disable macOS shortcuts that conflict with terminal/editor keybindings
           # ID 32 = Mission Control (ctrl+up)
