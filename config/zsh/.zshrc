@@ -39,7 +39,7 @@ if [[ -n "${commands[fzf]}" ]]; then
 fi
 
 # Load the shell dotfiles, and then some:
-for DOTFILE in "$DOTFILES_DIR"/system/{path,alias,rvm,functions}; do
+for DOTFILE in "$DOTFILES_DIR"/system/{path,alias,functions}; do
   [ -r "$DOTFILE" ] && source "$DOTFILE"
 done
 

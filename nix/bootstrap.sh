@@ -6,7 +6,7 @@ DEFAULT_REPO_URL="git@github.com:vivekkalyan/dotfiles.git"
 REPO_URL="${DOTFILES_REPO_URL:-$DEFAULT_REPO_URL}"
 REPO_DIR="${DOTFILES_REPO_DIR:-$HOME/personal/dotfiles}"
 FLAKE_HOST="${DOTFILES_DARWIN_HOST:-cw}"
-FLAKE_SUBDIR="nix-config/cw"
+FLAKE_SUBDIR="nix"
 
 log() {
   printf '[bootstrap] %s\n' "$*"
