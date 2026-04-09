@@ -1,16 +1,17 @@
 return {
-  "iamcco/markdown-preview.nvim",
-  cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+  "selimacerbas/markdown-preview.nvim",
+  name = "selim-markdown-preview.nvim",
+  dependencies = { "selimacerbas/live-server.nvim" },
+  cmd = { "MarkdownPreview", "MarkdownPreviewRefresh", "MarkdownPreviewStop" },
   ft = { "markdown" },
-  build = "cd app && npx --yes yarn install",
-  init = function()
-    vim.g.mkdp_filetypes = { "markdown" }
+  config = function()
+    require("markdown_preview").setup()
   end,
   keys = {
     {
       "<leader>cp",
       ft = "markdown",
-      "<cmd>MarkdownPreviewToggle<cr>",
+      "<cmd>MarkdownPreview<cr>",
       desc = "Markdown Preview",
     },
   },
