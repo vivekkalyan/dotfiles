@@ -7,6 +7,7 @@ REPO_URL="${DOTFILES_REPO_URL:-$DEFAULT_REPO_URL}"
 REPO_DIR="${DOTFILES_REPO_DIR:-$HOME/personal/dotfiles}"
 FLAKE_HOST="${DOTFILES_DARWIN_HOST:-cw}"
 FLAKE_SUBDIR="nix"
+DETERMINATE_INSTALL_URL="https://install.determinate.systems/nix"
 
 log() {
   printf '[bootstrap] %s\n' "$*"
@@ -70,8 +71,8 @@ ensure_nix() {
     return
   fi
 
-  log "Installing Nix"
-  sh <(curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install)
+  log "Installing Determinate Nix"
+  curl --proto '=https' --tlsv1.2 -sSf -L "$DETERMINATE_INSTALL_URL" | sh -s -- install --no-confirm
   refresh_nix_env
   command -v nix >/dev/null 2>&1 || die "Nix installed but is not in PATH yet. Open a new shell and rerun."
 }
@@ -103,7 +104,6 @@ ensure_homebrew() {
     return
   fi
 
-  ensure_xcode_clt
   log "Installing Homebrew because cw uses nix-darwin's Homebrew module"
   NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   refresh_brew_env
@@ -140,54 +140,6 @@ ensure_repo() {
   [ -f "$REPO_DIR/$FLAKE_SUBDIR/flake.nix" ] || die "Missing flake at $REPO_DIR/$FLAKE_SUBDIR/flake.nix"
 }
 
-etc_file_needs_handoff() {
-  local path="$1" static_target="$2" link_target
-
-  if [ ! -e "$path" ]; then
-    return 1
-  fi
-
-  if [ -L "$path" ]; then
-    link_target="$(readlink "$path" || true)"
-    [ "$link_target" != "$static_target" ]
-    return
-  fi
-
-  return 0
-}
-
-check_nix_darwin_etc_handoff() {
-  local needs_handoff=0
-
-  if etc_file_needs_handoff "/etc/bashrc" "/etc/static/bashrc"; then
-    needs_handoff=1
-  fi
-
-  if etc_file_needs_handoff "/etc/zshrc" "/etc/static/zshrc"; then
-    needs_handoff=1
-  fi
-
-  if [ "$needs_handoff" -eq 0 ]; then
-    return
-  fi
-
-  die "$(cat <<'EOF'
-nix-darwin is not yet managing /etc/bashrc and /etc/zshrc, and the current Nix install
-likely already modified them. This bootstrap script will not move those files automatically.
-
-If this is a fresh machine using the upstream Nix installer, review the files and then run:
-
-  sudo mv /etc/bashrc /etc/bashrc.before-nix-darwin
-  sudo mv /etc/zshrc /etc/zshrc.before-nix-darwin
-
-Then rerun bootstrap.
-
-If you want to avoid this handoff on future machines, prefer a Nix installer path that does
-not modify shell profiles, such as Determinate's installer with --no-modify-profile.
-EOF
-)"
-}
-
 run_switch() {
   local flake_path nix_bin darwin_rebuild_bin
 
@@ -210,7 +162,6 @@ main() {
   ensure_nix
   ensure_homebrew
   ensure_repo
-  check_nix_darwin_etc_handoff
   run_switch
   log "Bootstrap complete"
 }
