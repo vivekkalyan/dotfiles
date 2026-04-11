@@ -72,8 +72,13 @@
   # Keyboard repeat settings (lower = faster)
   # KeyRepeat: delay between repeated characters (default: 6, range: 1-15)
   # InitialKeyRepeat: delay before repeat starts (default: 25, range: 15-120)
+  system.defaults.NSGlobalDomain.ApplePressAndHoldEnabled = false;
+  system.defaults.NSGlobalDomain.AppleShowAllExtensions = true;
   system.defaults.NSGlobalDomain.KeyRepeat = 2;
   system.defaults.NSGlobalDomain.InitialKeyRepeat = 15;
+  system.defaults.NSGlobalDomain.NSAutomaticCapitalizationEnabled = false;
+  system.defaults.NSGlobalDomain.NSAutomaticPeriodSubstitutionEnabled = false;
+  system.defaults.NSGlobalDomain.NSAutomaticQuoteSubstitutionEnabled = false;
 
   # Mouse sensitivity (higher = more sensitive, range: -1.0 to 1.0)
   # Using CustomUserPreferences for settings not directly exposed by nix-darwin
@@ -93,6 +98,7 @@
     AppleLocale = "en_US";
     AppleLanguages = [ "en-US" ];
   };
+  system.defaults.finder.ShowPathbar = true;
 
   # Save screenshots to clipboard
   system.defaults.screencapture.target = "clipboard";
