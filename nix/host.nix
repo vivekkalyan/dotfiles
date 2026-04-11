@@ -31,8 +31,10 @@
     "handy"
     "inkscape"
     "karabiner-elements"
+    "notion"
     "obsidian"
     "raycast"
+    "slack"
     "todoist-app"
     "zen"
   ];
