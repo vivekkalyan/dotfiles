@@ -3,14 +3,15 @@
 ## Source Of Truth
 
 - [`nix/flake.nix`](nix/flake.nix) defines the flake inputs and the `homeConfigurations.cw` / `darwinConfigurations.cw` outputs.
-- [`nix/home.nix`](nix/home.nix) is the main ownership map: it links repo files into `~/.config`, `~/.claude`, and other home paths via out-of-store symlinks.
+- [`nix/home.nix`](nix/home.nix) is the main ownership map: it links repo files into `~/.config`, `~/.claude`, `~/.agents`, and other home paths via out-of-store symlinks.
 - Edit files in this repo, not the live copies under `$HOME`.
 - If you add, rename, or remove a managed config file, update [`nix/home.nix`](nix/home.nix).
 
 ## Repo Map
 
 - [`config/nvim/`](config/nvim): Neovim config. [`config/nvim/init.lua`](config/nvim/init.lua) loads [`config/nvim/lua/vivek/core/`](config/nvim/lua/vivek/core) and [`config/nvim/lua/vivek/plugins/`](config/nvim/lua/vivek/plugins). LSP lives in [`config/nvim/lua/vivek/plugins/lsp/`](config/nvim/lua/vivek/plugins/lsp), formatting in [`config/nvim/lua/vivek/plugins/format.lua`](config/nvim/lua/vivek/plugins/format.lua), linting in [`config/nvim/lua/vivek/plugins/lint.lua`](config/nvim/lua/vivek/plugins/lint.lua).
-- [`config/claude/`](config/claude): Claude/Codex-adjacent settings, commands, hooks, skills, and statusline copied into `~/.claude`. Start with [`config/claude/settings.json`](config/claude/settings.json), [`config/claude/commands/`](config/claude/commands), and [`config/claude/skills/`](config/claude/skills). Hooks currently wrap bare `python` / `sky` commands to `uv run ...`.
+- [`config/claude/`](config/claude): Claude-specific settings, commands, hooks, and statusline copied into `~/.claude`. Start with [`config/claude/settings.json`](config/claude/settings.json) and [`config/claude/commands/`](config/claude/commands). Hooks currently wrap bare `python` / `sky` commands to `uv run ...`.
+- [`config/skills/`](config/skills): Shared Agent Skills tree linked into both `~/.claude/skills` and `~/.agents/skills` so Claude and Codex use the same source files.
 - [`config/git/`](config/git), [`config/zsh/`](config/zsh), [`config/tmux/`](config/tmux), [`config/ghostty/`](config/ghostty), [`config/karabiner/`](config/karabiner): tool-specific configs.
 - [`system/`](system): shell fragments sourced by zsh (`path`, `alias`, `functions`, prompt/fzf/history helpers).
 - [`bin/`](bin): personal scripts on PATH. Python helpers use `uv run --script` with inline metadata.

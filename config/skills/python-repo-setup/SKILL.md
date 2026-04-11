@@ -29,7 +29,7 @@ chore: Create uv app with package layout
 
 ## Step 3: Configure dev tooling
 
-Invoke the `modern-python` skill (via `/modern-python`) to configure ruff, ty, prek, and pytest. Delegate all configuration choices to that skill.
+Invoke the `modern-python` skill directly to configure ruff, ty, prek, and pytest. Delegate all configuration choices to that skill.
 
 After the modern-python skill completes, commit all changes:
 

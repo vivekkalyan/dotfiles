@@ -2,8 +2,8 @@
 name: commit
 description: >
   Create atomic conventional commits from staged and unstaged changes. Use when the user asks to
-  commit, create commits, or invokes /commit. Analyzes the diff, splits changes into logical atomic
-  commits, and creates them using conventional commit format.
+  commit, create commits, or invokes the skill directly. Analyzes the diff, splits changes into
+  logical atomic commits, and creates them using conventional commit format.
 ---
 
 # Commit

@@ -1,12 +1,14 @@
 ---
 name: skill-creator
-description: Guide for creating effective skills. This skill should be used when users want to create a new skill (or update an existing skill) that extends Claude's capabilities with specialized knowledge, workflows, or tool integrations.
+description: Guide for creating effective skills. This skill should be used when users want to create a new skill (or update an existing skill) that extends an assistant with specialized knowledge, workflows, or tool integrations.
 license: Complete terms in LICENSE.txt
 ---
 
 # Skill Creator
 
 This skill provides guidance for creating effective skills.
+
+Use this guidance for shared Agent Skills that may be consumed by Claude, Codex, or other tools that follow the open standard. If a behavior is tool-specific, call that out explicitly in the skill metadata or body.
 
 ## About Skills
 
