@@ -2,7 +2,10 @@
 let
   homeDir = config.home.homeDirectory;
   oos = config.lib.file.mkOutOfStoreSymlink;
-in {
+  repoSkills = builtins.attrNames (lib.filterAttrs (_: type: type == "directory")
+    (builtins.readDir ../config/skills));
+in lib.mkMerge [
+{
   home.username = "vkalyan";
   home.homeDirectory = "/Users/vkalyan";
   home.stateVersion = "25.05";
@@ -73,9 +76,6 @@ in {
   home.file.".claude/skills" = {
     source = oos "${homeDir}/personal/dotfiles/config/skills";
   };
-  home.file.".agents/skills" = {
-    source = oos "${homeDir}/personal/dotfiles/config/skills";
-  };
   home.file.".claude/statusline-command.sh" = {
     source = oos "${homeDir}/personal/dotfiles/config/claude/statusline-command.sh";
   };
@@ -106,3 +106,12 @@ in {
   '';
 
 }
+{
+  home.file = lib.listToAttrs (map (name: {
+    name = ".codex/skills/user/${name}";
+    value = {
+      source = oos "${homeDir}/personal/dotfiles/config/skills/${name}";
+    };
+  }) repoSkills);
+}
+]
