@@ -105,43 +105,49 @@
   # Save screenshots to clipboard
   system.defaults.screencapture.target = "clipboard";
 
-  # llama-server for local LLM inference (used by llama.vim)
-  # Monitors power source: starts server on AC, stops on battery.
+  # llama-server for a general-purpose local LLM API.
+  # Serves Qwen3.6-27B over a localhost OpenAI-compatible API at /v1.
   launchd.user.agents.llama-server = {
     serviceConfig = {
       Label = "com.llama.server";
       ProgramArguments = [
-        "${pkgs.writeShellScript "llama-power-wrapper" ''
-          cleanup() { [ -n "$SERVER_PID" ] && kill "$SERVER_PID" 2>/dev/null; wait "$SERVER_PID" 2>/dev/null; }
-          trap cleanup EXIT
-
-          SERVER_PID=""
-          start_server() {
-            if [ -z "$SERVER_PID" ] || ! kill -0 "$SERVER_PID" 2>/dev/null; then
-              ${pkgs.llama-cpp}/bin/llama-server --fim-qwen-7b-default &
-              SERVER_PID=$!
-              echo "Started llama-server (pid $SERVER_PID)"
-            fi
-          }
-          stop_server() {
-            if [ -n "$SERVER_PID" ] && kill -0 "$SERVER_PID" 2>/dev/null; then
-              echo "Stopping llama-server (pid $SERVER_PID)"
-              kill "$SERVER_PID" 2>/dev/null
-              wait "$SERVER_PID" 2>/dev/null
-              SERVER_PID=""
-            fi
-          }
-          on_ac() { /usr/bin/pmset -g batt 2>/dev/null | head -1 | grep -q "AC Power"; }
-
-          while true; do
-            if on_ac; then
-              start_server
-            else
-              stop_server
-            fi
-            sleep 30
-          done
-        ''}"
+        "${pkgs.llama-cpp}/bin/llama-server"
+        "--hf-repo"
+        "unsloth/Qwen3.6-27B-GGUF:Q4_K_M"
+        "--no-mmproj"
+        "--fit"
+        "on"
+        "--host"
+        "127.0.0.1"
+        "--port"
+        "8012"
+        "--alias"
+        "qwen3.6-27b"
+        "--jinja"
+        "--temp"
+        "0.6"
+        "--top-p"
+        "0.95"
+        "--top-k"
+        "20"
+        "--min-p"
+        "0.0"
+        "--presence-penalty"
+        "0.0"
+        "--repeat-penalty"
+        "1.0"
+        "--reasoning"
+        "auto"
+        "--reasoning-format"
+        "deepseek"
+        "--ctx-size"
+        "65536"
+        "--ctx-checkpoints"
+        "2"
+        "--cache-ram"
+        "4096"
+        "--chat-template-kwargs"
+        ''{"enable_thinking": false, "preserve_thinking": true}''
       ];
       RunAtLoad = true;
       KeepAlive = true;

@@ -16,6 +16,7 @@
     unstable = import nixpkgs-unstable { inherit system; };
     overlay = _final: _prev: {
       prek = unstable.prek;
+      llama-cpp = unstable.llama-cpp;
     };
     pkgs   = import nixpkgs {
       inherit system;
