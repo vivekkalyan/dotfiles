@@ -46,18 +46,15 @@ requires = ["uv_build>=0.9,<1"]  # Use latest 0.x; check https://pypi.org/projec
 build-backend = "uv_build"
 
 [dependency-groups]
-dev = [{include-group = "lint"}, {include-group = "test"}, {include-group = "audit"}]
-lint = ["ruff", "ty"]
-test = ["pytest", "pytest-cov"]
-audit = ["pip-audit"]
+dev = ["prek", "pytest", "ruff", "ty"]
 
 [tool.uv]
-default-groups = ["dev", "test"]
+default-groups = ["dev"]
 
 [tool.ruff]
 line-length = 100
 target-version = "py311"
-src = ["src"]
+src = ["src", "tests"]
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "UP", "B", "SIM", "RUF", "C4", "PT"]
@@ -67,24 +64,13 @@ quote-style = "double"
 indent-style = "space"
 docstring-code-format = true
 
-[tool.pytest]
+[tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["src"]
 addopts = [
-    "--cov=myproject",
-    "--cov-report=term-missing",
-    "--cov-fail-under=80",
-]
-
-[tool.coverage.run]
-branch = true
-source = ["src/myproject"]
-
-[tool.coverage.report]
-exclude_lines = [
-    "pragma: no cover",
-    "if TYPE_CHECKING:",
-    "if __name__ == .__main__.:",
+    "-q",
+    "--strict-markers",
+    "--strict-config",
 ]
 
 [tool.ty.terminal]
@@ -165,7 +151,7 @@ Development dependencies (PEP 735). Unlike optional-dependencies, these are NOT 
 
 ```toml
 [dependency-groups]
-dev = ["ruff", "ty", "pytest"]
+dev = ["prek", "pytest", "ruff", "ty"]
 ```
 
 Install with: `uv sync --group dev`
@@ -193,7 +179,8 @@ test = ["pytest"]
 | Project Type | uv.lock in Git? | Why |
 |--------------|-----------------|-----|
 | Application | Yes | Reproducible deploys |
-| Library | No (.gitignore) | Users resolve their own deps |
+| Internal library / service repo | Yes | Reproducible local tooling and CI |
+| Public package with broad compatibility testing | Case-by-case | Commit unless the project intentionally tests against fresh dependency resolution |
 
 ## Common Patterns
 
@@ -208,7 +195,7 @@ dependencies = []  # Minimal runtime deps
 async = ["httpx"]
 
 [dependency-groups]
-dev = ["ruff", "ty", "pytest"]
+dev = ["prek", "pytest", "ruff", "ty"]
 ```
 
 ### Application Package
@@ -225,7 +212,7 @@ dependencies = [
 myapp = "myapp.main:run"
 
 [dependency-groups]
-dev = ["ruff", "ty", "pytest"]
+dev = ["prek", "pytest", "ruff", "ty"]
 ```
 
 ### CLI Tool
@@ -241,5 +228,5 @@ dependencies = [
 mytool = "mytool.cli:app"
 
 [dependency-groups]
-dev = ["ruff", "ty", "pytest"]
+dev = ["prek", "pytest", "ruff", "ty"]
 ```

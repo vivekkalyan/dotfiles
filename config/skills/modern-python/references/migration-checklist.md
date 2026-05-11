@@ -5,7 +5,7 @@ Comprehensive checklist for migrating Python projects to modern tooling.
 ## Before Migration
 
 - [ ] **Determine layout**: `src/` or flat? Configure `[tool.uv.build-backend]` if flat
-- [ ] **Decide uv.lock strategy**: app (commit) vs library (.gitignore)
+- [ ] **Decide uv.lock strategy**: commit by default for reproducible tooling/CI; only ignore it for an intentional public-library compatibility policy
 - [ ] **Backup current state**: Create a branch or tag before starting
 
 ## Cleanup Old Artifacts
@@ -41,9 +41,15 @@ __pycache__/
 # Tools
 .ruff_cache/
 .ty/
+.pytest_cache/
+.coverage
 
-# uv (for libraries only - apps should commit uv.lock)
-# uv.lock
+# Build output
+build/
+dist/
+*.egg-info/
+
+# uv lockfiles should usually be committed for reproducible tooling and CI.
 ```
 
 ## pyproject.toml Sections to Remove
@@ -76,7 +82,7 @@ uv run ruff check --select=ERA --fix .
 ## CI Cleanup
 
 - [ ] Remove scheduled CI triggers (activity without progress is theater)
-- [ ] Update CI to use `uv sync` and `uv run`
+- [ ] Update CI to use `uv sync --locked --all-groups` and `uv run`
 - [ ] Pin GitHub Actions to SHA hashes
 - [ ] Set up security tooling (see [security-setup.md](./security-setup.md))
 

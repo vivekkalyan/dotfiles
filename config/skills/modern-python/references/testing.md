@@ -1,13 +1,13 @@
 # Testing with pytest
 
-Configuration and best practices for pytest with coverage enforcement.
+Configuration and best practices for pytest. Coverage is optional; do not add it unless the user asks for it or the project already enforces it.
 
 ## Setup
 
 Add test dependencies:
 
 ```bash
-uv add --group test pytest
+uv add --group dev pytest
 ```
 
 ## pyproject.toml Configuration
@@ -31,7 +31,7 @@ filterwarnings = [
 Only set up coverage when explicitly needed. Add `pytest-cov`:
 
 ```bash
-uv add --group test pytest-cov
+uv add --group dev pytest-cov
 ```
 
 Then extend your pytest config:
@@ -258,33 +258,27 @@ def test_unix_feature():
 - name: Checkout
   uses: actions/checkout@<sha>  # <latest> https://github.com/actions/checkout/releases
 
+- name: Install dependencies
+  run: uv sync --locked --all-groups
+
 - name: Run tests
-  run: |
-    uv sync --group test
-    uv run pytest --cov-report=xml
-
-- name: Security audit
-  run: |
-    uv sync --group audit
-    uv run pip-audit
-
-- name: Upload coverage
-  uses: codecov/codecov-action@<sha>  # <latest> https://github.com/codecov/codecov-action/releases
-  with:
-    files: ./coverage.xml
+  run: uv run pytest
 ```
 
 ## Makefile Target
 
-Add optional testing targets to the canonical template in [makefile.md](./makefile.md):
+Add optional coverage targets only after installing `pytest-cov`:
 
 ```makefile
-.PHONY: test-cov test-fast
+.PHONY: test test-cov test-fast
+
+test: ## Run tests
+	uv run pytest
 
 test-cov: ## Run tests with HTML coverage report
 	uv run pytest --cov-report=html
 	open htmlcov/index.html
 
-test-fast: ## Run tests quickly, stop on first failure, no coverage
-	uv run pytest -x -q --no-cov
+test-fast: ## Run tests quickly, stop on first failure
+	uv run pytest -x -q
 ```

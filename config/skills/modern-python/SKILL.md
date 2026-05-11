@@ -5,7 +5,7 @@ description: Configures Python projects with modern tooling (uv, ruff, ty). Use 
 
 # Modern Python
 
-Guide for modern Python tooling and best practices, based on [trailofbits/cookiecutter-python](https://github.com/trailofbits/cookiecutter-python).
+Guide for modern Python tooling and best practices.
 
 ## When to Use This Skill
 
@@ -37,9 +37,10 @@ Guide for modern Python tooling and best practices, based on [trailofbits/cookie
 | pre-commit | prek (faster, no Python runtime needed) |
 
 **Key principles:**
-- Always use `uv add` and `uv remove` to manage dependencies
-- Never manually activate or manage virtual environments—use `uv run` for all commands
-- Use `[dependency-groups]` for dev/test/docs dependencies, not `[project.optional-dependencies]`
+- Manage dependencies with `uv add` / `uv remove`; run commands with `uv run`.
+- Use dependency groups for dev tools, commit `uv.lock`, and make `ruff`, `ty`, `pytest`, and `prek` project dev dependencies.
+- Use local `uv run ...` hooks with `language: system`; use `uv run prek ...` in Makefiles, CI, and validation.
+- Do not add `pytest-cov` or coverage config unless the user explicitly asks for coverage.
 
 ## Decision Tree
 
@@ -69,18 +70,7 @@ What are you doing?
 | **pytest** | Testing | unittest |
 | **prek** | Pre-commit hooks ([setup](./references/prek.md)) | pre-commit (faster, Rust-native) |
 
-### Security Tools
-
-| Tool | Purpose | When It Runs |
-|------|---------|--------------|
-| **shellcheck** | Shell script linting | pre-commit |
-| **detect-secrets** | Secret detection | pre-commit |
-| **actionlint** | Workflow syntax validation | pre-commit, CI |
-| **zizmor** | Workflow security audit | pre-commit, CI |
-| **pip-audit** | Dependency vulnerability scanning | CI, manual |
-| **Dependabot** | Automated dependency updates | scheduled |
-
-See [security-setup.md](./references/security-setup.md) for configuration and usage.
+For security hooks and audits, read [security-setup.md](./references/security-setup.md) only when needed.
 
 ## Quick Start: Minimal Project
 
@@ -95,7 +85,7 @@ cd myproject
 uv add requests rich
 
 # Add dev dependencies
-uv add --group dev pytest ruff ty
+uv add --group dev pytest ruff ty prek
 
 # Run code
 uv run python src/myproject/main.py
@@ -103,73 +93,34 @@ uv run python src/myproject/main.py
 # Run tools
 uv run pytest
 uv run ruff check .
+uv run ty check
+uv run prek run --all-files
 ```
 
 ## Full Project Setup
 
-If starting from scratch, ask the user if they prefer to use the Trail of Bits cookiecutter template to bootstrap a complete project with already preconfigured tooling.
-
-```bash
-uvx cookiecutter gh:trailofbits/cookiecutter-python
-```
+Use `uv init` for all new project scaffolds.
 
 ### 1. Create Project Structure
 
 ```bash
+# For a named package
 uv init --package myproject
 cd myproject
-```
 
-This creates:
-```
-myproject/
-├── pyproject.toml
-├── README.md
-├── src/
-│   └── myproject/
-│       └── __init__.py
-└── .python-version
+# Or for the current directory
+uv init --app --package .
 ```
 
 ### 2. Configure pyproject.toml
 
-See [pyproject.md](./references/pyproject.md) for complete configuration reference.
+Use [pyproject.md](./references/pyproject.md). Defaults: `dev = ["prek", "pytest", "ruff", "ty"]`, Ruff on `src` and `tests`, strict pytest config, and `[tool.ty.environment] python-version`.
 
-Key sections:
-```toml
-[project]
-name = "myproject"
-version = "0.1.0"
-requires-python = ">=3.11"
-dependencies = []
+### 3. Configure Git Hooks
 
-[dependency-groups]
-dev = ["ruff", "ty", "pytest"]
+Use [templates/pre-commit-config.yaml](./templates/pre-commit-config.yaml) and [prek.md](./references/prek.md).
 
-[tool.ruff]
-line-length = 100
-src = ["src", "tests"]
-
-[tool.ruff.lint]
-select = ["E", "F", "W", "I", "UP", "B", "SIM", "RUF", "C4", "PT"]
-
-[tool.pytest.ini_options]
-testpaths = ["tests"]
-addopts = ["-q", "--strict-markers", "--strict-config"]
-
-[tool.ty.terminal]
-error-on-warning = true
-
-[tool.ty.environment]
-python-version = "3.11"
-
-[tool.ty.rules]
-# Strict from day 1 for new projects
-possibly-unresolved-reference = "error"
-unused-ignore-comment = "warn"
-```
-
-### 3. Install Dependencies
+### 4. Install Dependencies
 
 ```bash
 # Install all dependency groups
@@ -179,7 +130,7 @@ uv sync --all-groups
 uv sync --group dev
 ```
 
-### 4. Add Makefile
+### 5. Add Makefile
 
 Use the canonical template in [makefile.md](./references/makefile.md). It includes shell safety defaults, a `help` target powered by `##` docs, and standard Python project targets.
 
@@ -283,6 +234,8 @@ See [uv-commands.md](./references/uv-commands.md) for complete reference.
 - [ ] Use ty for type checking
 - [ ] Use dependency groups instead of extras for dev tools
 - [ ] Add `uv.lock` to version control
+- [ ] Use local `uv run` hooks for uv-managed tools in `.pre-commit-config.yaml`
+- [ ] Use `uv run prek` in Makefiles and CI
 - [ ] Use PEP 723 for standalone scripts
 
 ## Read Next
@@ -291,7 +244,7 @@ See [uv-commands.md](./references/uv-commands.md) for complete reference.
 - [pyproject.md](./references/pyproject.md) - Complete pyproject.toml reference
 - [uv-commands.md](./references/uv-commands.md) - uv command reference
 - [ruff-config.md](./references/ruff-config.md) - Ruff linting/formatting configuration
-- [testing.md](./references/testing.md) - pytest and coverage setup
+- [testing.md](./references/testing.md) - pytest setup; coverage is optional
 - [pep723-scripts.md](./references/pep723-scripts.md) - PEP 723 inline script metadata
 - [prek.md](./references/prek.md) - Fast pre-commit hooks with prek
 - [security-setup.md](./references/security-setup.md) - Security hooks and dependency scanning

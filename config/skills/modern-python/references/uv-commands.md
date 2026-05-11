@@ -127,7 +127,7 @@ uv run myscript.py
 uv init myapp
 cd myapp
 uv add fastapi uvicorn
-uv add --group dev ruff pytest
+uv add --group dev prek pytest ruff ty
 uv sync --all-groups
 uv run uvicorn myapp:app
 ```
@@ -137,7 +137,7 @@ uv run uvicorn myapp:app
 ```bash
 uv init --package mylib
 cd mylib
-uv add --group dev ruff pytest pytest-cov
+uv add --group dev prek pytest ruff ty
 uv add --group docs sphinx
 uv sync --all-groups
 uv run pytest

@@ -21,7 +21,22 @@ git init && git commit --allow-empty --allow-empty-message --message 'Initial Co
 uv init --app --package .
 ```
 
-Then commit all generated files:
+Add a root `.gitignore` before committing, at minimum:
+
+```gitignore
+.venv/
+.coverage
+.pytest_cache/
+.ruff_cache/
+.ty/
+__pycache__/
+*.py[cod]
+build/
+dist/
+*.egg-info/
+```
+
+Then commit all generated files and `.gitignore`:
 
 ```
 chore: Create uv app with package layout
@@ -29,7 +44,11 @@ chore: Create uv app with package layout
 
 ## Step 3: Configure dev tooling
 
-Invoke the `modern-python` skill directly to configure ruff, ty, prek, and pytest. Delegate all configuration choices to that skill.
+Invoke the `modern-python` skill directly to configure ruff, ty, prek, and pytest. Apply these repo-setup constraints:
+
+- Use project-managed dev dependencies: `uv add --group dev ruff ty pytest prek`.
+- Keep `uv.lock` as the source of truth for tool versions; do not add coverage unless requested.
+- Use local `uv run ...` hooks with `language: system`, and use `uv run prek ...` in Makefile, CI, and validation commands.
 
 After the modern-python skill completes, commit all changes:
 

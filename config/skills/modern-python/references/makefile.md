@@ -24,7 +24,7 @@ install: install-hooks ## Install all dependencies
 	uv sync --all-groups
 
 install-hooks: ## Install pre-commit hooks
-	prek install
+	uv run prek install
 
 lint: ## Lint code with ruff
 	uv run ruff check . --fix
@@ -36,7 +36,7 @@ typecheck: ## Type-check code with ty
 	uv run ty check
 
 hooks: ## Run pre-commit hooks
-	prek run --all-files
+	uv run prek run --all-files
 
 test: ## Run tests
 	uv run pytest

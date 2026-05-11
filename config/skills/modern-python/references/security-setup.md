@@ -42,7 +42,7 @@ Alternative installation methods:
 
 ```bash
 # 1. Install security hooks
-prek install
+uv run prek install
 
 # 2. Initialize secrets baseline
 detect-secrets scan > .secrets.baseline
