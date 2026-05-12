@@ -19,6 +19,9 @@
     upgrade = true;
     cleanup = "zap";
   };
+  homebrew.brews = [
+    "pi-coding-agent"
+  ];
   homebrew.casks = [
     "claude"
     "claude-code"
