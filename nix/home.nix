@@ -1,16 +1,20 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  username ? "vkalyan",
+  homeDirectory ? "/Users/${username}",
+  dotfilesDir ? "${homeDirectory}/personal/dotfiles",
+  includeAgentConfig ? pkgs.stdenv.isDarwin,
+  ...
+}:
 let
   homeDir = config.home.homeDirectory;
   oos = config.lib.file.mkOutOfStoreSymlink;
   repoSkills = builtins.attrNames (lib.filterAttrs (_: type: type == "directory")
     (builtins.readDir ../config/skills));
-in lib.mkMerge [
-{
-  home.username = "vkalyan";
-  home.homeDirectory = "/Users/vkalyan";
-  home.stateVersion = "25.05";
-
-  home.packages = with pkgs; [
+  commonPackages = with pkgs; [
+    bat
     bun
     coreutils
     curl
@@ -20,23 +24,45 @@ in lib.mkMerge [
     gh
     git
     gnumake
-    hledger
     jq
-    keepassxc
-    llama-cpp
+    kubectl
+    less
     neovim
+    netcat-gnu
     nodejs_24
+    openssh
     prek
     ripgrep
+    socat
     tmux
     typst
+    unzip
     uv
     zoxide
-    # for skypilot[kubernetes]
-    kubectl
-    netcat-gnu
-    socat
+    zsh
   ];
+  darwinPackages = with pkgs; [
+    hledger
+    keepassxc
+    llama-cpp
+  ];
+  linuxPackages = with pkgs; [
+    file
+    htop
+    procps
+    psmisc
+    xclip
+  ];
+in lib.mkMerge [
+{
+  home.username = username;
+  home.homeDirectory = homeDirectory;
+  home.stateVersion = "25.05";
+
+  home.packages =
+    commonPackages
+    ++ lib.optionals pkgs.stdenv.isDarwin darwinPackages
+    ++ lib.optionals pkgs.stdenv.isLinux linuxPackages;
 
   # PATH: nix-managed tools plus personal scripts.
   home.sessionPath = [
@@ -44,46 +70,22 @@ in lib.mkMerge [
     "${homeDir}/.nix-profile/bin"
   ];
   xdg.configFile."nvim" = {
-    source = oos "${homeDir}/personal/dotfiles/config/nvim";
-  };
-  xdg.configFile."ghostty" = {
-    source = oos "${homeDir}/personal/dotfiles/config/ghostty";
-  };
-  xdg.configFile."karabiner" = {
-    source = oos "${homeDir}/personal/dotfiles/config/karabiner";
+    source = oos "${dotfilesDir}/config/nvim";
   };
   xdg.configFile."tmux" = {
-    source = oos "${homeDir}/personal/dotfiles/config/tmux";
+    source = oos "${dotfilesDir}/config/tmux";
   };
   xdg.configFile."zsh" = {
-    source = oos "${homeDir}/personal/dotfiles/config/zsh";
+    source = oos "${dotfilesDir}/config/zsh";
   };
   home.file.".zshenv" = {
-    source = oos "${homeDir}/personal/dotfiles/config/zsh/zshenv";
-  };
-  home.file.".claude/settings.json" = {
-    source = oos "${homeDir}/personal/dotfiles/config/claude/settings.json";
-  };
-  home.file.".claude/CLAUDE.md" = {
-    source = oos "${homeDir}/personal/dotfiles/config/claude/CLAUDE.md";
-  };
-  home.file.".claude/commands" = {
-    source = oos "${homeDir}/personal/dotfiles/config/claude/commands";
-  };
-  home.file.".claude/hooks" = {
-    source = oos "${homeDir}/personal/dotfiles/config/claude/hooks";
-  };
-  home.file.".claude/skills" = {
-    source = oos "${homeDir}/personal/dotfiles/config/skills";
-  };
-  home.file.".claude/statusline-command.sh" = {
-    source = oos "${homeDir}/personal/dotfiles/config/claude/statusline-command.sh";
+    source = oos "${dotfilesDir}/config/zsh/zshenv";
   };
   xdg.configFile."git/config" = {
-    source = oos "${homeDir}/personal/dotfiles/config/git/config";
+    source = oos "${dotfilesDir}/config/git/config";
   };
   xdg.configFile."git/ignore" = {
-    source = oos "${homeDir}/personal/dotfiles/config/git/ignore";
+    source = oos "${dotfilesDir}/config/git/ignore";
   };
   xdg.configFile."git/config-os" = {
       text = ''
@@ -96,22 +98,52 @@ in lib.mkMerge [
       '';
     };
 
-  # Link .app bundles from nix profile into ~/Applications
-  home.activation.linkNixApps = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    mkdir -p "${homeDir}/Applications"
-    for app in "${homeDir}/.nix-profile/Applications/"*.app; do
-      [ -e "$app" ] || continue
-      ln -sfn "$app" "${homeDir}/Applications/$(basename "$app")"
-    done
-  '';
-
 }
 {
-  home.file = lib.listToAttrs (map (name: {
+  xdg.configFile."ghostty" = lib.mkIf pkgs.stdenv.isDarwin {
+    source = oos "${dotfilesDir}/config/ghostty";
+  };
+  xdg.configFile."karabiner" = lib.mkIf pkgs.stdenv.isDarwin {
+    source = oos "${dotfilesDir}/config/karabiner";
+  };
+
+  # Link .app bundles from nix profile into ~/Applications
+  home.activation.linkNixApps = lib.mkIf pkgs.stdenv.isDarwin (
+    lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      mkdir -p "${homeDir}/Applications"
+      for app in "${homeDir}/.nix-profile/Applications/"*.app; do
+        [ -e "$app" ] || continue
+        ln -sfn "$app" "${homeDir}/Applications/$(basename "$app")"
+      done
+    ''
+  );
+}
+{
+  home.file.".claude/settings.json" = lib.mkIf includeAgentConfig {
+    source = oos "${dotfilesDir}/config/claude/settings.json";
+  };
+  home.file.".claude/CLAUDE.md" = lib.mkIf includeAgentConfig {
+    source = oos "${dotfilesDir}/config/claude/CLAUDE.md";
+  };
+  home.file.".claude/commands" = lib.mkIf includeAgentConfig {
+    source = oos "${dotfilesDir}/config/claude/commands";
+  };
+  home.file.".claude/hooks" = lib.mkIf includeAgentConfig {
+    source = oos "${dotfilesDir}/config/claude/hooks";
+  };
+  home.file.".claude/skills" = lib.mkIf includeAgentConfig {
+    source = oos "${dotfilesDir}/config/skills";
+  };
+  home.file.".claude/statusline-command.sh" = lib.mkIf includeAgentConfig {
+    source = oos "${dotfilesDir}/config/claude/statusline-command.sh";
+  };
+}
+{
+  home.file = lib.mkIf includeAgentConfig (lib.listToAttrs (map (name: {
     name = ".codex/skills/user/${name}";
     value = {
-      source = oos "${homeDir}/personal/dotfiles/config/skills/${name}";
+      source = oos "${dotfilesDir}/config/skills/${name}";
     };
-  }) repoSkills);
+  }) repoSkills));
 }
 ]

@@ -12,33 +12,68 @@
 
   outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, nix-darwin, ... }:
   let
-    system = "aarch64-darwin";
-    unstable = import nixpkgs-unstable { inherit system; };
-    overlay = _final: _prev: {
-      prek = unstable.prek;
-      uv = unstable.uv;
-      llama-cpp = unstable.llama-cpp;
-    };
-    pkgs   = import nixpkgs {
+    darwinSystem = "aarch64-darwin";
+    linuxSystem = "x86_64-linux";
+
+    mkOverlay = system:
+      let
+        unstable = import nixpkgs-unstable { inherit system; };
+      in _final: _prev: {
+        prek = unstable.prek;
+        uv = unstable.uv;
+        llama-cpp = unstable.llama-cpp;
+      };
+
+    mkPkgs = system: import nixpkgs {
       inherit system;
-      overlays = [ overlay ];
+      overlays = [ (mkOverlay system) ];
     };
-  in {
-    # Home Manager-only build
-    homeConfigurations."cw" =
+
+    darwinPkgs = mkPkgs darwinSystem;
+    linuxPkgs = mkPkgs linuxSystem;
+    darwinOverlay = mkOverlay darwinSystem;
+
+    mkHome = { pkgs, username, homeDirectory, dotfilesDir, includeAgentConfig ? pkgs.stdenv.isDarwin }:
       home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
+        extraSpecialArgs = {
+          inherit username homeDirectory dotfilesDir includeAgentConfig;
+        };
         modules = [ ./home.nix ];
       };
+  in {
+    # Home Manager-only build for the Mac.
+    homeConfigurations."cw" = mkHome {
+      pkgs = darwinPkgs;
+      username = "vkalyan";
+      homeDirectory = "/Users/vkalyan";
+      dotfilesDir = "/Users/vkalyan/personal/dotfiles";
+      includeAgentConfig = true;
+    };
+
+    # Home Manager-only build for the dev pod.
+    homeConfigurations."vivek-dev" = mkHome {
+      pkgs = linuxPkgs;
+      username = "root";
+      homeDirectory = "/root";
+      dotfilesDir = "/workspace/personal/dotfiles";
+      includeAgentConfig = false;
+    };
 
     # nix-darwin system with Home Manager integrated
     darwinConfigurations."cw" = nix-darwin.lib.darwinSystem {
-      inherit system;
+      system = darwinSystem;
       modules = [
         ./host.nix
         home-manager.darwinModules.home-manager
         {
-          nixpkgs.overlays = [ overlay ];
+          nixpkgs.overlays = [ darwinOverlay ];
+          home-manager.extraSpecialArgs = {
+            username = "vkalyan";
+            homeDirectory = "/Users/vkalyan";
+            dotfilesDir = "/Users/vkalyan/personal/dotfiles";
+            includeAgentConfig = true;
+          };
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
           home-manager.users.vkalyan = import ./home.nix;
