@@ -8,9 +8,10 @@
     nix-darwin.url = "github:nix-darwin/nix-darwin/nix-darwin-25.11";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nixpkgs-codex.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, nix-darwin, ... }:
+  outputs = { self, nixpkgs, nixpkgs-unstable, nixpkgs-codex, home-manager, nix-darwin, ... }:
   let
     darwinSystem = "aarch64-darwin";
     linuxSystem = "x86_64-linux";
@@ -18,7 +19,9 @@
     mkOverlay = system:
       let
         unstable = import nixpkgs-unstable { inherit system; };
+        codexPkgs = import nixpkgs-codex { inherit system; };
       in _final: _prev: {
+        codex = codexPkgs.codex;
         prek = unstable.prek;
         uv = unstable.uv;
         llama-cpp = unstable.llama-cpp;

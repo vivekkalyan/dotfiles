@@ -16,6 +16,7 @@ let
   commonPackages = with pkgs; [
     bat
     bun
+    codex
     coreutils
     curl
     eza
