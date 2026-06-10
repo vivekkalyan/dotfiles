@@ -46,14 +46,14 @@ if tput setaf 1 &> /dev/null; then
   BOLD=$(tput bold)
   RESET=$(tput sgr0)
 else
-  MAGENTA="\033[1;31m"
-  ORANGE="\033[1;33m"
-  BLUE="\033[1;34m"
-  GREEN="\033[1;32m"
-  PURPLE="\033[1;35m"
-  WHITE="\033[1;37m"
+  MAGENTA=$'\033[1;31m'
+  ORANGE=$'\033[1;33m'
+  BLUE=$'\033[1;34m'
+  GREEN=$'\033[1;32m'
+  PURPLE=$'\033[1;35m'
+  WHITE=$'\033[1;37m'
   BOLD=""
-  RESET="\033[m"
+  RESET=$'\033[m'
 fi
 
 export MAGENTA
