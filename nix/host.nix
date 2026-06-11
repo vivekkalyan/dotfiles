@@ -85,6 +85,9 @@
   system.defaults.NSGlobalDomain.NSAutomaticPeriodSubstitutionEnabled = false;
   system.defaults.NSGlobalDomain.NSAutomaticQuoteSubstitutionEnabled = false;
 
+  # Keep notifications visible, but mute alert sounds.
+  system.defaults.NSGlobalDomain."com.apple.sound.beep.volume" = 0.0;
+
   # Mouse sensitivity (higher = more sensitive, range: -1.0 to 1.0)
   # Using CustomUserPreferences for settings not directly exposed by nix-darwin
   system.defaults.CustomUserPreferences."com.apple.mouse".scaling = 1.0;
