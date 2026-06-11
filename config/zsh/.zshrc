@@ -46,7 +46,7 @@ done
 # Set LSCOLORS (after path is set so dircolors command is available)
 command -v dircolors &>/dev/null && eval "$(dircolors "$DOTFILES_DIR"/system/dircolors)"
 
-for DOTFILE in "$DOTFILES_DIR"/system/{async,prompt,fzf,history}.zsh; do
+for DOTFILE in "$DOTFILES_DIR"/system/{async,ssh,prompt,fzf,history}.zsh; do
   [ -r "$DOTFILE" ] && source "$DOTFILE"
 done
 
