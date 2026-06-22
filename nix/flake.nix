@@ -36,11 +36,11 @@
     linuxPkgs = mkPkgs linuxSystem;
     darwinOverlay = mkOverlay darwinSystem;
 
-    mkHome = { pkgs, username, homeDirectory, dotfilesDir, includeAgentConfig ? pkgs.stdenv.isDarwin }:
+    mkHome = { pkgs, username, homeDirectory, dotfilesDir, workDir ? null, includeAgentConfig ? pkgs.stdenv.isDarwin }:
       home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
         extraSpecialArgs = {
-          inherit username homeDirectory dotfilesDir includeAgentConfig;
+          inherit username homeDirectory dotfilesDir workDir includeAgentConfig;
         };
         modules = [ ./home.nix ];
       };
@@ -60,6 +60,7 @@
       username = "root";
       homeDirectory = "/root";
       dotfilesDir = "/workspace/personal/dotfiles";
+      workDir = "/workspace";
       includeAgentConfig = false;
     };
 

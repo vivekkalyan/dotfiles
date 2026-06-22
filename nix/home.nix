@@ -5,6 +5,7 @@
   username ? "vkalyan",
   homeDirectory ? "/Users/${username}",
   dotfilesDir ? "${homeDirectory}/personal/dotfiles",
+  workDir ? null,
   includeAgentConfig ? pkgs.stdenv.isDarwin,
   ...
 }:
@@ -70,6 +71,13 @@ in lib.mkMerge [
     "${homeDir}/.local/bin"
     "${homeDir}/.nix-profile/bin"
   ];
+
+  # Keep uv's cache beside dev-pod workspaces so installs can hardlink into
+  # project venvs instead of copying across PVC subPath mounts.
+  home.sessionVariables = lib.mkIf (workDir != null) {
+    UV_CACHE_DIR = "${workDir}/.cache/uv";
+  };
+
   xdg.configFile."nvim" = {
     source = oos "${dotfilesDir}/config/nvim";
   };
