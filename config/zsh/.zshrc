@@ -1,5 +1,6 @@
 autoload -Uz compinit
-compinit
+# Trust the dump file; plain compinit rescans the large Nix completion tree.
+compinit -C
 
 # Infinite history.
 HISTSIZE=1000000000
@@ -28,7 +29,7 @@ bindkey -e # emacs bindings
 
 # fzf completions and key bindings (find path dynamically for nix/homebrew/linux)
 # NOTE: must be sourced before alias file so bindkey overrides work
-if [[ -n "${commands[fzf]}" ]]; then
+if [[ -t 0 && -n "${commands[fzf]}" ]]; then
   _fzf_base="$(dirname $(dirname $(readlink -f ${commands[fzf]})))/share/fzf"
   [[ -f "$_fzf_base/key-bindings.zsh" ]] && source "$_fzf_base/key-bindings.zsh"
   [[ -f "$_fzf_base/completion.zsh" ]] && source "$_fzf_base/completion.zsh"
