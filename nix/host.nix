@@ -19,6 +19,9 @@
     upgrade = true;
     cleanup = "zap";
   };
+  homebrew.taps = [
+    "timescam/tap"
+  ];
   homebrew.brews = [
     "pi-coding-agent"
   ];
@@ -32,15 +35,20 @@
     "font-meslo-lg-nerd-font"
     "ghostty"
     "handy"
+    "helium-browser"
     "inkscape"
     "karabiner-elements"
     "notion"
     "obsidian"
     "raycast"
     "slack"
+    "telegram"
     "todoist-app"
     "zen"
   ];
+  homebrew.extraConfig = ''
+    cask "timescam/tap/raycast@beta", trusted: true
+  '';
 
   # Dock size (pixels).
   system.defaults.dock.tilesize = 16;
