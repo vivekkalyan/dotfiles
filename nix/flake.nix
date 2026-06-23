@@ -74,6 +74,7 @@
             username = "vkalyan";
             homeDirectory = "/Users/vkalyan";
             dotfilesDir = "/Users/vkalyan/personal/dotfiles";
+            workDir = null;
             includeAgentConfig = true;
           };
           home-manager.useGlobalPkgs = true;
