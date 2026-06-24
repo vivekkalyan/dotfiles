@@ -1,0 +1,274 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vivek-dev
+  namespace: default
+  annotations:
+    internal.dd.datadoghq.com/vivek-dev.detected_langs: python
+  labels:
+    app: vivek-dev
+    app.kubernetes.io/instance: vivek-dev
+    app.kubernetes.io/name: vivek-dev
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  progressDeadlineSeconds: 600
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: vivek-dev
+      app.kubernetes.io/managed-by: deployment
+      app.kubernetes.io/name: vivek-dev
+  template:
+    metadata:
+      labels:
+        app: vivek-dev
+        app.kubernetes.io/instance: vivek-dev
+        app.kubernetes.io/managed-by: deployment
+        app.kubernetes.io/name: vivek-dev
+    spec:
+      serviceAccountName: vivek-dev
+      automountServiceAccountToken: true
+      schedulerName: binpack-scheduler
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      nodeSelector:
+        cloud.google.com/gke-accelerator: H200
+      tolerations:
+        - key: nvidia.com/gpu
+          operator: Exists
+          effect: NoSchedule
+      containers:
+        - name: vivek-dev
+          image: pytorch/pytorch:2.9.0-cuda12.8-cudnn9-devel
+          imagePullPolicy: IfNotPresent
+          command:
+            - /bin/bash
+            - -lc
+          args:
+            - |-
+              set -euo pipefail
+
+              export HOME="${HOME:-/root}"
+              export USER="${USER:-root}"
+              export DOTFILES_DIR="${DOTFILES_DIR:-/workspace/personal/dotfiles}"
+              export WORKDIR="${WORKDIR:-/workspace}"
+
+              mkdir -p "$WORKDIR" "$HOME/.config/nix" "$HOME/.ssh" "$HOME/.kube" /nix
+              chmod 700 "$HOME/.ssh"
+
+              # BEGIN vivek-dev kubeconfig
+              mkdir -p "$HOME/.kube"
+              if [ -r /var/run/secrets/kubernetes.io/serviceaccount/token ] && [ -r /var/run/secrets/kubernetes.io/serviceaccount/ca.crt ]; then
+                namespace="$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace 2>/dev/null || echo default)"
+                cat > "$HOME/.kube/config" <<KUBECONFIG_EOF
+              apiVersion: v1
+              kind: Config
+              clusters:
+              - name: in-cluster
+                cluster:
+                  server: https://kubernetes.default.svc
+                  certificate-authority: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+              contexts:
+              - name: in-cluster
+                context:
+                  cluster: in-cluster
+                  namespace: ${namespace}
+                  user: vivek-dev
+              current-context: in-cluster
+              users:
+              - name: vivek-dev
+                user:
+                  tokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+              KUBECONFIG_EOF
+                chmod 600 "$HOME/.kube/config"
+              fi
+              # END vivek-dev kubeconfig
+
+              if ! getent group nixbld >/dev/null; then
+                groupadd -g 30000 nixbld
+              fi
+
+              for i in $(seq 1 10); do
+                if ! id "nixbld$i" >/dev/null 2>&1; then
+                  useradd -r -u $((30000 + i)) -g nixbld -G nixbld -d /nonexistent -s /usr/sbin/nologin "nixbld$i"
+                fi
+              done
+
+              cat > "$HOME/.config/nix/nix.conf" <<"EOF"
+              experimental-features = nix-command flakes
+              build-users-group = nixbld
+              EOF
+
+              if [ -L "$HOME/.nix-profile" ] && [ ! -e "$HOME/.nix-profile" ]; then
+                rm -f "$HOME/.nix-profile"
+              fi
+
+              if [ ! -x "$HOME/.nix-profile/bin/nix" ] || [ ! -x /usr/sbin/sshd ]; then
+                export DEBIAN_FRONTEND=noninteractive
+                apt-get update
+                apt-get install -y --no-install-recommends ca-certificates curl xz-utils git openssh-server
+              fi
+
+              # BEGIN vivek-dev ssh client config
+              if [ -f /etc/ssh/ssh_config ]; then
+                sed -i -E 's/^([[:space:]]*)GSSAPIAuthentication([[:space:]]+.*)$/\1# GSSAPIAuthentication\2/' /etc/ssh/ssh_config
+              fi
+              # END vivek-dev ssh client config
+
+              if [ ! -x "$HOME/.nix-profile/bin/nix" ]; then
+                mkdir -m 0755 -p /nix
+                chown root:root /nix
+                curl -L https://nixos.org/nix/install | sh -s -- --no-daemon
+              fi
+
+              export PATH="$HOME/.nix-profile/bin:$PATH"
+
+              if [ -d "$DOTFILES_DIR/nix" ]; then
+                if nix build -L "$DOTFILES_DIR/nix#homeConfigurations.vivek-dev.activationPackage" -o /tmp/vivek-dev-home; then
+                  /tmp/vivek-dev-home/activate || echo "WARNING: Home Manager activation failed; keeping pod alive" >&2
+                else
+                  echo "WARNING: Home Manager build failed; keeping pod alive" >&2
+                fi
+              fi
+
+              if [ -x "$HOME/.nix-profile/bin/zsh" ]; then
+                grep -qxF "$HOME/.nix-profile/bin/zsh" /etc/shells || echo "$HOME/.nix-profile/bin/zsh" >> /etc/shells
+                usermod -s "$HOME/.nix-profile/bin/zsh" root || true
+              fi
+
+              if [ -r /run/secrets/ssh/authorized_keys ]; then
+                install -m 600 /run/secrets/ssh/authorized_keys "$HOME/.ssh/authorized_keys"
+              fi
+
+              if [ -r /run/secrets/github-ssh/id_ed25519 ]; then
+                install -m 600 /run/secrets/github-ssh/id_ed25519 "$HOME/.ssh/github"
+                if [ -r /run/secrets/github-ssh/id_ed25519.pub ]; then
+                  install -m 644 /run/secrets/github-ssh/id_ed25519.pub "$HOME/.ssh/github.pub"
+                fi
+
+                touch "$HOME/.ssh/config"
+                chmod 600 "$HOME/.ssh/config"
+                tmp_ssh_config="$(mktemp)"
+                awk '
+                  /^# BEGIN vivek-dev github ssh$/ { skip=1; next }
+                  /^# END vivek-dev github ssh$/ { skip=0; next }
+                  !skip { print }
+                ' "$HOME/.ssh/config" > "$tmp_ssh_config"
+                cat >> "$tmp_ssh_config" <<"EOF"
+              # BEGIN vivek-dev github ssh
+              Host github.com
+                HostName github.com
+                User git
+                IdentityFile /root/.ssh/github
+                IdentitiesOnly yes
+                StrictHostKeyChecking accept-new
+              # END vivek-dev github ssh
+              EOF
+                install -m 600 "$tmp_ssh_config" "$HOME/.ssh/config"
+                rm -f "$tmp_ssh_config"
+              fi
+
+              for key_type in rsa ecdsa ed25519; do
+                key_file="$HOME/.ssh/ssh_host_${key_type}_key"
+                if [ ! -f "$key_file" ]; then
+                  ssh-keygen -q -N "" -t "$key_type" -f "$key_file"
+                fi
+              done
+              chmod 600 "$HOME"/.ssh/ssh_host_*_key
+              chmod 644 "$HOME"/.ssh/ssh_host_*_key.pub
+
+              cat > /tmp/vivek-dev-sshd_config <<"EOF"
+              Port 2222
+              ListenAddress 127.0.0.1
+              HostKey /root/.ssh/ssh_host_rsa_key
+              HostKey /root/.ssh/ssh_host_ecdsa_key
+              HostKey /root/.ssh/ssh_host_ed25519_key
+              PidFile /run/sshd/vivek-dev.pid
+              AuthorizedKeysFile /root/.ssh/authorized_keys
+              PubkeyAuthentication yes
+              AuthenticationMethods publickey
+              PasswordAuthentication no
+              KbdInteractiveAuthentication no
+              ChallengeResponseAuthentication no
+              PermitRootLogin prohibit-password
+              PermitEmptyPasswords no
+              UsePAM no
+              AllowTcpForwarding yes
+              X11Forwarding no
+              PermitTunnel no
+              PrintMotd no
+              Subsystem sftp internal-sftp
+              EOF
+
+              mkdir -p /run/sshd
+              if [ -s "$HOME/.ssh/authorized_keys" ]; then
+                if ! /usr/sbin/sshd -f /tmp/vivek-dev-sshd_config -E /tmp/vivek-dev-sshd.log; then
+                  cat /tmp/vivek-dev-sshd.log >&2 || true
+                  echo "WARNING: sshd failed to start; keeping pod alive" >&2
+                fi
+              else
+                echo "WARNING: no SSH authorized_keys found; sshd not started" >&2
+              fi
+
+              trap : TERM INT
+              sleep infinity & wait
+          env:
+            - name: HOME
+              value: /root
+            - name: USER
+              value: root
+            - name: SHELL
+              value: /root/.nix-profile/bin/zsh
+            - name: DOTFILES_DIR
+              value: /workspace/personal/dotfiles
+            - name: WORKDIR
+              value: /workspace
+            - name: KUBECONFIG
+              value: /root/.kube/config
+          envFrom:
+            - secretRef:
+                name: vivek-dev-api-keys
+          resources:
+            requests:
+              cpu: "16"
+              memory: 128Gi
+              nvidia.com/gpu: "2"
+            limits:
+              nvidia.com/gpu: "2"
+          volumeMounts:
+            - name: github-ssh
+              mountPath: /run/secrets/github-ssh
+              readOnly: true
+            - name: ssh-authorized-keys
+              mountPath: /run/secrets/ssh
+              readOnly: true
+            - name: api-keys
+              mountPath: /run/secrets/api-keys
+              readOnly: true
+            - name: workspace
+              mountPath: /workspace
+              subPath: workspace
+            - name: workspace
+              mountPath: /root
+              subPath: root
+            - name: dshm
+              mountPath: /dev/shm
+      volumes:
+        - name: github-ssh
+          secret:
+            secretName: vivek-dev-github-ssh
+        - name: ssh-authorized-keys
+          secret:
+            secretName: vivek-dev-ssh-authorized-keys
+        - name: api-keys
+          secret:
+            secretName: vivek-dev-api-keys
+        - name: workspace
+          persistentVolumeClaim:
+            claimName: vivek-dev-workspace
+        - name: dshm
+          emptyDir:
+            medium: Memory
+            sizeLimit: 64Gi

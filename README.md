@@ -1,17 +1,19 @@
 # Dotfiles
 
-Personal macOS and development environment setup managed with Nix, Home Manager,
-and nix-darwin.
+Personal macOS and dev-pod environment setup managed with Nix, Home Manager,
+nix-darwin, and Kubernetes manifests.
 
-## Source Of Truth
+## Start Here
 
-- `nix/flake.nix` defines the flake inputs and the `homeConfigurations.cw` /
-  `darwinConfigurations.cw` outputs.
-- `nix/home.nix` links repo files into `~/.config`, `~/.claude`, `~/.codex`, and
-  other home paths with out-of-store symlinks.
-- Edit files in this repo, not the live copies under `$HOME`.
+- [AGENTS.md](AGENTS.md): repo conventions for agents and humans.
+- [nix/flake.nix](nix/flake.nix): flake outputs for `cw` on macOS and `vivek-dev` on Linux.
+- [nix/home.nix](nix/home.nix): main ownership map for linked config files and packages.
+- [k8s/vivek-dev/](k8s/vivek-dev): source-controlled Kubernetes resources for the GPU dev pod.
 
-## Apply Changes
+Edit files in this repo, not the live copies under `$HOME`. If you add, rename,
+or remove a managed config file, update [nix/home.nix](nix/home.nix).
+
+## Mac Setup
 
 Cheap Home Manager eval:
 
@@ -31,6 +33,50 @@ Apply the macOS system:
 darwin-rebuild switch --flake ./nix#cw
 ```
 
+## Dev Pod
+
+The dev pod is `Deployment/default/vivek-dev` in Kubernetes context `cks-wb3`.
+It mounts `PVC/default/vivek-dev-workspace` at `/workspace` and `/root`.
+
+Entrypoints:
+
+- [k8s/vivek-dev/README.md](k8s/vivek-dev/README.md): Kubernetes manifests and required Secrets.
+- [CoreWeave Dev Workspace](/Users/vkalyan/personal/brain/efforts/projects/1780641941.md): workspace notes and links.
+
+Common commands:
+
+```sh
+ssh vivek-dev
+kubectl diff -k k8s/vivek-dev
+kubectl apply -k k8s/vivek-dev
+kubectl rollout status deployment/vivek-dev -n default
+kubectl scale deployment/vivek-dev -n default --replicas=0
+kubectl scale deployment/vivek-dev -n default --replicas=1
+```
+
+Apply Home Manager inside the pod:
+
+```sh
+cd /workspace/personal/dotfiles/nix
+nix build .#homeConfigurations.vivek-dev.activationPackage -o /tmp/vivek-dev-home
+/tmp/vivek-dev-home/activate
+```
+
+Secrets are not committed. The required secret names and recreation commands live
+in [k8s/vivek-dev/README.md](k8s/vivek-dev/README.md).
+
+
+## Repo Map
+
+- [config/nvim/](config/nvim): Neovim config.
+- [config/git/](config/git): Git config and ignore rules.
+- [config/zsh/](config/zsh): zsh entrypoints and shell config.
+- [config/tmux/](config/tmux): tmux config.
+- [config/skills/](config/skills): shared Agent Skills linked into Claude/Codex.
+- [system/](system): shell fragments sourced by zsh.
+- [bin/](bin): personal scripts on PATH.
+- [nix/bootstrap.sh](nix/bootstrap.sh): fresh-machine bootstrap for macOS.
+
 ## SSH Commit Signing
 
 Git signs commits with the SSH key at `~/.ssh/github`. On macOS, store that key's
@@ -49,3 +95,9 @@ Keychain into `ssh-agent` when needed. Check the agent with:
 ```sh
 ssh-add -l
 ```
+
+## Commit Style
+
+Use `[scope]: description`.
+
+Common scopes: `nix`, `k8s`, `nvim`, `zsh`, `git`, `claude`, `skills`, `clean`.
