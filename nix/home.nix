@@ -14,10 +14,25 @@ let
   oos = config.lib.file.mkOutOfStoreSymlink;
   repoSkills = builtins.attrNames (lib.filterAttrs (_: type: type == "directory")
     (builtins.readDir ../config/skills));
+  codexPackage =
+    if pkgs.stdenv.isLinux && workDir != null then
+      # Keep Codex SQLite runtime state off PVC-backed home on dev pods; auth and
+      # config still persist under CODEX_HOME.
+      pkgs.writeShellScriptBin "codex" ''
+        set -euo pipefail
+
+        export CODEX_SQLITE_HOME="''${CODEX_SQLITE_HOME:-/tmp/codex/sqlite}"
+        mkdir -p "$CODEX_SQLITE_HOME"
+
+        exec ${pkgs.codex}/bin/codex \
+          -c "sqlite_home=\"$CODEX_SQLITE_HOME\"" \
+          "$@"
+      ''
+    else
+      pkgs.codex;
   commonPackages = with pkgs; [
     bat
     bun
-    codex
     coreutils
     curl
     eza
@@ -42,6 +57,7 @@ let
     uv
     zoxide
     zsh
+    codexPackage
   ];
   darwinPackages = with pkgs; [
     hledger
@@ -72,11 +88,58 @@ in lib.mkMerge [
     "${homeDir}/.nix-profile/bin"
   ];
 
-  # Keep uv's cache beside dev-pod workspaces so installs can hardlink into
-  # project venvs instead of copying across PVC subPath mounts.
   home.sessionVariables = lib.mkIf (workDir != null) {
+    # Keep repo-interacting caches beside dev-pod workspaces so tools can
+    # hardlink into project venvs instead of copying across PVC subPath mounts.
     UV_CACHE_DIR = "${workDir}/.cache/uv";
+    # Keep Codex SQLite runtime state node-local; auth/config stay in CODEX_HOME.
+    CODEX_SQLITE_HOME = "/tmp/codex/sqlite";
   };
+
+  home.activation.linkCodexRuntimeDirs = lib.mkIf (pkgs.stdenv.isLinux && workDir != null) (
+    lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      codex_home="${homeDir}/.codex"
+      codex_runtime_root="/tmp/codex"
+
+      mkdir -p "$codex_home" "$codex_runtime_root/tmp"
+
+      link_codex_runtime_dir() {
+        name="$1"
+        source="$codex_runtime_root/$name"
+        target="$codex_home/$name"
+
+        mkdir -p "$source"
+
+        if [ -L "$target" ]; then
+          current_target="$(readlink "$target")"
+          if [ "$current_target" = "$source" ]; then
+            return
+          fi
+          rm -f "$target"
+        fi
+
+        if [ -e "$target" ]; then
+          mv "$target" "$target.pre-node-local.$(date -u +%Y%m%dT%H%M%SZ)"
+        fi
+
+        ln -s "$source" "$target"
+      }
+
+      link_codex_runtime_dir tmp
+
+      # Codex app-server currently expects this path to be a real directory, not
+      # a symlink, so keep it under CODEX_HOME and clean stale control artifacts.
+      app_server_control="$codex_home/app-server-control"
+      if [ -L "$app_server_control" ]; then
+        rm -f "$app_server_control"
+      fi
+      if [ -e "$app_server_control" ] && [ ! -d "$app_server_control" ]; then
+        mv "$app_server_control" "$app_server_control.pre-node-local.$(date -u +%Y%m%dT%H%M%SZ)"
+      fi
+      mkdir -p "$app_server_control"
+      rm -f "$app_server_control"/app-server-control.sock "$app_server_control"/app-server-startup.lock
+    ''
+  );
 
   xdg.configFile."nvim" = {
     source = oos "${dotfilesDir}/config/nvim";
