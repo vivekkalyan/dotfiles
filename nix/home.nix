@@ -33,6 +33,7 @@ let
   commonPackages = with pkgs; [
     bat
     bun
+    pkgs."claude-code"
     coreutils
     curl
     eza
@@ -48,6 +49,7 @@ let
     netcat-gnu
     nodejs_24
     openssh
+    pkgs."pi-coding-agent"
     prek
     ripgrep
     rsync

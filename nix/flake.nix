@@ -14,12 +14,23 @@
   let
     darwinSystem = "aarch64-darwin";
     linuxSystem = "x86_64-linux";
+    nixpkgsConfig = {
+      allowUnfreePredicate = pkg: builtins.elem (nixpkgs.lib.getName pkg) [
+        "claude-code"
+        "pi-coding-agent"
+      ];
+    };
 
     mkOverlay = system:
       let
-        unstable = import nixpkgs-unstable { inherit system; };
+        unstable = import nixpkgs-unstable {
+          inherit system;
+          config = nixpkgsConfig;
+        };
       in final: _prev: {
         codex = final.callPackage ./packages/codex-bin.nix { };
+        claude-code = unstable.claude-code;
+        pi-coding-agent = unstable.pi-coding-agent;
         prek = unstable.prek;
         uv = unstable.uv;
         llama-cpp = unstable.llama-cpp;
@@ -27,6 +38,7 @@
 
     mkPkgs = system: import nixpkgs {
       inherit system;
+      config = nixpkgsConfig;
       overlays = [ (mkOverlay system) ];
     };
 
