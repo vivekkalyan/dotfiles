@@ -50,6 +50,7 @@ let
     openssh
     prek
     ripgrep
+    rsync
     socat
     tmux
     typst
@@ -95,6 +96,22 @@ in lib.mkMerge [
     # Keep Codex SQLite runtime state node-local; auth/config stay in CODEX_HOME.
     CODEX_SQLITE_HOME = "/tmp/codex/sqlite";
   };
+
+  home.activation.ensureSkyConfig = lib.mkIf (pkgs.stdenv.isLinux && workDir != null) (
+    lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      sky_config="${homeDir}/.sky/config.yaml"
+
+      if [ ! -e "$sky_config" ]; then
+        mkdir -p "$(dirname "$sky_config")"
+        chmod 700 "$(dirname "$sky_config")"
+        cat > "$sky_config" <<'EOF'
+kubernetes:
+  remote_identity: vivek-dev
+EOF
+        chmod 600 "$sky_config"
+      fi
+    ''
+  );
 
   home.activation.linkCodexRuntimeDirs = lib.mkIf (pkgs.stdenv.isLinux && workDir != null) (
     lib.hm.dag.entryAfter [ "writeBoundary" ] ''

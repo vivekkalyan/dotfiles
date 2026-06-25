@@ -38,3 +38,20 @@ kubectl create secret generic vivek-dev-github-ssh \
 ```
 
 The PVC manifest is included for reproducibility, but deleting and recreating the PVC would delete the workspace. Treat PVC deletion as a separate, explicit operation.
+
+## SkyPilot
+
+The `vivek-dev` service account has namespace-local dev permissions plus the
+cluster-scoped read permissions SkyPilot needs for Kubernetes discovery:
+
+- `nodes`
+- `runtimeclasses.node.k8s.io`
+- `storageclasses.storage.k8s.io`
+
+SkyPilot also needs to manage namespace-local Secrets for SSH/provisioning.
+Inside the pod, `/root/.sky/config.yaml` should contain:
+
+```yaml
+kubernetes:
+  remote_identity: vivek-dev
+```
