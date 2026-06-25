@@ -5,6 +5,8 @@
   username ? "vkalyan",
   homeDirectory ? "/Users/${username}",
   dotfilesDir ? "${homeDirectory}/personal/dotfiles",
+  skillsDir ? if workDir != null then "${workDir}/personal/skills" else "${homeDirectory}/personal/skills",
+  skillsRepoUrl ? "git@github.com:vivekkalyan/skills.git",
   workDir ? null,
   includeAgentConfig ? pkgs.stdenv.isDarwin,
   ...
@@ -12,8 +14,6 @@
 let
   homeDir = config.home.homeDirectory;
   oos = config.lib.file.mkOutOfStoreSymlink;
-  repoSkills = builtins.attrNames (lib.filterAttrs (_: type: type == "directory")
-    (builtins.readDir ../config/skills));
   codexPackage =
     if pkgs.stdenv.isLinux && workDir != null then
       # Keep Codex SQLite runtime state off PVC-backed home on dev pods; auth and
@@ -141,6 +141,56 @@ in lib.mkMerge [
     ''
   );
 
+  home.activation.ensureSkillsRepo = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    skills_dir="${skillsDir}"
+    skills_repo_url="${skillsRepoUrl}"
+    skills_parent="$(dirname "$skills_dir")"
+
+    mkdir -p "$skills_parent"
+
+    if [ -d "$skills_dir/.git" ]; then
+      :
+    elif [ -e "$skills_dir" ] && [ -n "$(${pkgs.findutils}/bin/find "$skills_dir" -mindepth 1 -maxdepth 1 -print -quit 2>/dev/null)" ]; then
+      echo "WARNING: $skills_dir exists and is not an empty git checkout; not cloning skills." >&2
+    else
+      rm -rf "$skills_dir"
+      if GIT_SSH_COMMAND="${pkgs.openssh}/bin/ssh -o BatchMode=yes -o StrictHostKeyChecking=accept-new" \
+        ${pkgs.git}/bin/git clone "$skills_repo_url" "$skills_dir"; then
+        :
+      else
+        echo "WARNING: failed to clone skills from $skills_repo_url; creating empty $skills_dir" >&2
+        mkdir -p "$skills_dir"
+      fi
+    fi
+  '';
+
+  home.activation.linkSkills = lib.hm.dag.entryAfter [ "ensureSkillsRepo" ] ''
+    skills_dir="${skillsDir}"
+
+    mkdir -p "$skills_dir" "${homeDir}/.codex/skills" "${homeDir}/.claude"
+
+    link_skills() {
+      target="$1"
+
+      if [ -L "$target" ]; then
+        current_target="$(readlink "$target")"
+        if [ "$current_target" = "$skills_dir" ]; then
+          return
+        fi
+        rm -f "$target"
+      fi
+
+      if [ -e "$target" ]; then
+        mv "$target" "$target.pre-skills.$(date -u +%Y%m%dT%H%M%SZ)"
+      fi
+
+      ln -s "$skills_dir" "$target"
+    }
+
+    link_skills "${homeDir}/.codex/skills/user"
+    link_skills "${homeDir}/.claude/skills"
+  '';
+
   xdg.configFile."nvim" = {
     source = oos "${dotfilesDir}/config/nvim";
   };
@@ -203,19 +253,8 @@ in lib.mkMerge [
   home.file.".claude/hooks" = lib.mkIf includeAgentConfig {
     source = oos "${dotfilesDir}/config/claude/hooks";
   };
-  home.file.".claude/skills" = lib.mkIf includeAgentConfig {
-    source = oos "${dotfilesDir}/config/skills";
-  };
   home.file.".claude/statusline-command.sh" = lib.mkIf includeAgentConfig {
     source = oos "${dotfilesDir}/config/claude/statusline-command.sh";
   };
-}
-{
-  home.file = lib.mkIf includeAgentConfig (lib.listToAttrs (map (name: {
-    name = ".codex/skills/user/${name}";
-    value = {
-      source = oos "${dotfilesDir}/config/skills/${name}";
-    };
-  }) repoSkills));
 }
 ]

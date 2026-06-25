@@ -14,6 +14,9 @@ The Deployment expects these Secrets to exist in `default`:
 - `vivek-dev-ssh-authorized-keys`
 - `vivek-dev-github-ssh`
 
+The GitHub SSH Secret is also used during first-time Home Manager activation to
+clone setup repos such as `~/personal/skills`.
+
 Do not commit Secret values. Recreate or update them from local files with commands like:
 
 ```bash

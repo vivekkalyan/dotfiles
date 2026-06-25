@@ -72,10 +72,10 @@ in [k8s/vivek-dev/README.md](k8s/vivek-dev/README.md).
 - [config/git/](config/git): Git config and ignore rules.
 - [config/zsh/](config/zsh): zsh entrypoints and shell config.
 - [config/tmux/](config/tmux): tmux config.
-- [config/skills/](config/skills): shared Agent Skills linked into Claude/Codex.
 - [system/](system): shell fragments sourced by zsh.
 - [bin/](bin): personal scripts on PATH.
 - [nix/bootstrap.sh](nix/bootstrap.sh): fresh-machine bootstrap for macOS.
+- `~/personal/skills`: Agent Skills repo
 
 ## SSH Commit Signing
 

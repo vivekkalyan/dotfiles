@@ -117,31 +117,8 @@ spec:
               fi
               # END vivek-dev ssh client config
 
-              if [ ! -x "$HOME/.nix-profile/bin/nix" ]; then
-                mkdir -m 0755 -p /nix
-                chown root:root /nix
-                curl -L https://nixos.org/nix/install | sh -s -- --no-daemon
-              fi
-
-              export PATH="$HOME/.nix-profile/bin:$PATH"
-
-              if [ -d "$DOTFILES_DIR/nix" ]; then
-                if nix build -L "$DOTFILES_DIR/nix#homeConfigurations.vivek-dev.activationPackage" -o /tmp/vivek-dev-home; then
-                  /tmp/vivek-dev-home/activate || echo "WARNING: Home Manager activation failed; keeping pod alive" >&2
-                else
-                  echo "WARNING: Home Manager build failed; keeping pod alive" >&2
-                fi
-              fi
-
-              if [ -x "$HOME/.nix-profile/bin/zsh" ]; then
-                grep -qxF "$HOME/.nix-profile/bin/zsh" /etc/shells || echo "$HOME/.nix-profile/bin/zsh" >> /etc/shells
-                usermod -s "$HOME/.nix-profile/bin/zsh" root || true
-              fi
-
-              if [ -r /run/secrets/ssh/authorized_keys ]; then
-                install -m 600 /run/secrets/ssh/authorized_keys "$HOME/.ssh/authorized_keys"
-              fi
-
+              # Install GitHub SSH auth before Home Manager activation so
+              # first-time setup can clone repos such as skills.
               if [ -r /run/secrets/github-ssh/id_ed25519 ]; then
                 install -m 600 /run/secrets/github-ssh/id_ed25519 "$HOME/.ssh/github"
                 if [ -r /run/secrets/github-ssh/id_ed25519.pub ]; then
@@ -168,6 +145,31 @@ spec:
               EOF
                 install -m 600 "$tmp_ssh_config" "$HOME/.ssh/config"
                 rm -f "$tmp_ssh_config"
+              fi
+
+              if [ ! -x "$HOME/.nix-profile/bin/nix" ]; then
+                mkdir -m 0755 -p /nix
+                chown root:root /nix
+                curl -L https://nixos.org/nix/install | sh -s -- --no-daemon
+              fi
+
+              export PATH="$HOME/.nix-profile/bin:$PATH"
+
+              if [ -d "$DOTFILES_DIR/nix" ]; then
+                if nix build -L "$DOTFILES_DIR/nix#homeConfigurations.vivek-dev.activationPackage" -o /tmp/vivek-dev-home; then
+                  /tmp/vivek-dev-home/activate || echo "WARNING: Home Manager activation failed; keeping pod alive" >&2
+                else
+                  echo "WARNING: Home Manager build failed; keeping pod alive" >&2
+                fi
+              fi
+
+              if [ -x "$HOME/.nix-profile/bin/zsh" ]; then
+                grep -qxF "$HOME/.nix-profile/bin/zsh" /etc/shells || echo "$HOME/.nix-profile/bin/zsh" >> /etc/shells
+                usermod -s "$HOME/.nix-profile/bin/zsh" root || true
+              fi
+
+              if [ -r /run/secrets/ssh/authorized_keys ]; then
+                install -m 600 /run/secrets/ssh/authorized_keys "$HOME/.ssh/authorized_keys"
               fi
 
               for key_type in rsa ecdsa ed25519; do

@@ -34,11 +34,20 @@
     linuxPkgs = mkPkgs linuxSystem;
     darwinOverlay = mkOverlay darwinSystem;
 
-    mkHome = { pkgs, username, homeDirectory, dotfilesDir, workDir ? null, includeAgentConfig ? pkgs.stdenv.isDarwin }:
+    mkHome = {
+      pkgs,
+      username,
+      homeDirectory,
+      dotfilesDir,
+      skillsDir,
+      skillsRepoUrl ? "git@github.com:vivekkalyan/skills.git",
+      workDir ? null,
+      includeAgentConfig ? pkgs.stdenv.isDarwin
+    }:
       home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
         extraSpecialArgs = {
-          inherit username homeDirectory dotfilesDir workDir includeAgentConfig;
+          inherit username homeDirectory dotfilesDir skillsDir skillsRepoUrl workDir includeAgentConfig;
         };
         modules = [ ./home.nix ];
       };
@@ -49,6 +58,8 @@
       username = "vkalyan";
       homeDirectory = "/Users/vkalyan";
       dotfilesDir = "/Users/vkalyan/personal/dotfiles";
+      skillsDir = "/Users/vkalyan/personal/skills";
+      skillsRepoUrl = "git@github.com:vivekkalyan/skills.git";
       includeAgentConfig = true;
     };
 
@@ -58,6 +69,8 @@
       username = "root";
       homeDirectory = "/root";
       dotfilesDir = "/workspace/personal/dotfiles";
+      skillsDir = "/workspace/personal/skills";
+      skillsRepoUrl = "git@github.com:vivekkalyan/skills.git";
       workDir = "/workspace";
       includeAgentConfig = false;
     };
@@ -74,6 +87,8 @@
             username = "vkalyan";
             homeDirectory = "/Users/vkalyan";
             dotfilesDir = "/Users/vkalyan/personal/dotfiles";
+            skillsDir = "/Users/vkalyan/personal/skills";
+            skillsRepoUrl = "git@github.com:vivekkalyan/skills.git";
             workDir = null;
             includeAgentConfig = true;
           };
