@@ -9,6 +9,9 @@
   # disable nix
   nix.enable = false;
 
+  # Completion initialization lives in config/zsh/.zshrc, where it uses its cache.
+  programs.zsh.enableGlobalCompInit = false;
+
   # Bellevue, Washington: Pacific Time with US locale/region defaults.
   time.timeZone = "America/Los_Angeles";
 
