@@ -1,0 +1,118 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+usage() {
+  cat <<'EOF'
+Usage: dotfiles-apply [--target mac|dev-pod] [--repo DIR] [--check] [--dry-run]
+
+Apply the current dotfiles checkout to this machine.
+
+Options:
+  --target TARGET  Apply as "mac" or "dev-pod"; auto-detected by default.
+  --repo DIR       Dotfiles checkout; defaults to the parent of this script.
+  --check          Build/evaluate without switching or activating.
+  --dry-run        Print the command that would run.
+  -h, --help       Show this help.
+EOF
+}
+
+script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+repo_dir="$(cd -- "$script_dir/.." && pwd)"
+target=""
+mode="apply"
+
+while [ "$#" -gt 0 ]; do
+  case "$1" in
+    --target)
+      target="${2:?missing value for --target}"
+      shift 2
+      ;;
+    --repo)
+      repo_dir="${2:?missing value for --repo}"
+      shift 2
+      ;;
+    --check)
+      mode="check"
+      shift
+      ;;
+    --dry-run)
+      mode="dry-run"
+      shift
+      ;;
+    -h|--help)
+      usage
+      exit 0
+      ;;
+    *)
+      echo "dotfiles-apply: unknown argument: $1" >&2
+      usage >&2
+      exit 2
+      ;;
+  esac
+done
+
+repo_dir="$(cd -- "$repo_dir" && pwd)"
+nix_dir="$repo_dir/nix"
+
+if [ -z "$target" ]; then
+  case "$(uname -s)" in
+    Darwin)
+      target="mac"
+      ;;
+    Linux)
+      if [ -d /workspace ] && [ "${HOME:-}" = "/root" ]; then
+        target="dev-pod"
+      else
+        echo "dotfiles-apply: could not auto-detect Linux target; pass --target dev-pod" >&2
+        exit 2
+      fi
+      ;;
+    *)
+      echo "dotfiles-apply: unsupported system: $(uname -s)" >&2
+      exit 2
+      ;;
+  esac
+fi
+
+case "$target" in
+  mac)
+    apply_cmd=(darwin-rebuild switch --flake "$nix_dir#cw")
+    check_cmd=(darwin-rebuild build --flake "$nix_dir#cw")
+    ;;
+  dev-pod)
+    check_cmd=(nix --extra-experimental-features "nix-command flakes" build -L "$nix_dir#homeConfigurations.vivek-dev.activationPackage" -o /tmp/vivek-dev-home)
+    apply_cmd=("${check_cmd[@]}" "&&" /tmp/vivek-dev-home/activate)
+    ;;
+  *)
+    echo "dotfiles-apply: unknown target: $target" >&2
+    usage >&2
+    exit 2
+    ;;
+esac
+
+case "$mode" in
+  apply)
+    echo "Applying dotfiles target: $target"
+    if [ "$target" = "dev-pod" ]; then
+      "${check_cmd[@]}"
+      /tmp/vivek-dev-home/activate
+    else
+      "${apply_cmd[@]}"
+    fi
+    ;;
+  check)
+    echo "Checking dotfiles target: $target"
+    "${check_cmd[@]}"
+    ;;
+  dry-run)
+    if [ "$target" = "dev-pod" ]; then
+      printf 'Would run:'
+      printf ' %q' "${check_cmd[@]}"
+      printf '\nThen run: /tmp/vivek-dev-home/activate\n'
+    else
+      printf 'Would run:'
+      printf ' %q' "${apply_cmd[@]}"
+      printf '\n'
+    fi
+    ;;
+esac

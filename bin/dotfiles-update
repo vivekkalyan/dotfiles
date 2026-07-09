@@ -1,0 +1,253 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+usage() {
+  cat <<'EOF'
+Usage: dotfiles-update [options] [command]
+
+Update the desired state in the dotfiles repo. This script edits the checkout;
+review and commit the resulting diff before applying it to machines.
+
+Commands:
+  all                    Update all dotfiles-managed pins and flake inputs. Default.
+  codex [VERSION|latest]  Update the pinned Codex CLI package and hashes.
+  flake [INPUT...]        Run nix flake update, optionally for specific inputs.
+  check                   Evaluate Home Manager configs for mac and dev-pod.
+
+Common options:
+  --repo DIR              Dotfiles checkout; defaults to the parent of this script.
+  --dry-run               Show intended changes without editing files.
+  -h, --help              Show this help.
+
+Codex options:
+  --version VERSION       Version to pin, for example 0.141.0. Defaults to latest.
+  --no-check              Skip Home Manager eval checks after editing.
+EOF
+}
+
+script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+repo_dir="$(cd -- "$script_dir/.." && pwd)"
+dry_run="0"
+
+require_cmd() {
+  if ! command -v "$1" >/dev/null 2>&1; then
+    echo "dotfiles-update: missing required command: $1" >&2
+    exit 1
+  fi
+}
+
+nix_eval_checks() {
+  (
+    cd "$repo_dir"
+    nix --extra-experimental-features "nix-command flakes" eval ./nix#homeConfigurations.cw.activationPackage.drvPath >/dev/null
+    nix --extra-experimental-features "nix-command flakes" eval ./nix#homeConfigurations.vivek-dev.activationPackage.drvPath >/dev/null
+  )
+}
+
+latest_codex_version() {
+  require_cmd curl
+  require_cmd jq
+
+  curl -fsSL \
+    -H "Accept: application/vnd.github+json" \
+    https://api.github.com/repos/openai/codex/releases |
+    jq -r '[.[] | select(.draft | not) | select(.prerelease | not) | .tag_name | select(startswith("rust-v"))][0] | sub("^rust-v"; "")'
+}
+
+prefetch_hash() {
+  local url="$1"
+  require_cmd jq
+
+  nix --extra-experimental-features "nix-command flakes" store prefetch-file --json "$url" |
+    jq -r '.hash'
+}
+
+update_codex() {
+  local version="latest"
+  local run_checks="1"
+
+  while [ "$#" -gt 0 ]; do
+    case "$1" in
+      --version)
+        version="${2:?missing value for --version}"
+        shift 2
+        ;;
+      --no-check)
+        run_checks="0"
+        shift
+        ;;
+      --dry-run)
+        dry_run="1"
+        shift
+        ;;
+      -*)
+        echo "dotfiles-update codex: unknown argument: $1" >&2
+        exit 2
+        ;;
+      *)
+        version="$1"
+        shift
+        ;;
+    esac
+  done
+
+  if [ "$version" = "latest" ]; then
+    version="$(latest_codex_version)"
+  fi
+
+  if [ -z "$version" ] || [ "$version" = "null" ]; then
+    echo "dotfiles-update codex: could not resolve a Codex version" >&2
+    exit 1
+  fi
+
+  local codex_file="$repo_dir/nix/packages/codex-bin.nix"
+  local darwin_url="https://github.com/openai/codex/releases/download/rust-v${version}/codex-aarch64-apple-darwin.tar.gz"
+  local linux_url="https://github.com/openai/codex/releases/download/rust-v${version}/codex-x86_64-unknown-linux-musl.tar.gz"
+  local darwin_hash linux_hash
+
+  echo "Prefetching Codex $version..."
+  darwin_hash="$(prefetch_hash "$darwin_url")"
+  linux_hash="$(prefetch_hash "$linux_url")"
+
+  if [ "$dry_run" = "1" ]; then
+    cat <<EOF
+Would update $codex_file:
+  version: $version
+  aarch64-darwin hash: $darwin_hash
+  x86_64-linux hash:   $linux_hash
+EOF
+    return
+  fi
+
+  VERSION="$version" DARWIN_HASH="$darwin_hash" LINUX_HASH="$linux_hash" perl -0pi -e '
+    s/version = "[^"]+";/version = "$ENV{VERSION}";/;
+    s/(aarch64-darwin = \{\s*\n\s*url = "[^"]+";\s*\n\s*hash = ")[^"]+(";)/$1$ENV{DARWIN_HASH}$2/s;
+    s/(x86_64-linux = \{\s*\n\s*url = "[^"]+";\s*\n\s*hash = ")[^"]+(";)/$1$ENV{LINUX_HASH}$2/s;
+  ' "$codex_file"
+
+  if [ "$run_checks" = "1" ]; then
+    nix_eval_checks
+  fi
+}
+
+update_flake() {
+  local inputs=()
+  local run_checks="1"
+
+  while [ "$#" -gt 0 ]; do
+    case "$1" in
+      --no-check)
+        run_checks="0"
+        shift
+        ;;
+      --dry-run)
+        dry_run="1"
+        shift
+        ;;
+      -*)
+        echo "dotfiles-update flake: unknown argument: $1" >&2
+        exit 2
+        ;;
+      *)
+        inputs+=("$1")
+        shift
+        ;;
+    esac
+  done
+
+  if [ "$dry_run" = "1" ]; then
+    printf 'Would run: cd %q && nix --extra-experimental-features %q flake update' "$repo_dir/nix" "nix-command flakes"
+    if [ "${#inputs[@]}" -gt 0 ]; then
+      printf ' %q' "${inputs[@]}"
+    fi
+    printf '\n'
+    return
+  fi
+
+  (
+    cd "$repo_dir/nix"
+    nix --extra-experimental-features "nix-command flakes" flake update "${inputs[@]}"
+  )
+  if [ "$run_checks" = "1" ]; then
+    nix_eval_checks
+  fi
+}
+
+update_all() {
+  while [ "$#" -gt 0 ]; do
+    case "$1" in
+      --dry-run)
+        dry_run="1"
+        shift
+        ;;
+      -*)
+        echo "dotfiles-update all: unknown argument: $1" >&2
+        exit 2
+        ;;
+      *)
+        echo "dotfiles-update all: unexpected argument: $1" >&2
+        exit 2
+        ;;
+    esac
+  done
+
+  echo "Updating Codex..."
+  update_codex --no-check
+
+  echo "Updating flake inputs..."
+  update_flake --no-check
+
+  if [ "$dry_run" != "1" ]; then
+    echo "Checking Home Manager configs..."
+    nix_eval_checks
+  fi
+}
+
+while [ "$#" -gt 0 ]; do
+  case "$1" in
+    --repo)
+      repo_dir="${2:?missing value for --repo}"
+      shift 2
+      ;;
+    --dry-run)
+      dry_run="1"
+      shift
+      ;;
+    -h|--help)
+      usage
+      exit 0
+      ;;
+    *)
+      break
+      ;;
+  esac
+done
+
+repo_dir="$(cd -- "$repo_dir" && pwd)"
+command="${1:-all}"
+if [ "$#" -gt 0 ]; then
+  shift
+fi
+
+case "$command" in
+  all)
+    update_all "$@"
+    ;;
+  codex)
+    update_codex "$@"
+    ;;
+  flake)
+    update_flake "$@"
+    ;;
+  check)
+    nix_eval_checks
+    ;;
+  -h|--help)
+    usage
+    ;;
+  *)
+    echo "dotfiles-update: unknown command: $command" >&2
+    usage >&2
+    exit 2
+    ;;
+esac

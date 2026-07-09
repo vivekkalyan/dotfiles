@@ -33,6 +33,12 @@ Apply the macOS system:
 darwin-rebuild switch --flake ./nix#cw
 ```
 
+Or use the repo wrapper:
+
+```sh
+dotfiles-apply --target mac
+```
+
 ## Dev Pod
 
 The dev pod is `Deployment/default/vivek-dev` in Kubernetes context `cks-wb3`.
@@ -62,8 +68,31 @@ nix build .#homeConfigurations.vivek-dev.activationPackage -o /tmp/vivek-dev-hom
 /tmp/vivek-dev-home/activate
 ```
 
+From the Mac, pull the latest pushed dotfiles on the pod and apply them:
+
+```sh
+dev-pod-apply
+```
+
+Use `dev-pod-apply --check` to build on the pod without activating.
+
 Secrets are not committed. The required secret names and recreation commands live
 in [k8s/vivek-dev/README.md](k8s/vivek-dev/README.md).
+
+## Updates
+
+Update scripts change the repo first; apply scripts make a machine match the
+current repo checkout.
+
+```sh
+dotfiles-update --dry-run
+dotfiles-update
+dotfiles-update flake nixpkgs-unstable
+dotfiles-update check
+```
+
+Bare `dotfiles-update` updates all dotfiles-managed pins and flake inputs.
+Review and commit the diff, push it, then run `dev-pod-apply`.
 
 
 ## Repo Map

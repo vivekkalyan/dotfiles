@@ -1,0 +1,132 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+usage() {
+  cat <<'EOF'
+Usage: dev-pod-apply [--host HOST] [--repo DIR] [--remote NAME] [--branch NAME]
+                     [--check] [--dry-run] [--no-pull] [--stash]
+
+Pull dotfiles on the dev pod and apply the dev-pod Home Manager profile.
+
+Options:
+  --host HOST      SSH host; defaults to vivek-dev.
+  --repo DIR       Remote dotfiles checkout; defaults to /workspace/personal/dotfiles.
+  --remote NAME    Git remote to pull from; defaults to origin.
+  --branch NAME    Git branch to pull; defaults to master.
+  --check          Build on the pod without activating.
+  --dry-run        Print the remote command without running it.
+  --no-pull        Skip git fetch/pull and apply the current remote checkout.
+  --stash          Stash dirty remote changes before pulling.
+  -h, --help       Show this help.
+EOF
+}
+
+host="vivek-dev"
+repo_dir="/workspace/personal/dotfiles"
+remote="origin"
+branch="master"
+mode="apply"
+pull="1"
+stash_dirty="0"
+
+while [ "$#" -gt 0 ]; do
+  case "$1" in
+    --host)
+      host="${2:?missing value for --host}"
+      shift 2
+      ;;
+    --repo)
+      repo_dir="${2:?missing value for --repo}"
+      shift 2
+      ;;
+    --remote)
+      remote="${2:?missing value for --remote}"
+      shift 2
+      ;;
+    --branch)
+      branch="${2:?missing value for --branch}"
+      shift 2
+      ;;
+    --check)
+      mode="check"
+      shift
+      ;;
+    --dry-run)
+      mode="dry-run"
+      shift
+      ;;
+    --no-pull)
+      pull="0"
+      shift
+      ;;
+    --stash)
+      stash_dirty="1"
+      shift
+      ;;
+    -h|--help)
+      usage
+      exit 0
+      ;;
+    *)
+      echo "dev-pod-apply: unknown argument: $1" >&2
+      usage >&2
+      exit 2
+      ;;
+  esac
+done
+
+remote_script='
+set -euo pipefail
+
+repo_dir="$1"
+remote="$2"
+branch="$3"
+mode="$4"
+pull="$5"
+stash_dirty="$6"
+
+cd "$repo_dir"
+
+if [ "$pull" = "1" ]; then
+  if [ -n "$(git status --porcelain)" ]; then
+    if [ "$stash_dirty" = "1" ]; then
+      git stash push -u -m "dev-pod-apply-$(date -u +%Y%m%dT%H%M%SZ)"
+      git stash list -1
+    else
+      echo "dev-pod-apply: remote dotfiles checkout is dirty; refusing to pull" >&2
+      git status --short >&2
+      echo "Re-run with --stash to preserve these changes before pulling." >&2
+      exit 1
+    fi
+  fi
+
+  git fetch "$remote"
+  git pull --ff-only "$remote" "$branch"
+fi
+
+if [ ! -x "$repo_dir/bin/dotfiles-apply" ]; then
+  echo "dev-pod-apply: $repo_dir/bin/dotfiles-apply is missing or not executable" >&2
+  exit 1
+fi
+
+if [ "$mode" = "check" ]; then
+  "$repo_dir/bin/dotfiles-apply" --target dev-pod --repo "$repo_dir" --check
+else
+  "$repo_dir/bin/dotfiles-apply" --target dev-pod --repo "$repo_dir"
+fi
+
+zsh -lc "codex --version 2>/dev/null || true; claude --version 2>/dev/null || true; pi --version 2>/dev/null || true"
+'
+
+if [ "$mode" = "dry-run" ]; then
+  cat <<EOF
+Would run on $host:
+  cd $repo_dir
+  git fetch $remote
+  git pull --ff-only $remote $branch
+  bin/dotfiles-apply --target dev-pod
+EOF
+  exit 0
+fi
+
+ssh "$host" bash -s -- "$repo_dir" "$remote" "$branch" "$mode" "$pull" "$stash_dirty" <<<"$remote_script"
