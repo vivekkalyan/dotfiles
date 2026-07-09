@@ -11,7 +11,7 @@
 
 - [`config/nvim/`](config/nvim): Neovim config. [`config/nvim/init.lua`](config/nvim/init.lua) loads [`config/nvim/lua/vivek/core/`](config/nvim/lua/vivek/core) and [`config/nvim/lua/vivek/plugins/`](config/nvim/lua/vivek/plugins). LSP lives in [`config/nvim/lua/vivek/plugins/lsp/`](config/nvim/lua/vivek/plugins/lsp), formatting in [`config/nvim/lua/vivek/plugins/format.lua`](config/nvim/lua/vivek/plugins/format.lua), linting in [`config/nvim/lua/vivek/plugins/lint.lua`](config/nvim/lua/vivek/plugins/lint.lua).
 - [`config/claude/`](config/claude): Claude-specific settings, commands, hooks, and statusline copied into `~/.claude`. Start with [`config/claude/settings.json`](config/claude/settings.json) and [`config/claude/commands/`](config/claude/commands). Hooks currently wrap bare `python` / `sky` commands to `uv run ...`.
-- `~/personal/agents`: Shared `AGENTS.md` and skills cloned from GitHub if missing. Home Manager links `skills/` into `~/.claude/skills` and `~/.codex/skills/user`, and links its `AGENTS.md` into `~/.codex/AGENTS.md`.
+- `~/personal/agents`: Shared `AGENTS.md` and skills cloned from GitHub if missing. Home Manager links `skills/` into `~/.claude/skills` and `~/.codex/skills/user`, and links its `AGENTS.md` into `/workspace/AGENTS.md` on the dev pod.
 - [`config/git/`](config/git), [`config/zsh/`](config/zsh), [`config/tmux/`](config/tmux), [`config/ghostty/`](config/ghostty), [`config/karabiner/`](config/karabiner): tool-specific configs.
 - [`system/`](system): shell fragments sourced by zsh (`path`, `alias`, `functions`, prompt/fzf/history helpers).
 - [`bin/`](bin): personal scripts on PATH. Python helpers use `uv run --script` with inline metadata.

@@ -211,18 +211,18 @@ EOF
     link_skills "${homeDir}/.claude/skills"
   '';
 
-  home.activation.linkCodexAgentInstructions = lib.hm.dag.entryAfter [ "ensureAgentsRepo" ] ''
+  home.activation.linkWorkspaceAgentInstructions = lib.mkIf (workDir != null) (lib.hm.dag.entryAfter [ "ensureAgentsRepo" ] ''
     source="${agentsDir}/AGENTS.md"
-    target="${homeDir}/.codex/AGENTS.md"
+    target="${workDir}/AGENTS.md"
 
     mkdir -p "$(dirname "$target")"
 
     if [ ! -f "$source" ]; then
-      echo "WARNING: $source is missing; not linking Codex instructions." >&2
+      echo "WARNING: $source is missing; not linking workspace instructions." >&2
     elif [ -L "$target" ] && [ "$(readlink "$target")" = "$source" ]; then
       :
     else
-      if [ -L "$target" ] || { [ -f "$target" ] && [ ! -s "$target" ]; }; then
+      if [ -L "$target" ]; then
         rm -f "$target"
       elif [ -e "$target" ]; then
         mv "$target" "$target.pre-agents.$(date -u +%Y%m%dT%H%M%SZ)"
@@ -230,7 +230,7 @@ EOF
 
       ln -s "$source" "$target"
     fi
-  '';
+  '');
 
   xdg.configFile."nvim" = {
     source = oos "${dotfilesDir}/config/nvim";
