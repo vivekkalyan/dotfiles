@@ -5,8 +5,8 @@
   username ? "vkalyan",
   homeDirectory ? "/Users/${username}",
   dotfilesDir ? "${homeDirectory}/personal/dotfiles",
-  skillsDir ? if workDir != null then "${workDir}/personal/skills" else "${homeDirectory}/personal/skills",
-  skillsRepoUrl ? "git@github.com:vivekkalyan/skills.git",
+  agentsDir ? if workDir != null then "${workDir}/personal/agents" else "${homeDirectory}/personal/agents",
+  agentsRepoUrl ? "git@github.com:vivekkalyan/agents.git",
   workDir ? null,
   includeAgentConfig ? pkgs.stdenv.isDarwin,
   ...
@@ -14,6 +14,7 @@
 let
   homeDir = config.home.homeDirectory;
   oos = config.lib.file.mkOutOfStoreSymlink;
+  skillsDir = "${agentsDir}/skills";
   codexPackage =
     if pkgs.stdenv.isLinux && workDir != null then
       # Keep Codex SQLite runtime state off PVC-backed home on dev pods; auth and
@@ -160,30 +161,30 @@ EOF
     ''
   );
 
-  home.activation.ensureSkillsRepo = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    skills_dir="${skillsDir}"
-    skills_repo_url="${skillsRepoUrl}"
-    skills_parent="$(dirname "$skills_dir")"
+  home.activation.ensureAgentsRepo = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    agents_dir="${agentsDir}"
+    agents_repo_url="${agentsRepoUrl}"
+    agents_parent="$(dirname "$agents_dir")"
 
-    mkdir -p "$skills_parent"
+    mkdir -p "$agents_parent"
 
-    if [ -d "$skills_dir/.git" ]; then
+    if [ -d "$agents_dir/.git" ]; then
       :
-    elif [ -e "$skills_dir" ] && [ -n "$(${pkgs.findutils}/bin/find "$skills_dir" -mindepth 1 -maxdepth 1 -print -quit 2>/dev/null)" ]; then
-      echo "WARNING: $skills_dir exists and is not an empty git checkout; not cloning skills." >&2
+    elif [ -e "$agents_dir" ] && [ -n "$(${pkgs.findutils}/bin/find "$agents_dir" -mindepth 1 -maxdepth 1 -print -quit 2>/dev/null)" ]; then
+      echo "WARNING: $agents_dir exists and is not an empty git checkout; not cloning agents." >&2
     else
-      rm -rf "$skills_dir"
+      rm -rf "$agents_dir"
       if GIT_SSH_COMMAND="${pkgs.openssh}/bin/ssh -o BatchMode=yes -o StrictHostKeyChecking=accept-new" \
-        ${pkgs.git}/bin/git clone "$skills_repo_url" "$skills_dir"; then
+        ${pkgs.git}/bin/git clone "$agents_repo_url" "$agents_dir"; then
         :
       else
-        echo "WARNING: failed to clone skills from $skills_repo_url; creating empty $skills_dir" >&2
-        mkdir -p "$skills_dir"
+        echo "WARNING: failed to clone agents from $agents_repo_url; creating empty $agents_dir" >&2
+        mkdir -p "$agents_dir"
       fi
     fi
   '';
 
-  home.activation.linkSkills = lib.hm.dag.entryAfter [ "ensureSkillsRepo" ] ''
+  home.activation.linkSkills = lib.hm.dag.entryAfter [ "ensureAgentsRepo" ] ''
     skills_dir="${skillsDir}"
 
     mkdir -p "$skills_dir" "${homeDir}/.codex/skills" "${homeDir}/.claude"
@@ -208,6 +209,27 @@ EOF
 
     link_skills "${homeDir}/.codex/skills/user"
     link_skills "${homeDir}/.claude/skills"
+  '';
+
+  home.activation.linkCodexAgentInstructions = lib.hm.dag.entryAfter [ "ensureAgentsRepo" ] ''
+    source="${agentsDir}/AGENTS.md"
+    target="${homeDir}/.codex/AGENTS.md"
+
+    mkdir -p "$(dirname "$target")"
+
+    if [ ! -f "$source" ]; then
+      echo "WARNING: $source is missing; not linking Codex instructions." >&2
+    elif [ -L "$target" ] && [ "$(readlink "$target")" = "$source" ]; then
+      :
+    else
+      if [ -L "$target" ] || { [ -f "$target" ] && [ ! -s "$target" ]; }; then
+        rm -f "$target"
+      elif [ -e "$target" ]; then
+        mv "$target" "$target.pre-agents.$(date -u +%Y%m%dT%H%M%SZ)"
+      fi
+
+      ln -s "$source" "$target"
+    fi
   '';
 
   xdg.configFile."nvim" = {

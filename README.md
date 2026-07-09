@@ -104,7 +104,7 @@ Review and commit the diff, push it, then run `dev-pod-apply`.
 - [system/](system): shell fragments sourced by zsh.
 - [bin/](bin): personal scripts on PATH.
 - [nix/bootstrap.sh](nix/bootstrap.sh): fresh-machine bootstrap for macOS.
-- `~/personal/skills`: Agent Skills repo
+- `~/personal/agents`: Shared agent instructions and skills repo
 
 ## SSH Commit Signing
 
