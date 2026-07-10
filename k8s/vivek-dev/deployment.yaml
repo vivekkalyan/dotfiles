@@ -108,7 +108,7 @@ spec:
               if [ ! -x "$HOME/.nix-profile/bin/nix" ] || [ ! -x /usr/sbin/sshd ]; then
                 export DEBIAN_FRONTEND=noninteractive
                 apt-get update
-                apt-get install -y --no-install-recommends ca-certificates curl xz-utils git openssh-server
+                apt-get install -y --no-install-recommends ca-certificates curl xz-utils git openssh-server tzdata
               fi
 
               # BEGIN vivek-dev ssh client config
@@ -221,6 +221,8 @@ spec:
               value: /root
             - name: USER
               value: root
+            - name: TZ
+              value: America/Los_Angeles
             - name: SHELL
               value: /root/.nix-profile/bin/zsh
             - name: DOTFILES_DIR
