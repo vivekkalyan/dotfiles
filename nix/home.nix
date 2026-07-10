@@ -32,6 +32,7 @@ let
     else
       pkgs.codex;
   commonPackages = with pkgs; [
+    age
     bat
     bun
     pkgs."claude-code"
