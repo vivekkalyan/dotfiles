@@ -45,6 +45,7 @@ let
     git
     gnumake
     jq
+    pkgs."kimi-code"
     kubectl
     less
     neovim

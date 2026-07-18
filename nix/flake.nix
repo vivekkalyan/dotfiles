@@ -17,6 +17,7 @@
     nixpkgsConfig = {
       allowUnfreePredicate = pkg: builtins.elem (nixpkgs.lib.getName pkg) [
         "claude-code"
+        "kimi-code"
         "pi-coding-agent"
       ];
     };
@@ -29,6 +30,7 @@
         };
       in final: _prev: {
         codex = final.callPackage ./packages/codex-bin.nix { };
+        kimi-code = final.callPackage ./packages/kimi-code-bin.nix { };
         claude-code = unstable.claude-code;
         pi-coding-agent = unstable.pi-coding-agent;
         prek = unstable.prek;
@@ -94,6 +96,7 @@
         ./host.nix
         home-manager.darwinModules.home-manager
         {
+          nixpkgs.config = nixpkgsConfig;
           nixpkgs.overlays = [ darwinOverlay ];
           home-manager.extraSpecialArgs = {
             username = "vkalyan";
