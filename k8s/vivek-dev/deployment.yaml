@@ -223,6 +223,8 @@ spec:
               value: root
             - name: TZ
               value: America/Los_Angeles
+            - name: TZDIR
+              value: /usr/share/zoneinfo
             - name: SHELL
               value: /root/.nix-profile/bin/zsh
             - name: DOTFILES_DIR
