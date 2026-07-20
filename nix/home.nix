@@ -73,6 +73,7 @@ let
   linuxPackages = with pkgs; [
     file
     htop
+    obsidian-headless
     procps
     psmisc
     xclip

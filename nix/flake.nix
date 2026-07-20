@@ -18,6 +18,7 @@
       allowUnfreePredicate = pkg: builtins.elem (nixpkgs.lib.getName pkg) [
         "claude-code"
         "kimi-code"
+        "obsidian-headless"
         "pi-coding-agent"
       ];
     };
@@ -31,6 +32,7 @@
       in final: _prev: {
         codex = final.callPackage ./packages/codex-bin.nix { };
         kimi-code = final.callPackage ./packages/kimi-code-bin.nix { };
+        obsidian-headless = final.callPackage ./packages/obsidian-headless.nix { };
         claude-code = unstable.claude-code;
         pi-coding-agent = unstable.pi-coding-agent;
         prek = unstable.prek;
