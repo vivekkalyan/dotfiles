@@ -156,7 +156,7 @@ spec:
               export PATH="$HOME/.nix-profile/bin:$PATH"
 
               if [ -d "$DOTFILES_DIR/nix" ]; then
-                if nix build -L "$DOTFILES_DIR/nix#homeConfigurations.vivek-dev.activationPackage" -o /tmp/vivek-dev-home; then
+                if nix build -L "path:$DOTFILES_DIR/nix#homeConfigurations.vivek-dev.activationPackage" -o /tmp/vivek-dev-home; then
                   /tmp/vivek-dev-home/activate || echo "WARNING: Home Manager activation failed; keeping pod alive" >&2
                 else
                   echo "WARNING: Home Manager build failed; keeping pod alive" >&2
@@ -214,8 +214,62 @@ spec:
                 echo "WARNING: no SSH authorized_keys found; sshd not started" >&2
               fi
 
-              trap : TERM INT
-              sleep infinity & wait
+              supervise_obsidian_sync() {
+                sync_pid=""
+                trap '
+                  if [ -n "$sync_pid" ]; then
+                    kill "$sync_pid" 2>/dev/null || true
+                    wait "$sync_pid" 2>/dev/null || true
+                  fi
+                  exit 0
+                ' TERM INT
+
+                while true; do
+                  echo "Starting continuous Obsidian Sync for $OBSIDIAN_SYNC_PATH"
+                  "$HOME/.nix-profile/bin/ob" sync \
+                    --continuous \
+                    --path "$OBSIDIAN_SYNC_PATH" &
+                  sync_pid="$!"
+
+                  if wait "$sync_pid"; then
+                    status=0
+                  else
+                    status="$?"
+                  fi
+                  sync_pid=""
+
+                  echo "WARNING: Obsidian Sync exited with status $status; restarting in 5 seconds" >&2
+                  sleep 5
+                done
+              }
+
+              obsidian_sync_supervisor_pid=""
+              if [ -x "$HOME/.nix-profile/bin/ob" ] && [ -d "$OBSIDIAN_SYNC_PATH" ]; then
+                supervise_obsidian_sync &
+                obsidian_sync_supervisor_pid="$!"
+              else
+                echo "WARNING: Obsidian Sync is not configured at $OBSIDIAN_SYNC_PATH; continuous sync not started" >&2
+              fi
+
+              keepalive_pid=""
+              shutdown() {
+                trap - TERM INT
+
+                if [ -n "$obsidian_sync_supervisor_pid" ]; then
+                  kill "$obsidian_sync_supervisor_pid" 2>/dev/null || true
+                  wait "$obsidian_sync_supervisor_pid" 2>/dev/null || true
+                fi
+                if [ -n "$keepalive_pid" ]; then
+                  kill "$keepalive_pid" 2>/dev/null || true
+                  wait "$keepalive_pid" 2>/dev/null || true
+                fi
+                exit 0
+              }
+
+              trap shutdown TERM INT
+              sleep infinity &
+              keepalive_pid="$!"
+              wait "$keepalive_pid"
           env:
             - name: HOME
               value: /root
@@ -231,6 +285,8 @@ spec:
               value: /workspace/personal/dotfiles
             - name: WORKDIR
               value: /workspace
+            - name: OBSIDIAN_SYNC_PATH
+              value: /workspace/brain
             - name: KUBECONFIG
               value: /root/.kube/config
           envFrom:
