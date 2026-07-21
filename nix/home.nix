@@ -101,6 +101,10 @@ in lib.mkMerge [
     UV_CACHE_DIR = "${workDir}/.cache/uv";
     # Keep Codex SQLite runtime state node-local; auth/config stay in CODEX_HOME.
     CODEX_SQLITE_HOME = "/tmp/codex/sqlite";
+    # OpenSSH does not preserve TZDIR from the container environment. Export
+    # both here so Nix-provided tools use Pacific time in dev-pod shells.
+    TZ = "America/Los_Angeles";
+    TZDIR = "/usr/share/zoneinfo";
   };
 
   home.activation.ensureSkyConfig = lib.mkIf (pkgs.stdenv.isLinux && workDir != null) (
