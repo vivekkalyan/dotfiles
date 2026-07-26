@@ -225,6 +225,14 @@ spec:
                 ' TERM INT
 
                 while true; do
+                  if ! "$HOME/.nix-profile/bin/ob" sync-config \
+                    --path "$OBSIDIAN_SYNC_PATH" \
+                    --file-types image,audio,video,pdf,unsupported; then
+                    echo "WARNING: Failed to configure Obsidian Sync file types; retrying in 5 seconds" >&2
+                    sleep 5
+                    continue
+                  fi
+
                   echo "Starting continuous Obsidian Sync for $OBSIDIAN_SYNC_PATH"
                   "$HOME/.nix-profile/bin/ob" sync \
                     --continuous \
