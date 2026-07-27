@@ -15,6 +15,7 @@ let
   homeDir = config.home.homeDirectory;
   oos = config.lib.file.mkOutOfStoreSymlink;
   skillsDir = "${agentsDir}/skills";
+  workspaceAgentInstructionsDir = "${agentsDir}/devpod";
   codexPackage =
     if pkgs.stdenv.isLinux && workDir != null then
       # Keep Codex SQLite runtime state off PVC-backed home on dev pods; auth and
@@ -219,24 +220,28 @@ EOF
   '';
 
   home.activation.linkWorkspaceAgentInstructions = lib.mkIf (workDir != null) (lib.hm.dag.entryAfter [ "ensureAgentsRepo" ] ''
-    source="${agentsDir}/AGENTS.md"
-    target="${workDir}/AGENTS.md"
+    instructions_dir="${workspaceAgentInstructionsDir}"
 
-    mkdir -p "$(dirname "$target")"
+    mkdir -p "${workDir}"
 
-    if [ ! -f "$source" ]; then
-      echo "WARNING: $source is missing; not linking workspace instructions." >&2
-    elif [ -L "$target" ] && [ "$(readlink "$target")" = "$source" ]; then
-      :
-    else
-      if [ -L "$target" ]; then
-        rm -f "$target"
-      elif [ -e "$target" ]; then
-        mv "$target" "$target.pre-agents.$(date -u +%Y%m%dT%H%M%SZ)"
+    for name in AGENTS.md CLAUDE.md; do
+      source="$instructions_dir/$name"
+      target="${workDir}/$name"
+
+      if [ ! -f "$source" ]; then
+        echo "WARNING: $source is missing; not linking workspace instructions." >&2
+      elif [ -L "$target" ] && [ "$(readlink "$target")" = "$source" ]; then
+        :
+      else
+        if [ -L "$target" ]; then
+          rm -f "$target"
+        elif [ -e "$target" ]; then
+          mv "$target" "$target.pre-agents.$(date -u +%Y%m%dT%H%M%SZ)"
+        fi
+
+        ln -s "$source" "$target"
       fi
-
-      ln -s "$source" "$target"
-    fi
+    done
   '');
 
   xdg.configFile."nvim" = {
