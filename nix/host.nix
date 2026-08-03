@@ -25,9 +25,6 @@
   homebrew.taps = [
     "timescam/tap"
   ];
-  homebrew.brews = [
-    "pi-coding-agent"
-  ];
   homebrew.casks = [
     "claude"
     "claude-code"

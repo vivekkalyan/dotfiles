@@ -195,7 +195,7 @@ EOF
   home.activation.linkSkills = lib.hm.dag.entryAfter [ "ensureAgentsRepo" ] ''
     skills_dir="${skillsDir}"
 
-    mkdir -p "$skills_dir" "${homeDir}/.codex/skills" "${homeDir}/.claude"
+    mkdir -p "$skills_dir" "${homeDir}/.codex/skills" "${homeDir}/.claude" "${homeDir}/.pi/agent"
 
     link_skills() {
       target="$1"
@@ -217,6 +217,7 @@ EOF
 
     link_skills "${homeDir}/.codex/skills/user"
     link_skills "${homeDir}/.claude/skills"
+    link_skills "${homeDir}/.pi/agent/skills"
   '';
 
   home.activation.linkWorkspaceAgentInstructions = lib.mkIf (workDir != null) (lib.hm.dag.entryAfter [ "ensureAgentsRepo" ] ''
@@ -272,6 +273,11 @@ EOF
           diffFilter = ${pkgs.git}/share/git/contrib/diff-highlight/diff-highlight
       '';
     };
+
+  home.file.".pi/agent/settings.json" = {
+    source = oos "${dotfilesDir}/config/pi/agent/settings.json";
+    force = true;
+  };
 
 }
 {
