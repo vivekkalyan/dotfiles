@@ -97,6 +97,9 @@ in lib.mkMerge [
   ];
 
   home.sessionVariables = lib.mkIf (workDir != null) {
+    # SSH login shells do not inherit the container environment. Keep kubectl
+    # pointed at the read-only multi-cluster config mounted by the Deployment.
+    KUBECONFIG = "/run/secrets/kubeconfig/config";
     # Keep repo-interacting caches beside dev-pod workspaces so tools can
     # hardlink into project venvs instead of copying across PVC subPath mounts.
     UV_CACHE_DIR = "${workDir}/.cache/uv";
