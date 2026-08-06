@@ -47,7 +47,6 @@ It mounts `PVC/default/vivek-dev-workspace` at `/workspace` and `/root`.
 Entrypoints:
 
 - [k8s/vivek-dev/README.md](k8s/vivek-dev/README.md): Kubernetes manifests and required Secrets.
-- [CoreWeave Dev Workspace](/Users/vkalyan/personal/brain/efforts/projects/1780641941.md): workspace notes and links.
 
 Common commands:
 
