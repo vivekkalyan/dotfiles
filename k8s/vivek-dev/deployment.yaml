@@ -55,36 +55,8 @@ spec:
               export DOTFILES_DIR="${DOTFILES_DIR:-/workspace/personal/dotfiles}"
               export WORKDIR="${WORKDIR:-/workspace}"
 
-              mkdir -p "$WORKDIR" "$HOME/.config/nix" "$HOME/.ssh" "$HOME/.kube" /nix
+              mkdir -p "$WORKDIR" "$HOME/.config/nix" "$HOME/.ssh" /nix
               chmod 700 "$HOME/.ssh"
-
-              # BEGIN vivek-dev kubeconfig
-              mkdir -p "$HOME/.kube"
-              if [ -r /var/run/secrets/kubernetes.io/serviceaccount/token ] && [ -r /var/run/secrets/kubernetes.io/serviceaccount/ca.crt ]; then
-                namespace="$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace 2>/dev/null || echo default)"
-                cat > "$HOME/.kube/config" <<KUBECONFIG_EOF
-              apiVersion: v1
-              kind: Config
-              clusters:
-              - name: in-cluster
-                cluster:
-                  server: https://kubernetes.default.svc
-                  certificate-authority: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
-              contexts:
-              - name: in-cluster
-                context:
-                  cluster: in-cluster
-                  namespace: ${namespace}
-                  user: vivek-dev
-              current-context: in-cluster
-              users:
-              - name: vivek-dev
-                user:
-                  tokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
-              KUBECONFIG_EOF
-                chmod 600 "$HOME/.kube/config"
-              fi
-              # END vivek-dev kubeconfig
 
               if ! getent group nixbld >/dev/null; then
                 groupadd -g 30000 nixbld
@@ -296,7 +268,7 @@ spec:
             - name: OBSIDIAN_SYNC_PATH
               value: /workspace/brain
             - name: KUBECONFIG
-              value: /root/.kube/config
+              value: /run/secrets/kubeconfig/config
           envFrom:
             - secretRef:
                 name: vivek-dev-api-keys
@@ -317,6 +289,9 @@ spec:
             - name: api-keys
               mountPath: /run/secrets/api-keys
               readOnly: true
+            - name: kubeconfig
+              mountPath: /run/secrets/kubeconfig
+              readOnly: true
             - name: workspace
               mountPath: /workspace
               subPath: workspace
@@ -335,6 +310,10 @@ spec:
         - name: api-keys
           secret:
             secretName: vivek-dev-api-keys
+        - name: kubeconfig
+          secret:
+            secretName: vivek-dev-kubeconfig
+            defaultMode: 0400
         - name: workspace
           persistentVolumeClaim:
             claimName: vivek-dev-workspace

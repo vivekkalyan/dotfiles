@@ -13,6 +13,7 @@ The Deployment expects these Secrets to exist in `default`:
 - `vivek-dev-api-keys`
 - `vivek-dev-ssh-authorized-keys`
 - `vivek-dev-github-ssh`
+- `vivek-dev-kubeconfig`
 
 The GitHub SSH Secret is also used during first-time Home Manager activation to
 clone setup repos such as `~/personal/agents`.
@@ -36,6 +37,38 @@ kubectl create secret generic vivek-dev-github-ssh \
   --from-file=id_ed25519.pub="$HOME/.ssh/vivek-dev-github.pub" \
   --dry-run=client -o yaml | kubectl apply -f -
 ```
+
+Create or refresh the kubeconfig Secret with only the contexts the dev pod
+should use. Pass context names at runtime so they never appear in this repo:
+
+```bash
+dev-pod-kubeconfig-sync \
+  --check \
+  --host-context "<host-context>" \
+  "<host-context>" \
+  "<additional-context>"
+```
+
+The helper extracts the selected contexts and their credentials from the local
+kubeconfig, then applies the resulting config directly as
+`Secret/default/vivek-dev-kubeconfig`. The Deployment mounts the Secret
+read-only at `/run/secrets/kubeconfig/config`. Refresh the Secret after rotating
+its credential; directory-mounted Secret updates are projected into a running
+pod without committing or copying the kubeconfig into the workspace. The
+example uses `--check`; remove that flag when you are ready to update the Secret.
+
+Verify the mounted contexts from inside the pod without naming them in Git:
+
+```bash
+kubectl config get-contexts
+
+for context in $(kubectl config get-contexts -o name); do
+  kubectl --context="$context" auth can-i get nodes
+done
+```
+
+Anyone who can execute commands in the pod can use every credential in this
+Secret. Prefer a dedicated, least-privilege credential when one is available.
 
 The PVC manifest is included for reproducibility, but deleting and recreating the PVC would delete the workspace. Treat PVC deletion as a separate, explicit operation.
 

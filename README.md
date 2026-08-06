@@ -41,7 +41,7 @@ dotfiles-apply --target mac
 
 ## Dev Pod
 
-The dev pod is `Deployment/default/vivek-dev` in Kubernetes context `cks-wb3`.
+The dev pod is `Deployment/default/vivek-dev` on the host Kubernetes cluster.
 It mounts `PVC/default/vivek-dev-workspace` at `/workspace` and `/root`.
 
 Entrypoints:
