@@ -28,6 +28,7 @@ spec:
         app.kubernetes.io/managed-by: deployment
         app.kubernetes.io/name: vivek-dev
     spec:
+      serviceAccountName: default
       automountServiceAccountToken: false
       schedulerName: binpack-scheduler
       restartPolicy: Always
