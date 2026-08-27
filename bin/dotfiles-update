@@ -102,27 +102,40 @@ update_codex() {
 
   local codex_file="$repo_dir/nix/packages/codex-bin.nix"
   local darwin_url="https://github.com/openai/codex/releases/download/rust-v${version}/codex-aarch64-apple-darwin.tar.gz"
+  local darwin_code_mode_host_url="https://github.com/openai/codex/releases/download/rust-v${version}/codex-code-mode-host-aarch64-apple-darwin.tar.gz"
   local linux_url="https://github.com/openai/codex/releases/download/rust-v${version}/codex-x86_64-unknown-linux-musl.tar.gz"
-  local darwin_hash linux_hash
+  local linux_code_mode_host_url="https://github.com/openai/codex/releases/download/rust-v${version}/codex-code-mode-host-x86_64-unknown-linux-musl.tar.gz"
+  local darwin_hash darwin_code_mode_host_hash linux_hash linux_code_mode_host_hash
 
   echo "Prefetching Codex $version..."
   darwin_hash="$(prefetch_hash "$darwin_url")"
+  darwin_code_mode_host_hash="$(prefetch_hash "$darwin_code_mode_host_url")"
   linux_hash="$(prefetch_hash "$linux_url")"
+  linux_code_mode_host_hash="$(prefetch_hash "$linux_code_mode_host_url")"
 
   if [ "$dry_run" = "1" ]; then
     cat <<EOF
 Would update $codex_file:
   version: $version
   aarch64-darwin hash: $darwin_hash
+  aarch64-darwin code-mode-host hash: $darwin_code_mode_host_hash
   x86_64-linux hash:   $linux_hash
+  x86_64-linux code-mode-host hash:   $linux_code_mode_host_hash
 EOF
     return
   fi
 
-  VERSION="$version" DARWIN_HASH="$darwin_hash" LINUX_HASH="$linux_hash" perl -0pi -e '
+  VERSION="$version" \
+    DARWIN_HASH="$darwin_hash" \
+    DARWIN_CODE_MODE_HOST_HASH="$darwin_code_mode_host_hash" \
+    LINUX_HASH="$linux_hash" \
+    LINUX_CODE_MODE_HOST_HASH="$linux_code_mode_host_hash" \
+    perl -0pi -e '
     s/version = "[^"]+";/version = "$ENV{VERSION}";/;
-    s/(aarch64-darwin = \{\s*\n\s*url = "[^"]+";\s*\n\s*hash = ")[^"]+(";)/$1$ENV{DARWIN_HASH}$2/s;
-    s/(x86_64-linux = \{\s*\n\s*url = "[^"]+";\s*\n\s*hash = ")[^"]+(";)/$1$ENV{LINUX_HASH}$2/s;
+    s/(aarch64-darwin = \{.*?codex = \{\s*\n\s*url = "[^"]+";\s*\n\s*hash = ")[^"]+(";)/$1$ENV{DARWIN_HASH}$2/s;
+    s/(aarch64-darwin = \{.*?codeModeHost = \{\s*\n\s*url = "[^"]+";\s*\n\s*hash = ")[^"]+(";)/$1$ENV{DARWIN_CODE_MODE_HOST_HASH}$2/s;
+    s/(x86_64-linux = \{.*?codex = \{\s*\n\s*url = "[^"]+";\s*\n\s*hash = ")[^"]+(";)/$1$ENV{LINUX_HASH}$2/s;
+    s/(x86_64-linux = \{.*?codeModeHost = \{\s*\n\s*url = "[^"]+";\s*\n\s*hash = ")[^"]+(";)/$1$ENV{LINUX_CODE_MODE_HOST_HASH}$2/s;
   ' "$codex_file"
 
   if [ "$run_checks" = "1" ]; then
