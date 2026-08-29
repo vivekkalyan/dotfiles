@@ -45,6 +45,7 @@ let
     gh
     git
     gnumake
+    herdr
     jq
     pkgs."kimi-code"
     kubectl

@@ -31,6 +31,7 @@
         };
       in final: _prev: {
         codex = final.callPackage ./packages/codex-bin.nix { };
+        herdr = unstable.herdr;
         kimi-code = final.callPackage ./packages/kimi-code-bin.nix { };
         obsidian-headless = final.callPackage ./packages/obsidian-headless.nix { };
         claude-code = unstable.claude-code;
