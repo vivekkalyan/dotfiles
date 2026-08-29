@@ -255,6 +255,9 @@ EOF
   xdg.configFile."tmux" = {
     source = oos "${dotfilesDir}/config/tmux";
   };
+  xdg.configFile."herdr/config.toml" = {
+    source = oos "${dotfilesDir}/config/herdr/config.toml";
+  };
   xdg.configFile."zsh" = {
     source = oos "${dotfilesDir}/config/zsh";
   };

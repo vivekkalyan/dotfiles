@@ -1,0 +1,43 @@
+# Keep Herdr's core navigation close to config/tmux/tmux.conf.
+
+[terminal]
+new_cwd = "follow"
+
+[keys]
+prefix = "ctrl+space"
+
+detach = "prefix+d"
+workspace_picker = "prefix+t"
+
+new_tab = "prefix+c"
+rename_tab = "prefix+comma"
+previous_tab = "prefix+p"
+next_tab = "prefix+n"
+move_tab_previous = "prefix+<"
+move_tab_next = "prefix+>"
+switch_tab = "prefix+1..9"
+close_tab = "prefix+ampersand"
+
+split_vertical = "prefix+\\"
+split_horizontal = "prefix+minus"
+
+focus_pane_left = "prefix+h"
+focus_pane_down = "prefix+j"
+focus_pane_up = "prefix+k"
+focus_pane_right = "prefix+l"
+
+resize_pane_left = "prefix+left"
+resize_pane_down = "prefix+down"
+resize_pane_up = "prefix+up"
+resize_pane_right = "prefix+right"
+
+reload_config = "prefix+r"
+
+[ui]
+mouse_capture = true
+confirm_close = false
+prompt_new_tab_name = false
+pane_outer_borders = false
+pane_gaps = false
+tab_bar_position = "bottom"
+window_title = "{workspace}"
