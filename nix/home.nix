@@ -36,7 +36,9 @@ let
     age
     bat
     bun
+    cargo
     pkgs."claude-code"
+    clippy
     coreutils
     curl
     eza
@@ -58,6 +60,9 @@ let
     prek
     ripgrep
     rsync
+    rust-analyzer
+    rustc
+    rustfmt
     socat
     tmux
     typst
