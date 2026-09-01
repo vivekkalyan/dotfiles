@@ -20,16 +20,18 @@
   homebrew.onActivation = {
     autoUpdate = true;
     upgrade = true;
-    cleanup = "none";
+    cleanup = "uninstall";
   };
   homebrew.taps = [
     "timescam/tap"
   ];
+  homebrew.brews = [
+    "ca-certificates"
+  ];
   homebrew.casks = [
     "claude"
     "claude-code"
-    "codex"
-    "codex-app"
+    "chatgpt"
     "cursor"
     "flux-app"
     "font-meslo-lg-nerd-font"
@@ -44,7 +46,6 @@
     "slack"
     "telegram"
     "todoist-app"
-    "zen"
   ];
   homebrew.extraConfig = ''
     cask "timescam/tap/raycast@beta", trusted: true
