@@ -109,6 +109,18 @@ unset_env() {
     unset $(cat .env | grep -v "^#" | sed -E 's/(.*)=.*/\1/' | xargs)
 }
 
+ssh() {
+  command ssh "$@"
+  local exit_status=$?
+
+  # An interrupted interactive session can leave keyboard/mouse reporting on.
+  if (( exit_status == 255 )) && [[ -t 0 && -t 1 ]]; then
+    command reset
+  fi
+
+  return $exit_status
+}
+
 tmux() {
   emulate -L zsh
 
