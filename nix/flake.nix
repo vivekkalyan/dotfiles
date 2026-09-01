@@ -34,7 +34,7 @@
         herdr = unstable.herdr;
         kimi-code = final.callPackage ./packages/kimi-code-bin.nix { };
         obsidian-headless = final.callPackage ./packages/obsidian-headless.nix { };
-        claude-code = unstable.claude-code;
+        claude-code = final.callPackage ./packages/claude-code-bin.nix { };
         pi-coding-agent = unstable.pi-coding-agent;
         prek = unstable.prek;
         uv = unstable.uv;

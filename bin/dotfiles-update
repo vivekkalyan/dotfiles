@@ -10,6 +10,7 @@ review and commit the resulting diff before applying it to machines.
 
 Commands:
   all                    Update all dotfiles-managed pins and flake inputs. Default.
+  claude [VERSION|latest] Update the pinned Claude Code package and hashes.
   codex [VERSION|latest]  Update the pinned Codex CLI package and hashes.
   flake [INPUT...]        Run nix flake update, optionally for specific inputs.
   check                   Evaluate Home Manager configs for mac and dev-pod.
@@ -19,8 +20,8 @@ Common options:
   --dry-run               Show intended changes without editing files.
   -h, --help              Show this help.
 
-Codex options:
-  --version VERSION       Version to pin, for example 0.141.0. Defaults to latest.
+Package options:
+  --version VERSION       Version to pin, for example 2.1.257. Defaults to latest.
   --no-check              Skip Home Manager eval checks after editing.
 EOF
 }
@@ -37,11 +38,10 @@ require_cmd() {
 }
 
 nix_eval_checks() {
-  (
-    cd "$repo_dir"
-    nix --extra-experimental-features "nix-command flakes" eval ./nix#homeConfigurations.cw.activationPackage.drvPath >/dev/null
-    nix --extra-experimental-features "nix-command flakes" eval ./nix#homeConfigurations.vivek-dev.activationPackage.drvPath >/dev/null
-  )
+  nix --extra-experimental-features "nix-command flakes" eval \
+    "path:$repo_dir/nix#homeConfigurations.cw.activationPackage.drvPath" >/dev/null
+  nix --extra-experimental-features "nix-command flakes" eval \
+    "path:$repo_dir/nix#homeConfigurations.vivek-dev.activationPackage.drvPath" >/dev/null
 }
 
 latest_codex_version() {
@@ -52,6 +52,17 @@ latest_codex_version() {
     -H "Accept: application/vnd.github+json" \
     https://api.github.com/repos/openai/codex/releases |
     jq -r '[.[] | select(.draft | not) | select(.prerelease | not) | .tag_name | select(startswith("rust-v"))][0] | sub("^rust-v"; "")'
+}
+
+latest_claude_version() {
+  require_cmd curl
+
+  curl -fsSL https://downloads.claude.ai/claude-code-releases/latest
+}
+
+sha256_sri() {
+  nix --extra-experimental-features "nix-command flakes" hash convert \
+    --hash-algo sha256 --to sri "$1"
 }
 
 prefetch_hash() {
@@ -143,6 +154,90 @@ EOF
   fi
 }
 
+update_claude() {
+  local version="latest"
+  local run_checks="1"
+
+  while [ "$#" -gt 0 ]; do
+    case "$1" in
+      --version)
+        version="${2:?missing value for --version}"
+        shift 2
+        ;;
+      --no-check)
+        run_checks="0"
+        shift
+        ;;
+      --dry-run)
+        dry_run="1"
+        shift
+        ;;
+      -*)
+        echo "dotfiles-update claude: unknown argument: $1" >&2
+        exit 2
+        ;;
+      *)
+        version="$1"
+        shift
+        ;;
+    esac
+  done
+
+  if [ "$version" = "latest" ]; then
+    version="$(latest_claude_version)"
+  fi
+
+  if [[ ! "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+([.-][[:alnum:].-]+)?$ ]]; then
+    echo "dotfiles-update claude: could not resolve a Claude Code version" >&2
+    exit 1
+  fi
+
+  require_cmd curl
+  require_cmd jq
+
+  local claude_file="$repo_dir/nix/packages/claude-code-bin.nix"
+  local manifest
+  manifest="$(curl -fsSL "https://downloads.claude.ai/claude-code-releases/${version}/manifest.json")"
+
+  local manifest_version darwin_checksum linux_checksum darwin_hash linux_hash
+  manifest_version="$(jq -r '.version // empty' <<<"$manifest")"
+  darwin_checksum="$(jq -r '.platforms["darwin-arm64"].checksum // empty' <<<"$manifest")"
+  linux_checksum="$(jq -r '.platforms["linux-x64"].checksum // empty' <<<"$manifest")"
+
+  if [ "$manifest_version" != "$version" ] \
+    || [[ ! "$darwin_checksum" =~ ^[0-9a-f]{64}$ ]] \
+    || [[ ! "$linux_checksum" =~ ^[0-9a-f]{64}$ ]]; then
+    echo "dotfiles-update claude: invalid release manifest for $version" >&2
+    exit 1
+  fi
+
+  darwin_hash="$(sha256_sri "$darwin_checksum")"
+  linux_hash="$(sha256_sri "$linux_checksum")"
+
+  if [ "$dry_run" = "1" ]; then
+    cat <<EOF
+Would update $claude_file:
+  version: $version
+  aarch64-darwin hash: $darwin_hash
+  x86_64-linux hash:   $linux_hash
+EOF
+    return
+  fi
+
+  VERSION="$version" \
+    DARWIN_HASH="$darwin_hash" \
+    LINUX_HASH="$linux_hash" \
+    perl -0pi -e '
+    s/version = "[^"]+";/version = "$ENV{VERSION}";/;
+    s/(aarch64-darwin = \{.*?hash = ")[^"]+(";)/$1$ENV{DARWIN_HASH}$2/s;
+    s/(x86_64-linux = \{.*?hash = ")[^"]+(";)/$1$ENV{LINUX_HASH}$2/s;
+  ' "$claude_file"
+
+  if [ "$run_checks" = "1" ]; then
+    nix_eval_checks
+  fi
+}
+
 update_flake() {
   local inputs=()
   local run_checks="1"
@@ -207,6 +302,9 @@ update_all() {
   echo "Updating Codex..."
   update_codex --no-check
 
+  echo "Updating Claude Code..."
+  update_claude --no-check
+
   echo "Updating flake inputs..."
   update_flake --no-check
 
@@ -248,6 +346,9 @@ case "$command" in
     ;;
   codex)
     update_codex "$@"
+    ;;
+  claude)
+    update_claude "$@"
     ;;
   flake)
     update_flake "$@"

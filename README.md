@@ -86,6 +86,8 @@ current repo checkout.
 ```sh
 dotfiles-update --dry-run
 dotfiles-update
+dotfiles-update claude
+dotfiles-update codex
 dotfiles-update flake nixpkgs-unstable
 dotfiles-update check
 ```
