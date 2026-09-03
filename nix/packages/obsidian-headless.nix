@@ -12,27 +12,20 @@
 }:
 stdenv.mkDerivation (finalAttrs: {
   pname = "obsidian-headless";
-  version = "0.0.13";
+  version = "0.0.14";
 
   src = fetchFromGitHub {
     owner = "obsidianmd";
     repo = "obsidian-headless";
     tag = finalAttrs.version;
-    hash = "sha256-gPFIGxB4jf2+JbgUpIf6ENiYKp2bmHKKRKrb2sXSDHY=";
+    hash = "sha256-ue2M9maFyvabGH9qTDOpAJS4OPwCikpAMYm/M/XRGKo=";
   };
-
-  # The 0.0.13 tag updated package.json without refreshing pnpm-lock.yaml.
-  postPatch = ''
-    substituteInPlace package.json \
-      --replace-fail '"better-sqlite3": "12.11.1"' '"better-sqlite3": "12.6.2"'
-  '';
 
   pnpmDeps = fetchPnpmDeps {
     inherit (finalAttrs) pname version src;
     pnpm = pnpm_10;
     fetcherVersion = 3;
-    hash = "sha256-9XbLTX0ZM7GzRkNQ0IIKjuU7dIzzz3WvqfbBOFdIdmY=";
-    inherit (finalAttrs) postPatch;
+    hash = "sha256-2jGvGgmeeFbeuPIR1Td1TaPdFt/10ZJ/k/ZY9KWQksg=";
   };
 
   nativeBuildInputs = [

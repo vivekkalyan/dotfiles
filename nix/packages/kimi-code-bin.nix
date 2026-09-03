@@ -8,15 +8,15 @@
 }:
 
 let
-  version = "0.27.0";
+  version = "0.40.1";
   sources = {
     aarch64-darwin = {
       url = "https://code.kimi.com/kimi-code/binaries/${version}/kimi-code-darwin-arm64";
-      sha256 = "550bca0ba6e474f4e0faeadfae03a9294c7c25688670f38ff488ab8cf176d817";
+      sha256 = "cdee8d0c3a1a994a7eb30a7ad95e93bf27e0f0ab3d126121518c68f6b2fe05e7";
     };
     x86_64-linux = {
       url = "https://code.kimi.com/kimi-code/binaries/${version}/kimi-code-linux-x64";
-      sha256 = "eecbab45bc1b992b648c46387a0972c340fac7d8b2549616f1eacec90e595a31";
+      sha256 = "e1d5003ae182200ecc3c0631aba7e7eaeba1601a0cf690770aa0184b59227bb7";
     };
   };
   source =
@@ -30,6 +30,8 @@ stdenvNoCC.mkDerivation {
   src = fetchurl source;
   sourceRoot = ".";
   dontUnpack = true;
+  # Stripping the binary corrupts its embedded Bun runtime on Linux.
+  dontStrip = true;
   nativeBuildInputs = lib.optionals stdenvNoCC.hostPlatform.isLinux [ autoPatchelfHook ];
   buildInputs = lib.optionals stdenvNoCC.hostPlatform.isLinux [ stdenv.cc.cc.lib ];
 

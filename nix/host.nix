@@ -30,7 +30,6 @@
   ];
   homebrew.casks = [
     "claude"
-    "claude-code"
     "chatgpt"
     "cursor"
     "flux-app"
