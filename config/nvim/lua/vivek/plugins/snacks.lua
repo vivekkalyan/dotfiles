@@ -44,6 +44,28 @@ return {
     local Snacks = require("snacks")
     Snacks.setup(opts)
 
+    local function switch_worktree()
+      local output = vim.fn.systemlist({ "git", "worktree", "list", "--porcelain" })
+      if vim.v.shell_error ~= 0 then
+        vim.notify("Not inside a Git repository", vim.log.levels.WARN)
+        return
+      end
+
+      local worktrees = {}
+      for _, line in ipairs(output) do
+        local path = line:match("^worktree (.+)$")
+        if path then
+          table.insert(worktrees, path)
+        end
+      end
+
+      Snacks.picker.projects({
+        dev = {},
+        projects = worktrees,
+        recent = false,
+      })
+    end
+
     local format = require("vivek.util.format")
     format.snacks_toggle():map("<leader>uf")
     format.snacks_toggle(true):map("<leader>uF")
@@ -62,6 +84,8 @@ return {
     vim.keymap.set("n", "<leader>go", function()
       Snacks.gitbrowse.open()
     end, { desc = "Open in GitHub" })
+
+    vim.keymap.set("n", "<leader>gw", switch_worktree, { desc = "Switch Git worktree" })
 
     Snacks.toggle.animate():map("<leader>ua")
     Snacks.toggle.treesitter({ name = " Treesitter Highlighting" }):map("<leader>ut")
