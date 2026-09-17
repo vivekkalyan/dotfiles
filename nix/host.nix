@@ -170,23 +170,4 @@
     };
   };
 
-  # hivemind agent
-  launchd.user.agents.hivemind = {
-    serviceConfig = {
-      Label = "com.hivemind.agent";
-      ProgramArguments = [
-        "${pkgs.uv}/bin/uvx"
-        "--python"
-        "3.13"
-        "--from"
-        "wandb-hivemind"
-        "hivemind"
-        "run"
-      ];
-      KeepAlive = true;
-      RunAtLoad = true;
-      StandardOutPath = "/tmp/hivemind.log";
-      StandardErrorPath = "/tmp/hivemind.err.log";
-    };
-  };
 }
