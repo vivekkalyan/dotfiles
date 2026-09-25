@@ -276,9 +276,9 @@ spec:
             requests:
               cpu: "16"
               memory: 128Gi
-              nvidia.com/gpu: "2"
+              nvidia.com/gpu: "1"
             limits:
-              nvidia.com/gpu: "2"
+              nvidia.com/gpu: "1"
           volumeMounts:
             - name: github-ssh
               mountPath: /run/secrets/github-ssh
