@@ -12,6 +12,7 @@ Commands:
   all                    Update all dotfiles-managed pins and flake inputs. Default.
   claude [VERSION|latest] Update the pinned Claude Code package and hashes.
   codex [VERSION|latest]  Update the pinned Codex CLI package and hashes.
+  kimi [VERSION|latest]   Update the pinned Kimi Code package and hashes.
   flake [INPUT...]        Run nix flake update, optionally for specific inputs.
   check                   Evaluate Home Manager configs for mac and dev-pod.
 
@@ -58,6 +59,12 @@ latest_claude_version() {
   require_cmd curl
 
   curl -fsSL https://downloads.claude.ai/claude-code-releases/latest
+}
+
+latest_kimi_version() {
+  require_cmd curl
+
+  curl -fsSL https://code.kimi.com/kimi-code/latest | tr -d '[:space:]'
 }
 
 sha256_sri() {
@@ -238,6 +245,87 @@ EOF
   fi
 }
 
+update_kimi() {
+  local version="latest"
+  local run_checks="1"
+
+  while [ "$#" -gt 0 ]; do
+    case "$1" in
+      --version)
+        version="${2:?missing value for --version}"
+        shift 2
+        ;;
+      --no-check)
+        run_checks="0"
+        shift
+        ;;
+      --dry-run)
+        dry_run="1"
+        shift
+        ;;
+      -*)
+        echo "dotfiles-update kimi: unknown argument: $1" >&2
+        exit 2
+        ;;
+      *)
+        version="$1"
+        shift
+        ;;
+    esac
+  done
+
+  if [ "$version" = "latest" ]; then
+    version="$(latest_kimi_version)"
+  fi
+
+  if [[ ! "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+([.-][[:alnum:].-]+)?$ ]]; then
+    echo "dotfiles-update kimi: could not resolve a Kimi Code version" >&2
+    exit 1
+  fi
+
+  require_cmd curl
+  require_cmd jq
+
+  local kimi_file="$repo_dir/nix/packages/kimi-code-bin.nix"
+  local manifest
+  manifest="$(curl -fsSL "https://code.kimi.com/kimi-code/binaries/${version}/manifest.json")"
+
+  local manifest_version darwin_sha linux_sha
+  manifest_version="$(jq -r '.version // empty' <<<"$manifest")"
+  darwin_sha="$(jq -r '.platforms["darwin-arm64"].checksum // empty' <<<"$manifest")"
+  linux_sha="$(jq -r '.platforms["linux-x64"].checksum // empty' <<<"$manifest")"
+
+  if [ "$manifest_version" != "$version" ] \
+    || [[ ! "$darwin_sha" =~ ^[0-9a-f]{64}$ ]] \
+    || [[ ! "$linux_sha" =~ ^[0-9a-f]{64}$ ]]; then
+    echo "dotfiles-update kimi: invalid release manifest for $version" >&2
+    exit 1
+  fi
+
+  if [ "$dry_run" = "1" ]; then
+    cat <<EOF
+Would update $kimi_file:
+  version: $version
+  aarch64-darwin sha256: $darwin_sha
+  x86_64-linux sha256:   $linux_sha
+EOF
+    return
+  fi
+
+  VERSION="$version" \
+    DARWIN_SHA="$darwin_sha" \
+    LINUX_SHA="$linux_sha" \
+    perl -0pi -e '
+    s/version = "[^"]+";/version = "$ENV{VERSION}";/;
+    s/(aarch64-darwin = \{.*?sha256 = ")[^"]+(";)/$1$ENV{DARWIN_SHA}$2/s;
+    s/(x86_64-linux = \{.*?sha256 = ")[^"]+(";)/$1$ENV{LINUX_SHA}$2/s;
+  ' "$kimi_file"
+
+  if [ "$run_checks" = "1" ]; then
+    nix_eval_checks
+  fi
+}
+
 update_flake() {
   local inputs=()
   local run_checks="1"
@@ -305,6 +393,9 @@ update_all() {
   echo "Updating Claude Code..."
   update_claude --no-check
 
+  echo "Updating Kimi Code..."
+  update_kimi --no-check
+
   echo "Updating flake inputs..."
   update_flake --no-check
 
@@ -349,6 +440,9 @@ case "$command" in
     ;;
   claude)
     update_claude "$@"
+    ;;
+  kimi)
+    update_kimi "$@"
     ;;
   flake)
     update_flake "$@"
