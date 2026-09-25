@@ -8,15 +8,15 @@
 }:
 
 let
-  version = "0.40.1";
+  version = "2.1.1";
   sources = {
     aarch64-darwin = {
       url = "https://code.kimi.com/kimi-code/binaries/${version}/kimi-code-darwin-arm64";
-      sha256 = "cdee8d0c3a1a994a7eb30a7ad95e93bf27e0f0ab3d126121518c68f6b2fe05e7";
+      sha256 = "4bab6f96c2c289368b7f05a04f66737c53a59ce740f932d8f149240584758efb";
     };
     x86_64-linux = {
       url = "https://code.kimi.com/kimi-code/binaries/${version}/kimi-code-linux-x64";
-      sha256 = "e1d5003ae182200ecc3c0631aba7e7eaeba1601a0cf690770aa0184b59227bb7";
+      sha256 = "66f47536e40b02bb1d577cdd324768f73d39b8b9472e0ca140e73d8e225cd7de";
     };
   };
   source =
