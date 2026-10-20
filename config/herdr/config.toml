@@ -1,3 +1,4 @@
+onboarding = false
 # Keep Herdr's core navigation close to config/tmux/tmux.conf.
 
 [terminal]
