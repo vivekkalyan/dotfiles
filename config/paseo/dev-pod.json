@@ -1,0 +1,20 @@
+{
+  "$schema": "https://paseo.sh/schemas/paseo.config.v1.json",
+  "version": 1,
+  "agents": {
+    "providers": {
+      "claude": {
+        "command": ["/workspace/personal/dotfiles/bin/paseo-claude"]
+      }
+    }
+  },
+  "daemon": {
+    "listen": "127.0.0.1:6767",
+    "relay": {
+      "enabled": false
+    }
+  },
+  "worktrees": {
+    "root": "/workspace/.paseo/worktrees"
+  }
+}

@@ -263,6 +263,9 @@ EOF
   xdg.configFile."herdr/config.toml" = {
     source = oos "${dotfilesDir}/config/herdr/config.toml";
   };
+  home.file.".paseo/config.json" = lib.mkIf (pkgs.stdenv.isLinux && workDir != null) {
+    source = oos "${dotfilesDir}/config/paseo/dev-pod.json";
+  };
   xdg.configFile."zsh" = {
     source = oos "${dotfilesDir}/config/zsh";
   };

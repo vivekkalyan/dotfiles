@@ -231,10 +231,43 @@ spec:
                 echo "WARNING: Obsidian Sync is not configured at $OBSIDIAN_SYNC_PATH; continuous sync not started" >&2
               fi
 
+              # Paseo's supervisor restarts workers; this loop also recovers
+              # if the supervisor exits. State and its CLI persist under /root.
+              supervise_paseo() {
+                paseo_pid=""
+                trap '
+                  if [ -n "$paseo_pid" ]; then
+                    kill "$paseo_pid" 2>/dev/null || true
+                    wait "$paseo_pid" 2>/dev/null || true
+                  fi
+                  exit 0
+                ' TERM INT
+                while true; do
+                  "$DOTFILES_DIR/bin/dev-pod-paseo" daemon run &
+                  paseo_pid="$!"
+                  wait "$paseo_pid" || true
+                  paseo_pid=""
+                  echo "WARNING: Paseo exited; restarting in 5 seconds" >&2
+                  sleep 5
+                done
+              }
+
+              paseo_supervisor_pid=""
+              if [ -x "$DOTFILES_DIR/bin/dev-pod-paseo" ] && [ -f "$HOME/.paseo/config.json" ]; then
+                supervise_paseo &
+                paseo_supervisor_pid="$!"
+              else
+                echo "WARNING: Paseo is not configured; daemon not started" >&2
+              fi
+
               keepalive_pid=""
               shutdown() {
                 trap - TERM INT
 
+                if [ -n "$paseo_supervisor_pid" ]; then
+                  kill "$paseo_supervisor_pid" 2>/dev/null || true
+                  wait "$paseo_supervisor_pid" 2>/dev/null || true
+                fi
                 if [ -n "$obsidian_sync_supervisor_pid" ]; then
                   kill "$obsidian_sync_supervisor_pid" 2>/dev/null || true
                   wait "$obsidian_sync_supervisor_pid" 2>/dev/null || true

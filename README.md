@@ -78,6 +78,44 @@ Use `dev-pod-apply --check` to build on the pod without activating.
 Secrets are not committed. The required secret names and recreation commands live
 in [k8s/vivek-dev/README.md](k8s/vivek-dev/README.md).
 
+## Paseo
+
+The Mac runs Paseo Desktop; `vivek-dev` runs the daemon and agent processes.
+Install the desktop client with `brew install --cask paseo`. SSH transport needs
+Paseo 0.12.0 or newer; if the cask is older, use the current Apple Silicon release
+from <https://paseo.sh/download>.
+
+In Paseo Desktop, choose **Settings → Add host → Remote SSH** and enter
+`ssh://vivek-dev`. It uses the existing OpenSSH alias and its Kubernetes proxy.
+The daemon listens only on the pod's loopback interface, with relay disabled.
+Use remote paths such as `/workspace/personal/dotfiles` when opening projects.
+
+From the Mac terminal:
+
+```sh
+paseo-dev daemon status
+paseo-dev project create /workspace/personal/dotfiles
+paseo-dev ls
+```
+
+Home Manager links `config/paseo/dev-pod.json` to `/root/.paseo/config.json`.
+`dev-pod-paseo` installs the pinned CLI into `/root/.local/share/paseo` on first
+use. The Deployment supervises `dev-pod-paseo daemon run` at pod startup.
+For an already-running pod after applying Home Manager, start it without a pod
+restart:
+
+```sh
+ssh vivek-dev 'dev-pod-paseo daemon start'
+```
+
+Daemon state persists under `/root/.paseo`; worktrees live under
+`/workspace/.paseo/worktrees`. Agent credentials come from the pod's existing
+Claude/Codex setup.
+
+Paseo's Claude provider uses `bin/paseo-claude` to select the existing claude.ai
+login instead of the pod API key. On this root-run pod it also removes Paseo's
+bypass-permission launch flags, retaining normal permission checks.
+
 ## Updates
 
 Update scripts change the repo first; apply scripts make a machine match the

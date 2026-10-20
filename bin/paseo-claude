@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Paseo inherits the pod's API key, but Claude should use the existing claude.ai
+# login (including organization connectors) for interactive sessions.
+unset ANTHROPIC_API_KEY ANTHROPIC_AUTH_TOKEN
+
+# Paseo 0.12 always enables the SDK's bypass capability, which Claude refuses
+# under root even when Auto mode is selected. Keep normal permission checks.
+args=()
+while [ "$#" -gt 0 ]; do
+  if [ "$(id -u)" = 0 ]; then
+    case "$1" in
+      --allow-dangerously-skip-permissions|--dangerously-skip-permissions)
+        shift
+        continue
+        ;;
+      --permission-mode)
+        args+=("$1")
+        shift
+        if [ "${1:-}" = bypassPermissions ]; then
+          args+=(default)
+          shift
+          continue
+        fi
+        ;;
+      --permission-mode=bypassPermissions)
+        args+=(--permission-mode=default)
+        shift
+        continue
+        ;;
+    esac
+  fi
+  if [ "$#" -gt 0 ]; then
+    args+=("$1")
+    shift
+  fi
+done
+
+exec claude "${args[@]}"

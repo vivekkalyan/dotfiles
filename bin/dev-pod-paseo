@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Keep the headless CLI on the pod's persistent home, outside the Nix store.
+version="0.12.0"
+prefix="$HOME/.local/share/paseo"
+cli="$prefix/node_modules/.bin/paseo"
+package="$prefix/node_modules/@getpaseo/cli/package.json"
+
+if [ "$(uname -s)" != Linux ]; then
+  echo "dev-pod-paseo: run this on the Linux dev pod; use paseo-dev on the Mac" >&2
+  exit 1
+fi
+
+if [ ! -x "$cli" ] || [ ! -f "$package" ] || \
+   [ "$(node -p 'require(process.argv[1]).version' "$package")" != "$version" ]; then
+  npm install --prefix "$prefix" "@getpaseo/cli@$version" --no-audit --no-fund >&2
+fi
+
+exec "$cli" "$@"

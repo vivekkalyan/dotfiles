@@ -41,6 +41,7 @@
     "karabiner-elements"
     "notion"
     "obsidian"
+    "paseo"
     "raycast"
     "slack"
     "telegram"
