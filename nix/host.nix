@@ -39,6 +39,7 @@
     "helium-browser"
     "inkscape"
     "karabiner-elements"
+    "loom"
     "notion"
     "obsidian"
     "paseo"
