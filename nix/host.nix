@@ -59,15 +59,17 @@
   system.defaults.dock.tilesize = 16;
   system.defaults.dock.show-recents = false;
   system.defaults.dock.persistent-apps = [
-    { app = "/System/Library/CoreServices/Finder.app"; }
-    { app = "/Applications/CoreWeave App Store.app"; }
+    { app = "/Applications/Helium.app"; }
     { app = "/Applications/Ghostty.app"; }
-    { app = "/Applications/Safari.app"; }
-    { app = "/System/Applications/Calendar.app"; }
+    { app = "/Applications/Paseo.app"; }
     { app = "/Applications/Obsidian.app"; }
+    { app = "/Applications/ChatGPT.app"; }
     { app = "/Applications/Claude.app"; }
-    { app = "/Applications/Codex.app"; }
-    { app = "/Applications/Zen.app"; }
+    { app = "/Applications/Slack.app"; }
+    { app = "/Applications/Notion.app"; }
+    { app = "/Applications/Todoist.app"; }
+    { app = "/System/Applications/Calendar.app"; }
+    { app = "/Applications/zoom.us.app"; }
   ];
   system.defaults.dock.persistent-others = [
     { folder = "/Users/vkalyan/Downloads"; }
