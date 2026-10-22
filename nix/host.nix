@@ -20,7 +20,10 @@
   homebrew.onActivation = {
     autoUpdate = true;
     upgrade = true;
-    cleanup = "uninstall";
+    # Homebrew 7 removed `brew bundle --cleanup`, which nix-darwin-25.11 still
+    # passes for cleanup = "uninstall". Pass the replacement flag directly.
+    cleanup = "none";
+    extraFlags = [ "--force-cleanup" ];
   };
   homebrew.taps = [
     "timescam/tap"
