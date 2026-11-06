@@ -1,6 +1,7 @@
 {
   "$schema": "https://paseo.sh/schemas/paseo.config.v1.json",
   "version": 1,
+  "pluginsEnabled": true,
   "agents": {
     "providers": {
       "claude": {
@@ -16,5 +17,12 @@
   },
   "worktrees": {
     "root": "/workspace/.paseo/worktrees"
+  },
+  "plugins": {
+    "task-diffs": {
+      "source": "directory",
+      "path": "/workspace/personal/agents/paseo-plugins/task-diffs",
+      "enabled": true
+    }
   }
 }
