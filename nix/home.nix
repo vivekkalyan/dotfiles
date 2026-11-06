@@ -266,6 +266,10 @@ EOF
   home.file.".paseo/config.json" = lib.mkIf (pkgs.stdenv.isLinux && workDir != null) {
     source = oos "${dotfilesDir}/config/paseo/dev-pod.json";
   };
+  # Task worktree manager; assumes the dev-pod /workspace layout.
+  home.file.".local/bin/wt" = lib.mkIf (workDir != null) {
+    source = oos "${agentsDir}/scripts/wt";
+  };
   xdg.configFile."zsh" = {
     source = oos "${dotfilesDir}/config/zsh";
   };

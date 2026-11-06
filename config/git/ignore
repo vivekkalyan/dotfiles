@@ -24,3 +24,7 @@ node_modules
 
 # Agent working notes (local only, never committed)
 **/.agent-notes/
+
+# Link to a task's external scratch, created by `wt new`. No trailing slash,
+# so the pattern also matches the symlink.
+/scratch
