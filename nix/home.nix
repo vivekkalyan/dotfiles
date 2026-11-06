@@ -14,6 +14,10 @@
 let
   homeDir = config.home.homeDirectory;
   oos = config.lib.file.mkOutOfStoreSymlink;
+  paseoConfig =
+    if pkgs.stdenv.isDarwin then "mac.json"
+    else if workDir != null then "dev-pod.json"
+    else null;
   skillsDir = "${agentsDir}/skills";
   workspaceAgentInstructionsDir = "${agentsDir}/devpod";
   codexPackage =
@@ -116,6 +120,17 @@ in lib.mkMerge [
     TZ = "America/Los_Angeles";
     TZDIR = "/usr/share/zoneinfo";
   };
+
+  home.activation.checkPaseoConfig = lib.mkIf (paseoConfig != null) (
+    lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      paseo_shared='{pluginsEnabled, providers: (.agents.providers | map_values(del(.command)))}'
+      if ! diff -q \
+        <(${pkgs.jq}/bin/jq -S "$paseo_shared" "${dotfilesDir}/config/paseo/dev-pod.json") \
+        <(${pkgs.jq}/bin/jq -S "$paseo_shared" "${dotfilesDir}/config/paseo/mac.json") >/dev/null; then
+        echo "warning: Paseo plugin or provider settings differ between config/paseo/dev-pod.json and mac.json" >&2
+      fi
+    ''
+  );
 
   home.activation.ensureSkyConfig = lib.mkIf (pkgs.stdenv.isLinux && workDir != null) (
     lib.hm.dag.entryAfter [ "writeBoundary" ] ''
@@ -263,8 +278,10 @@ EOF
   xdg.configFile."herdr/config.toml" = {
     source = oos "${dotfilesDir}/config/herdr/config.toml";
   };
-  home.file.".paseo/config.json" = lib.mkIf (pkgs.stdenv.isLinux && workDir != null) {
-    source = oos "${dotfilesDir}/config/paseo/dev-pod.json";
+  # Paseo writes settings changes through this link, so it stays out of the Nix store. Both
+  # hosts share the plugin switch and provider models; checkPaseoConfig warns when they drift.
+  home.file.".paseo/config.json" = lib.mkIf (paseoConfig != null) {
+    source = oos "${dotfilesDir}/config/paseo/${paseoConfig}";
   };
   # Task worktree manager; assumes the dev-pod /workspace layout.
   home.file.".local/bin/wt" = lib.mkIf (workDir != null) {
