@@ -322,9 +322,6 @@ EOF
   home.file.".claude/settings.json" = lib.mkIf includeAgentConfig {
     source = oos "${dotfilesDir}/config/claude/settings.json";
   };
-  home.file.".claude/CLAUDE.md" = lib.mkIf includeAgentConfig {
-    source = oos "${dotfilesDir}/config/claude/CLAUDE.md";
-  };
   home.file.".claude/commands" = lib.mkIf includeAgentConfig {
     source = oos "${dotfilesDir}/config/claude/commands";
   };
