@@ -22,9 +22,17 @@ if [ -r "$HOME/.nix-profile/etc/profile.d/nix.sh" ]; then
   . "$HOME/.nix-profile/etc/profile.d/nix.sh"
 fi
 
-if [ -r "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh" ]; then
-  . "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
-fi
+# Standalone Home Manager (dev pod) installs into ~/.nix-profile; nix-darwin's
+# Home Manager module installs into /etc/profiles/per-user.
+for hm_session_vars in \
+  "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh" \
+  "/etc/profiles/per-user/$USER/etc/profile.d/hm-session-vars.sh"; do
+  if [ -r "$hm_session_vars" ]; then
+    . "$hm_session_vars"
+    break
+  fi
+done
+unset hm_session_vars
 
 if [ -z "${SHELL:-}" ]; then
   export SHELL="$(command -v zsh 2>/dev/null || echo /bin/sh)"
