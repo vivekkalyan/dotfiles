@@ -23,10 +23,7 @@
     autoUpdate = false;
     upgrade = false;
     # Uninstall every formula, cask and tap not listed here on each switch.
-    # This is cleanup = "uninstall", spelled out: Homebrew 7 removed the
-    # `brew bundle --cleanup` flag that nix-darwin-25.11 still passes for it.
-    cleanup = "none";
-    extraFlags = [ "--force-cleanup" ];
+    cleanup = "uninstall";
   };
   homebrew.brews = [
     "ca-certificates"
