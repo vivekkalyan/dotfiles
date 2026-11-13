@@ -25,9 +25,6 @@
     cleanup = "none";
     extraFlags = [ "--force-cleanup" ];
   };
-  homebrew.taps = [
-    "timescam/tap"
-  ];
   homebrew.brews = [
     "ca-certificates"
   ];
@@ -51,9 +48,6 @@
     "telegram"
     "todoist-app"
   ];
-  homebrew.extraConfig = ''
-    cask "timescam/tap/raycast@beta", trusted: true
-  '';
 
   # Dock size (pixels).
   system.defaults.dock.tilesize = 16;
