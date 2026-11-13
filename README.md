@@ -147,18 +147,16 @@ Review and commit the diff, push it, then run `dev-pod-apply`.
 
 ## SSH Commit Signing
 
-Git signs commits with the SSH key at `~/.ssh/github`. On macOS, store that key's
-passphrase in Keychain once:
+Git signs commits with the SSH key at `~/.ssh/github`, the same key
+GitHub uses for SSH auth; add it on GitHub as both an Authentication and a
+Signing key. The dev pod installs its own key at the same path from the
+`vivek-dev-github-ssh` Secret.
 
-```sh
-/usr/bin/ssh-add --apple-use-keychain ~/.ssh/github
-```
-
-Use `/usr/bin/ssh-add` so the Apple Keychain flags are available even when the
-Nix OpenSSH package appears earlier in `PATH`.
-
-New interactive shells source `system/ssh.zsh`, which quietly loads that key from
-Keychain into `ssh-agent` when needed. Check the agent with:
+On the Mac, `~/.ssh/config` sets `AddKeysToAgent yes` for `github.com`, so the
+first push or pull after login asks for the passphrase once and keeps the key
+in `ssh-agent` until logout. Commits made before that ask for the passphrase
+every time; run `ssh -T git@github.com` once to load the key. Check the agent
+with:
 
 ```sh
 ssh-add -l
