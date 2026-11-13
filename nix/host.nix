@@ -18,8 +18,10 @@
   # Install macOS apps (e.g., Raycast) via Homebrew casks
   homebrew.enable = true;
   homebrew.onActivation = {
-    autoUpdate = true;
-    upgrade = true;
+    # A switch only installs and removes casks; it never upgrades them. Most
+    # apps update themselves, and `brew upgrade` covers the rest when run.
+    autoUpdate = false;
+    upgrade = false;
     # Uninstall every formula, cask and tap not listed here on each switch.
     # This is cleanup = "uninstall", spelled out: Homebrew 7 removed the
     # `brew bundle --cleanup` flag that nix-darwin-25.11 still passes for it.
