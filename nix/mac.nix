@@ -3,11 +3,24 @@
   lib,
   pkgs,
   dotfilesDir,
+  workDir,
   ...
 }:
 let
   homeDir = config.home.homeDirectory;
   oos = config.lib.file.mkOutOfStoreSymlink;
+  # Load this host's API keys for one command; the workspace AGENTS.md tells
+  # agents to use it. The Mac keeps them in a hand-maintained .env.
+  withKeys = pkgs.writeShellScriptBin "with-keys" ''
+    set -euo pipefail
+    [ $# -gt 0 ] || { echo "usage: with-keys <command> [args...]" >&2; exit 2; }
+    env_file="${workDir}/.env"
+    [ -r "$env_file" ] || { echo "with-keys: $env_file not found" >&2; exit 1; }
+    set -a
+    . "$env_file"
+    set +a
+    exec "$@"
+  '';
 in
 {
   home.packages = with pkgs; [
@@ -15,6 +28,7 @@ in
     hledger
     keepassxc
     llama-cpp
+    withKeys
   ];
 
   # Paseo writes settings changes through this link, so it stays out of the Nix store. Both

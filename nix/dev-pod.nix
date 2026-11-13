@@ -20,6 +20,20 @@ let
       -c "sqlite_home=\"$CODEX_SQLITE_HOME\"" \
       "$@"
   '';
+  # Load this host's API keys for one command; the workspace AGENTS.md tells
+  # agents to use it. The Deployment mounts one file per key.
+  withKeys = pkgs.writeShellScriptBin "with-keys" ''
+    set -euo pipefail
+    [ $# -gt 0 ] || { echo "usage: with-keys <command> [args...]" >&2; exit 2; }
+    keys_dir=/run/secrets/api-keys
+    [ -d "$keys_dir" ] || { echo "with-keys: $keys_dir not found" >&2; exit 1; }
+    for f in "$keys_dir"/*; do
+      [ -f "$f" ] || continue
+      IFS= read -r value < "$f" || true
+      export "$(basename "$f")=$value"
+    done
+    exec "$@"
+  '';
 in
 {
   home.packages = with pkgs; [
@@ -30,6 +44,7 @@ in
     procps
     psmisc
     xclip
+    withKeys
   ];
 
   home.sessionVariables = {
