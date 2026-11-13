@@ -14,7 +14,7 @@ let
   oos = config.lib.file.mkOutOfStoreSymlink;
   agentsRepoUrl = "git@github.com:vivekkalyan/agents.git";
   skillsDir = "${agentsDir}/skills";
-  workspaceAgentInstructionsDir = "${agentsDir}/devpod";
+  workspaceAgentInstructionsDir = "${agentsDir}/workspace";
 in
 {
   home.username = username;
