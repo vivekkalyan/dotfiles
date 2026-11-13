@@ -269,7 +269,11 @@ return {
 
     vim.lsp.config["ruff"] = {
       capabilities = capabilities,
-      on_attach = on_attach,
+      on_attach = function(client, bufnr)
+        -- Leave hover to ty, so K shows one result.
+        client.server_capabilities.hoverProvider = false
+        on_attach(client, bufnr)
+      end,
     }
 
     -- configure rust server

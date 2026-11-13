@@ -38,8 +38,9 @@ return {
         "ts_ls",
         "ty",
       },
-      -- auto-install configured servers (with lspconfig)
-      automatic_installation = true, -- not the same as ensure_installed
+      -- stylua is installed below as a formatter and now also ships a language
+      -- server; conform runs the CLI, so don't start the server too.
+      automatic_enable = { exclude = { "stylua" } },
     })
 
     mason_tool_installer.setup({
