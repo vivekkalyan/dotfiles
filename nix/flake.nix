@@ -2,10 +2,10 @@
   description = "User-space setup via Home Manager + nix-darwin";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
-    home-manager.url = "github:nix-community/home-manager/release-25.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
+    home-manager.url = "github:nix-community/home-manager/release-26.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
-    nix-darwin.url = "github:nix-darwin/nix-darwin/nix-darwin-25.11";
+    nix-darwin.url = "github:nix-darwin/nix-darwin/nix-darwin-26.05";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
   };
@@ -34,7 +34,7 @@
         gh = unstable.gh;
         herdr = unstable.herdr;
         kimi-code = final.callPackage ./packages/kimi-code-bin.nix { };
-        obsidian-headless = final.callPackage ./packages/obsidian-headless.nix { };
+        obsidian-headless = final.callPackage ./packages/obsidian-headless.nix { pnpm_10 = unstable.pnpm_10; };
         claude-code = final.callPackage ./packages/claude-code-bin.nix { };
         pi-coding-agent = unstable.pi-coding-agent;
         prek = unstable.prek;
