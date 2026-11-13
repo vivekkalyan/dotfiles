@@ -52,45 +52,42 @@
     linuxPkgs = mkPkgs linuxSystem;
     darwinOverlay = mkOverlay darwinSystem;
 
-    mkHome = {
-      pkgs,
-      username,
-      homeDirectory,
-      dotfilesDir,
-      agentsDir,
-      agentsRepoUrl ? "git@github.com:vivekkalyan/agents.git",
-      workDir ? null,
-      includeAgentConfig ? pkgs.stdenv.isDarwin
-    }:
+    # Per-host parameters; checkout paths follow from the workspace root.
+    mkArgs = { username, homeDirectory, workDir }: {
+      inherit username homeDirectory workDir;
+      dotfilesDir = "${workDir}/personal/dotfiles";
+      agentsDir = "${workDir}/personal/agents";
+    };
+    macArgs = mkArgs {
+      username = "vkalyan";
+      homeDirectory = "/Users/vkalyan";
+      workDir = "/Users/vkalyan/workspace";
+    };
+    devPodArgs = mkArgs {
+      username = "root";
+      homeDirectory = "/root";
+      workDir = "/workspace";
+    };
+
+    mkHome = { pkgs, args, hostModule }:
       home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
-        extraSpecialArgs = {
-          inherit username homeDirectory dotfilesDir agentsDir agentsRepoUrl workDir includeAgentConfig;
-        };
-        modules = [ ./home.nix ];
+        extraSpecialArgs = args;
+        modules = [ ./home.nix hostModule ];
       };
   in {
     # Home Manager-only build for the Mac.
     homeConfigurations."cw" = mkHome {
       pkgs = darwinPkgs;
-      username = "vkalyan";
-      homeDirectory = "/Users/vkalyan";
-      dotfilesDir = "/Users/vkalyan/personal/dotfiles";
-      agentsDir = "/Users/vkalyan/personal/agents";
-      agentsRepoUrl = "git@github.com:vivekkalyan/agents.git";
-      includeAgentConfig = true;
+      args = macArgs;
+      hostModule = ./mac.nix;
     };
 
     # Home Manager-only build for the dev pod.
     homeConfigurations."vivek-dev" = mkHome {
       pkgs = linuxPkgs;
-      username = "root";
-      homeDirectory = "/root";
-      dotfilesDir = "/workspace/personal/dotfiles";
-      agentsDir = "/workspace/personal/agents";
-      agentsRepoUrl = "git@github.com:vivekkalyan/agents.git";
-      workDir = "/workspace";
-      includeAgentConfig = false;
+      args = devPodArgs;
+      hostModule = ./dev-pod.nix;
     };
 
     # nix-darwin system with Home Manager integrated
@@ -102,18 +99,10 @@
         {
           nixpkgs.config = nixpkgsConfig;
           nixpkgs.overlays = [ darwinOverlay ];
-          home-manager.extraSpecialArgs = {
-            username = "vkalyan";
-            homeDirectory = "/Users/vkalyan";
-            dotfilesDir = "/Users/vkalyan/personal/dotfiles";
-            agentsDir = "/Users/vkalyan/personal/agents";
-            agentsRepoUrl = "git@github.com:vivekkalyan/agents.git";
-            workDir = null;
-            includeAgentConfig = true;
-          };
+          home-manager.extraSpecialArgs = macArgs;
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
-          home-manager.users.vkalyan = import ./home.nix;
+          home-manager.users.vkalyan.imports = [ ./home.nix ./mac.nix ];
         }
       ];
     };

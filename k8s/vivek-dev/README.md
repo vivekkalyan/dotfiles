@@ -16,14 +16,14 @@ The Deployment expects these Secrets to exist in `default`:
 - `vivek-dev-kubeconfig`
 
 The GitHub SSH Secret is also used during first-time Home Manager activation to
-clone setup repos such as `~/personal/agents`.
+clone setup repos such as `/workspace/personal/agents`.
 
 Do not commit Secret values. Recreate or update them from local files with commands like:
 
 ```bash
 kubectl create secret generic vivek-dev-api-keys \
   -n default \
-  --from-env-file=/Users/vkalyan/coreweave/.env \
+  --from-env-file=/Users/vkalyan/workspace/projects/.env \
   --dry-run=client -o yaml | kubectl apply -f -
 
 kubectl create secret generic vivek-dev-ssh-authorized-keys \

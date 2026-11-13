@@ -8,4 +8,4 @@ script = ""
 [[actions]]
 name = "Run"
 icon = "run"
-command = "sudo darwin-rebuild switch --flake /Users/vkalyan/personal/dotfiles/nix#cw"
+command = "sudo darwin-rebuild switch --flake /Users/vkalyan/workspace/personal/dotfiles/nix#cw"

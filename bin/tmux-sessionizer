@@ -4,7 +4,7 @@ if [[ $# -eq 1 ]]; then
     selected=$1
 else
     dirs=()
-    for d in ~/personal ~/handshakes ~/cartograph ~/coreweave/; do
+    for d in ~/workspace/personal ~/workspace/projects; do
         [[ -d "$d" ]] && dirs+=("$d")
     done
     selected=$(find "${dirs[@]}" -mindepth 1 -maxdepth 1 -type d | fzf)

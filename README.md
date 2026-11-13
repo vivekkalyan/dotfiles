@@ -7,11 +7,11 @@ nix-darwin, and Kubernetes manifests.
 
 - [AGENTS.md](AGENTS.md): repo conventions for agents and humans.
 - [nix/flake.nix](nix/flake.nix): flake outputs for `cw` on macOS and `vivek-dev` on Linux.
-- [nix/home.nix](nix/home.nix): main ownership map for linked config files and packages.
+- [nix/home.nix](nix/home.nix): main ownership map for config files and packages both hosts share; [nix/mac.nix](nix/mac.nix) and [nix/dev-pod.nix](nix/dev-pod.nix) hold host-only pieces.
 - [k8s/vivek-dev/](k8s/vivek-dev): source-controlled Kubernetes resources for the GPU dev pod.
 
 Edit files in this repo, not the live copies under `$HOME`. If you add, rename,
-or remove a managed config file, update [nix/home.nix](nix/home.nix).
+or remove a managed config file, update the nix module that owns it.
 
 ## Mac Setup
 
@@ -143,7 +143,7 @@ Review and commit the diff, push it, then run `dev-pod-apply`.
 - [system/](system): shell fragments sourced by zsh.
 - [bin/](bin): personal scripts on PATH.
 - [nix/bootstrap.sh](nix/bootstrap.sh): fresh-machine bootstrap for macOS.
-- `~/personal/agents`: Shared dev-pod instructions and skills repo
+- `<workDir>/personal/agents`: Shared workspace instructions and skills repo
 
 ## SSH Commit Signing
 

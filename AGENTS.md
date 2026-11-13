@@ -3,15 +3,16 @@
 ## Source Of Truth
 
 - [`nix/flake.nix`](nix/flake.nix) defines the flake inputs and the `homeConfigurations.cw` / `darwinConfigurations.cw` outputs.
-- [`nix/home.nix`](nix/home.nix) is the main ownership map: it links repo files into `~/.config`, `~/.claude`, `~/.codex`, and other home paths via out-of-store symlinks.
+- [`nix/home.nix`](nix/home.nix) is the main ownership map for what both hosts share: it links repo files into `~/.config`, `~/.codex`, and other home paths via out-of-store symlinks. Host-only pieces live in [`nix/mac.nix`](nix/mac.nix) and [`nix/dev-pod.nix`](nix/dev-pod.nix), each added by its flake output; keep `home.nix` free of host conditionals.
+- Both hosts share one workspace layout under `workDir` (`~/workspace` on the Mac, `/workspace` on the dev pod), with this repo at `<workDir>/personal/dotfiles` and agents at `<workDir>/personal/agents`.
 - Edit files in this repo, not the live copies under `$HOME`.
-- If you add, rename, or remove a managed config file, update [`nix/home.nix`](nix/home.nix).
+- If you add, rename, or remove a managed config file, update the module that owns it.
 
 ## Repo Map
 
 - [`config/nvim/`](config/nvim): Neovim config. [`config/nvim/init.lua`](config/nvim/init.lua) loads [`config/nvim/lua/vivek/core/`](config/nvim/lua/vivek/core) and [`config/nvim/lua/vivek/plugins/`](config/nvim/lua/vivek/plugins). LSP lives in [`config/nvim/lua/vivek/plugins/lsp/`](config/nvim/lua/vivek/plugins/lsp), formatting in [`config/nvim/lua/vivek/plugins/format.lua`](config/nvim/lua/vivek/plugins/format.lua), linting in [`config/nvim/lua/vivek/plugins/lint.lua`](config/nvim/lua/vivek/plugins/lint.lua).
 - [`config/claude/`](config/claude): Claude-specific settings, commands, hooks, and statusline copied into `~/.claude`. Start with [`config/claude/settings.json`](config/claude/settings.json) and [`config/claude/commands/`](config/claude/commands). Hooks currently wrap bare `python` / `sky` commands to `uv run ...`.
-- `~/personal/agents`: Shared dev-pod instructions and skills cloned from GitHub if missing. Home Manager links `skills/` into `~/.claude/skills` and `~/.codex/skills/user`, and links `devpod/AGENTS.md` and `devpod/CLAUDE.md` into `/workspace` on the dev pod.
+- `<workDir>/personal/agents`: Shared workspace instructions and skills cloned from GitHub if missing. Home Manager links `skills/` into `~/.claude/skills` and `~/.codex/skills/user`, and links `devpod/AGENTS.md` and `devpod/CLAUDE.md` into the workspace root on both hosts.
 - [`config/git/`](config/git), [`config/zsh/`](config/zsh), [`config/tmux/`](config/tmux), [`config/ghostty/`](config/ghostty), [`config/karabiner/`](config/karabiner): tool-specific configs.
 - [`system/`](system): shell fragments sourced by zsh (`path`, `alias`, `functions`, prompt/fzf/history helpers).
 - [`bin/`](bin): personal scripts on PATH. Python helpers use `uv run --script` with inline metadata.
@@ -20,7 +21,7 @@
 ## Editing Rules
 
 - Preserve the repo's existing lightweight, hand-written style; avoid unnecessary refactors.
-- Edit source files in this repo, not live copies under `$HOME`. If you add, move, or remove a managed config, update [`nix/home.nix`](nix/home.nix).
+- Edit source files in this repo, not live copies under `$HOME`. If you add, move, or remove a managed config, update the nix module that owns it.
 - Do not edit generated/local state: `config/zsh/.zcompdump`, `config/git/config-os`.
 - Only change [`config/nvim/lazy-lock.json`](config/nvim/lazy-lock.json) or [`nix/flake.lock`](nix/flake.lock) when intentionally updating plugins or flake inputs.
 
