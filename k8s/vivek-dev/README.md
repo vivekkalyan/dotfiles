@@ -23,7 +23,7 @@ Do not commit Secret values. Recreate or update them from local files with comma
 ```bash
 kubectl create secret generic vivek-dev-api-keys \
   -n default \
-  --from-env-file=/Users/vkalyan/workspace/projects/.env \
+  --from-env-file=/Users/vkalyan/workspace/.env \
   --dry-run=client -o yaml | kubectl apply -f -
 
 kubectl create secret generic vivek-dev-ssh-authorized-keys \
