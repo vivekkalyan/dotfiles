@@ -43,9 +43,10 @@ in
     less
     neovim
     netcat-gnu
-    nodejs_24
+    nodejs_26
     openssh
     pkgs."pi-coding-agent"
+    pnpm_12
     prek
     ripgrep
     rsync
@@ -53,6 +54,7 @@ in
     rustc
     rustfmt
     socat
+    temporal-cli
     tmux
     typst
     unzip
