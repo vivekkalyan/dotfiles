@@ -39,7 +39,6 @@
         pi-coding-agent = unstable.pi-coding-agent;
         prek = unstable.prek;
         uv = unstable.uv;
-        llama-cpp = unstable.llama-cpp;
       };
 
     mkPkgs = system: import nixpkgs {

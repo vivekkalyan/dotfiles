@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ ... }:
 {
   system.stateVersion = 6;
   system.primaryUser = "vkalyan";
@@ -119,56 +119,5 @@
 
   # Save screenshots to clipboard
   system.defaults.screencapture.target = "clipboard";
-
-  # llama-server for a general-purpose local LLM API.
-  # Serves Qwen3.6-27B over a localhost OpenAI-compatible API at /v1.
-  launchd.user.agents.llama-server = {
-    serviceConfig = {
-      Label = "com.llama.server";
-      ProgramArguments = [
-        "${pkgs.llama-cpp}/bin/llama-server"
-        "--hf-repo"
-        "unsloth/Qwen3.6-27B-GGUF:Q4_K_M"
-        "--no-mmproj"
-        "--fit"
-        "on"
-        "--host"
-        "127.0.0.1"
-        "--port"
-        "8012"
-        "--alias"
-        "qwen3.6-27b"
-        "--jinja"
-        "--temp"
-        "0.6"
-        "--top-p"
-        "0.95"
-        "--top-k"
-        "20"
-        "--min-p"
-        "0.0"
-        "--presence-penalty"
-        "0.0"
-        "--repeat-penalty"
-        "1.0"
-        "--reasoning"
-        "auto"
-        "--reasoning-format"
-        "deepseek"
-        "--ctx-size"
-        "65536"
-        "--ctx-checkpoints"
-        "2"
-        "--cache-ram"
-        "4096"
-        "--chat-template-kwargs"
-        ''{"enable_thinking": false, "preserve_thinking": true}''
-      ];
-      RunAtLoad = true;
-      KeepAlive = true;
-      StandardOutPath = "/tmp/llama-server.log";
-      StandardErrorPath = "/tmp/llama-server.err";
-    };
-  };
 
 }

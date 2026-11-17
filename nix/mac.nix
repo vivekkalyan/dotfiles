@@ -27,7 +27,6 @@ in
     codex
     hledger
     keepassxc
-    llama-cpp
     withKeys
   ];
 
