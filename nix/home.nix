@@ -185,6 +185,10 @@ in
   home.file.".local/bin/wt" = {
     source = oos "${agentsDir}/scripts/wt";
   };
+  # The desk CLI; its launcher says how to install its dependencies when they are missing.
+  home.file.".local/bin/desk" = {
+    source = oos "${agentsDir}/desk/bin/desk";
+  };
   xdg.configFile."zsh" = {
     source = oos "${dotfilesDir}/config/zsh";
   };
