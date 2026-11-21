@@ -19,7 +19,7 @@
         "icon": "hammer",
         "color": "sky",
         "provider": "codex",
-        "model": "gpt-6.1-sol",
+        "model": "gpt-6.2-sol",
         "modeId": "auto-review",
         "thinkingOptionId": "medium"
       }
@@ -117,8 +117,9 @@
       "codex": {
         "models": [
           {
-            "id": "gpt-6-astra",
-            "label": "GPT-6-Astra",
+            "id": "gpt-6.2-sol",
+            "label": "GPT-6.2-Sol",
+            "isDefault": true,
             "thinkingOptions": [
               {
                 "id": "low",
@@ -148,9 +149,8 @@
             ]
           },
           {
-            "id": "gpt-6.1-sol",
-            "label": "GPT-6.1-Sol",
-            "isDefault": true,
+            "id": "gpt-6.2-astra",
+            "label": "GPT-6.2-Astra",
             "thinkingOptions": [
               {
                 "id": "low",
