@@ -1,13 +1,11 @@
 {
   config,
-  lib,
   pkgs,
   dotfilesDir,
   workDir,
   ...
 }:
 let
-  homeDir = config.home.homeDirectory;
   oos = config.lib.file.mkOutOfStoreSymlink;
   # Load this host's API keys for one command; the workspace AGENTS.md tells
   # agents to use it. The Mac keeps them in a hand-maintained .env.
@@ -43,14 +41,11 @@ in
     source = oos "${dotfilesDir}/config/karabiner";
   };
 
-  # Link .app bundles from nix profile into ~/Applications
-  home.activation.linkNixApps = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    mkdir -p "${homeDir}/Applications"
-    for app in "${homeDir}/.nix-profile/Applications/"*.app; do
-      [ -e "$app" ] || continue
-      ln -sfn "$app" "${homeDir}/Applications/$(basename "$app")"
-    done
-  '';
+  # Copy Nix apps into ~/Applications/Home Manager Apps rather than linking them,
+  # so Dock pins and Spotlight see a stable path and each switch restores the
+  # pinned bundle if an app's own updater replaced it.
+  targets.darwin.linkApps.enable = false;
+  targets.darwin.copyApps.enable = true;
 
   home.file.".claude/settings.json" = {
     source = oos "${dotfilesDir}/config/claude/settings.json";
