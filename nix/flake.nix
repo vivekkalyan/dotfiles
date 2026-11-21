@@ -35,6 +35,7 @@
         herdr = unstable.herdr;
         kimi-code = final.callPackage ./packages/kimi-code-bin.nix { };
         obsidian-headless = final.callPackage ./packages/obsidian-headless.nix { pnpm_10 = unstable.pnpm_10; };
+        paseo = final.callPackage ./packages/paseo-bin.nix { };
         claude-code = final.callPackage ./packages/claude-code-bin.nix { };
         pi-coding-agent = unstable.pi-coding-agent;
         prek = unstable.prek;
