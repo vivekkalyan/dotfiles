@@ -81,8 +81,8 @@
             ]
           },
           {
-            "id": "claude-fable-5-1",
-            "label": "Fable 5.1",
+            "id": "claude-fable-5-2",
+            "label": "Fable 5.2",
             "thinkingOptions": [
               {
                 "id": "low",
