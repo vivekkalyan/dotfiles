@@ -15,15 +15,15 @@
 }:
 
 let
-  version = "2.1.318";
+  version = "2.1.330";
   sources = {
     aarch64-darwin = {
       platform = "darwin-arm64";
-      hash = "sha256-Z3oup79XbO3SDhkdlzkU7YpBeW9TpjsZIzgd3E1bXn0=";
+      hash = "sha256-98UJO53WVg0Iryi8J7Ej+1UJHerjGArDnfGZUi2oaBU=";
     };
     x86_64-linux = {
       platform = "linux-x64";
-      hash = "sha256-cIx3sgTbMAhv9vHtNFd72gPhvnTO2AVXy/e1Qknr8L0=";
+      hash = "sha256-85DqoIFOahv/dMu0est0y5yJ0wztgJ/gr1rwDHv+jrs=";
     };
   };
   source =
