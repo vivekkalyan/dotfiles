@@ -50,10 +50,6 @@
               {
                 "id": "max",
                 "label": "Max"
-              },
-              {
-                "id": "ultracode",
-                "label": "Ultracode"
               }
             ]
           },
@@ -81,10 +77,6 @@
               {
                 "id": "max",
                 "label": "Max"
-              },
-              {
-                "id": "ultracode",
-                "label": "Ultracode"
               }
             ]
           }
