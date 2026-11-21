@@ -25,6 +25,7 @@ in
     codex
     hledger
     keepassxc
+    paseo
     withKeys
   ];
 

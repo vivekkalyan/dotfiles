@@ -81,9 +81,10 @@ in [k8s/vivek-dev/README.md](k8s/vivek-dev/README.md).
 ## Paseo
 
 The Mac runs Paseo Desktop; `vivek-dev` runs the daemon and agent processes.
-Install the desktop client with `brew install --cask paseo`. SSH transport needs
-Paseo 0.12.0 or newer; if the cask is older, use the current Apple Silicon release
-from <https://paseo.sh/download>.
+Nix installs Paseo Desktop and its `paseo` CLI from
+[`nix/packages/paseo-bin.nix`](nix/packages/paseo-bin.nix) into
+`~/Applications/Home Manager Apps`. Each switch restores the pinned app if
+Paseo's own updater replaced it.
 
 In Paseo Desktop, choose **Settings → Add host → Remote SSH** and enter
 `ssh://vivek-dev`. It uses the existing OpenSSH alias and its Kubernetes proxy.

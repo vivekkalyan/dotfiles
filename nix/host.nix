@@ -43,7 +43,6 @@
     "notion"
     "obsidian"
     "orbstack"
-    "paseo"
     "raycast"
     "slack"
     "telegram"
@@ -56,7 +55,7 @@
   system.defaults.dock.persistent-apps = [
     { app = "/Applications/Helium.app"; }
     { app = "/Applications/Ghostty.app"; }
-    { app = "/Applications/Paseo.app"; }
+    { app = "/Users/vkalyan/Applications/Home Manager Apps/Paseo.app"; }
     { app = "/Applications/Obsidian.app"; }
     { app = "/Applications/ChatGPT.app"; }
     { app = "/Applications/Claude.app"; }
