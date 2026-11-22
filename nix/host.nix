@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, ... }:
 {
   system.stateVersion = 6;
   system.primaryUser = "vkalyan";
@@ -14,6 +14,23 @@
 
   # Bellevue, Washington: Pacific Time with US locale/region defaults.
   time.timeZone = "America/Los_Angeles";
+
+  # Paseo is pinned in Nix but lives at /Applications/Paseo.app, where the Dock, Raycast and
+  # macOS permissions expect it. This runs before the Dock settings below are applied, and
+  # restores the pinned bundle if Paseo's own updater replaced it. Store mtimes are skipped
+  # because macOS rejects the bundle signature when mtime is 1.
+  system.activationScripts.extraActivation.text = ''
+    echo "installing Paseo into /Applications..." >&2
+    ${pkgs.rsync}/bin/rsync --recursive --links --perms --chmod=u+w --checksum --delete \
+      ${pkgs.paseo}/Applications/Paseo.app/ /Applications/Paseo.app/
+  '';
+  # The CLI launcher follows this link back into the installed bundle.
+  environment.systemPackages = [
+    (pkgs.runCommand "paseo-cli" { } ''
+      mkdir -p "$out/bin"
+      ln -s /Applications/Paseo.app/Contents/Resources/bin/paseo "$out/bin/paseo"
+    '')
+  ];
 
   # Install macOS apps (e.g., Raycast) via Homebrew casks
   homebrew.enable = true;
@@ -55,7 +72,7 @@
   system.defaults.dock.persistent-apps = [
     { app = "/Applications/Helium.app"; }
     { app = "/Applications/Ghostty.app"; }
-    { app = "/Users/vkalyan/Applications/Home Manager Apps/Paseo.app"; }
+    { app = "/Applications/Paseo.app"; }
     { app = "/Applications/Obsidian.app"; }
     { app = "/Applications/ChatGPT.app"; }
     { app = "/Applications/Claude.app"; }

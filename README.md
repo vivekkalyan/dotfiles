@@ -81,11 +81,11 @@ in [k8s/vivek-dev/README.md](k8s/vivek-dev/README.md).
 ## Paseo
 
 The Mac runs Paseo Desktop; `vivek-dev` runs the daemon and agent processes.
-Nix installs Paseo Desktop and its `paseo` CLI from
-[`nix/packages/paseo-bin.nix`](nix/packages/paseo-bin.nix) into
-`~/Applications/Home Manager Apps`, and `bin/dev-pod-paseo` pins the pod's CLI
-to the same version. Bump both with `dotfiles-update paseo`. Each switch restores
-the pinned app if Paseo's own updater replaced it.
+Nix pins Paseo Desktop in [`nix/packages/paseo-bin.nix`](nix/packages/paseo-bin.nix),
+and [`nix/host.nix`](nix/host.nix) installs it at `/Applications/Paseo.app` with
+its `paseo` CLI on PATH. `bin/dev-pod-paseo` pins the pod's CLI to the same
+version. Bump both with `dotfiles-update paseo`. Each switch restores the pinned
+app if Paseo's own updater replaced it.
 
 In Paseo Desktop, choose **Settings → Add host → Remote SSH** and enter
 `ssh://vivek-dev`. It uses the existing OpenSSH alias and its Kubernetes proxy.
