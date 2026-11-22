@@ -1,5 +1,8 @@
 # The desk services this Mac has, linked to ~/.config/desk/config.toml. Each table enables one
 # service; desk lists it once its keys are also in ~/workspace/.env.
 
+# Brain tasks (efforts/tasks/), local filesystem service with zero API keys.
+[task]
+
 # Personal tasks, tried on the Mac first.
 [todoist]
