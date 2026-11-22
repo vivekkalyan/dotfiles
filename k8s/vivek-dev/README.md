@@ -18,14 +18,28 @@ The Deployment expects these Secrets to exist in `default`:
 The GitHub SSH Secret is also used during first-time Home Manager activation to
 clone setup repos such as `/workspace/personal/agents`.
 
-Do not commit Secret values. Recreate or update them from local files with commands like:
+Do not commit Secret values.
+
+`vivek-dev-api-keys` holds exactly the keys the pod should have, and `dev-pod-api-keys` rebuilds
+it from the Mac's `~/workspace/.env`:
+
+- the keys of the desk services the pod's desk config enables, from
+  `desk keys --config config/desk/dev-pod.toml`;
+- the other keys listed by name in [`api-keys`](api-keys), such as the model providers'.
 
 ```bash
-kubectl create secret generic vivek-dev-api-keys \
-  -n default \
-  --from-env-file=/Users/vkalyan/workspace/.env \
-  --dry-run=client -o yaml | kubectl apply -f -
+dev-pod-api-keys --dry-run   # print the key names and check each is set; change nothing
+dev-pod-api-keys             # rebuild the Secret
+```
 
+The script fails, naming the key, when one is not set in `~/workspace/.env`. Values go to
+`kubectl` through a pipe and are never printed or written to disk. To give the pod a desk service,
+add its table to `config/desk/dev-pod.toml`; for any other key, add its name to `api-keys`. Then
+run the script.
+
+Recreate or update the other Secrets from local files:
+
+```bash
 kubectl create secret generic vivek-dev-ssh-authorized-keys \
   -n default \
   --from-file=authorized_keys="$HOME/.ssh/vivek-dev.pub" \

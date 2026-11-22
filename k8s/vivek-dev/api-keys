@@ -1,0 +1,7 @@
+# Keys the dev pod gets besides those of its desk services, one name per line. Names only, never
+# values: bin/dev-pod-api-keys reads the values from ~/workspace/.env on the Mac.
+OPENROUTER_API_KEY
+TINKER_API_KEY
+WANDB_API_KEY
+OPENAI_API_KEY
+ANTHROPIC_API_KEY

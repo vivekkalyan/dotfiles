@@ -1,0 +1,105 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+usage() {
+  cat <<'EOF'
+Usage: dev-pod-api-keys [--dry-run]
+
+Rebuild the dev pod's API keys Secret, vivek-dev-api-keys, from this Mac's key store.
+
+The Secret holds exactly these keys:
+  - the ones the pod's desk services need: desk keys --config config/desk/dev-pod.toml
+  - the others listed in k8s/vivek-dev/api-keys
+Their values come from ~/workspace/.env and go to kubectl through a pipe. They are never
+printed or written to disk. Every key must be set in ~/workspace/.env.
+
+Options:
+  --dry-run   Print the key names, check that each is set, and change nothing.
+  -h, --help  Show this help.
+EOF
+}
+
+mode="apply"
+while [ "$#" -gt 0 ]; do
+  case "$1" in
+    --dry-run)
+      mode="dry-run"
+      shift
+      ;;
+    -h|--help)
+      usage
+      exit 0
+      ;;
+    *)
+      echo "dev-pod-api-keys: unknown argument: $1" >&2
+      usage >&2
+      exit 2
+      ;;
+  esac
+done
+
+dotfiles_dir="$(cd "$(dirname "$(readlink -f "$0")")/.." && pwd)"
+env_file="$HOME/workspace/.env"
+secret="vivek-dev-api-keys"
+namespace="default"
+
+if ! command -v desk >/dev/null 2>&1; then
+  echo "dev-pod-api-keys: desk is not on PATH. Fix: Apply the dotfiles Nix configuration, which links desk" >&2
+  exit 1
+fi
+[ -r "$env_file" ] || { echo "dev-pod-api-keys: $env_file not found" >&2; exit 1; }
+
+# One name per line: the union of what the pod's desk services need and the other keys.
+desk_names="$(desk keys --config "$dotfiles_dir/config/desk/dev-pod.toml")"
+other_names="$(sed -e 's/#.*//' -e 's/[[:space:]]//g' "$dotfiles_dir/k8s/vivek-dev/api-keys")"
+names="$(printf '%s\n%s\n' "$desk_names" "$other_names" | awk 'NF' | sort -u)"
+
+# Names reach ${!name} below, so anything but a plain variable name is refused.
+while IFS= read -r name; do
+  if ! [[ "$name" =~ ^[A-Za-z_][A-Za-z0-9_]*$ ]]; then
+    echo "dev-pod-api-keys: '$name' is not an environment variable name" >&2
+    exit 1
+  fi
+done <<<"$names"
+
+# Each runs in a subshell, so the values sourced from the key store stay out of this shell and
+# out of kubectl's environment.
+problems() (
+  # shellcheck disable=SC1090
+  . "$env_file"
+  while IFS= read -r name; do
+    if [ -z "${!name-}" ]; then
+      echo "$name is not set in $env_file"
+    elif [[ "${!name}" == *$'\n'* ]]; then
+      echo "$name has a line break, which a Secret env file cannot hold"
+    fi
+  done <<<"$names"
+)
+
+env_lines() (
+  # shellcheck disable=SC1090
+  . "$env_file"
+  while IFS= read -r name; do
+    printf '%s=%s\n' "$name" "${!name}"
+  done <<<"$names"
+)
+
+if [ "$mode" = "dry-run" ]; then
+  echo "$names"
+fi
+
+found="$(problems)"
+if [ -n "$found" ]; then
+  echo "$found" >&2
+  echo "dev-pod-api-keys: not every key is usable. Fix: Add each one above to $env_file" >&2
+  exit 1
+fi
+
+if [ "$mode" = "dry-run" ]; then
+  exit 0
+fi
+
+env_lines |
+  kubectl create secret generic "$secret" -n "$namespace" \
+    --from-env-file=/dev/stdin --dry-run=client -o yaml |
+  kubectl apply -f -
