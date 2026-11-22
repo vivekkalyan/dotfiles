@@ -33,6 +33,11 @@ in
     source = oos "${dotfilesDir}/config/paseo/mac.json";
   };
 
+  # Which desk services this host has. desk reads it from the XDG config directory.
+  xdg.configFile."desk/config.toml" = {
+    source = oos "${dotfilesDir}/config/desk/mac.toml";
+  };
+
   xdg.configFile."ghostty" = {
     source = oos "${dotfilesDir}/config/ghostty";
   };

@@ -1,0 +1,4 @@
+# The desk services the dev pod has, linked to ~/.config/desk/config.toml there. Each table
+# enables one service, and bin/dev-pod-api-keys puts its keys into the pod's Secret.
+#
+# The pod starts with none: personal services such as Todoist stay on the Mac.

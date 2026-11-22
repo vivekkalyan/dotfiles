@@ -59,6 +59,11 @@ in
     source = oos "${dotfilesDir}/config/paseo/dev-pod.json";
   };
 
+  # Which desk services this host has. desk reads it from the XDG config directory.
+  xdg.configFile."desk/config.toml" = {
+    source = oos "${dotfilesDir}/config/desk/dev-pod.toml";
+  };
+
   home.activation.ensureSkyConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     sky_config="${homeDir}/.sky/config.yaml"
 
