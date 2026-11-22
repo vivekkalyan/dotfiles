@@ -42,6 +42,11 @@
       "source": "directory",
       "path": "/Users/vkalyan/workspace/personal/agents/paseo-plugins/task-diffs",
       "enabled": true
+    },
+    "enterprise-usage": {
+      "source": "directory",
+      "path": "/Users/vkalyan/workspace/personal/agents/paseo-plugins/enterprise-usage",
+      "enabled": true
     }
   },
   "agents": {

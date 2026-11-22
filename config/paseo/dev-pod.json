@@ -13,6 +13,11 @@
       "source": "directory",
       "path": "/workspace/personal/agents/paseo-plugins/task-diffs",
       "enabled": true
+    },
+    "enterprise-usage": {
+      "source": "directory",
+      "path": "/workspace/personal/agents/paseo-plugins/enterprise-usage",
+      "enabled": true
     }
   },
   "worktrees": {
