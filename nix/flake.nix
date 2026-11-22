@@ -17,6 +17,7 @@
     nixpkgsConfig = {
       allowUnfreePredicate = pkg: builtins.elem (nixpkgs.lib.getName pkg) [
         "claude-code"
+        "cursor-cli"
         "kimi-code"
         "obsidian-headless"
         "pi-coding-agent"
@@ -31,6 +32,7 @@
         };
       in final: _prev: {
         codex = final.callPackage ./packages/codex-bin.nix { };
+        cursor-cli = final.callPackage ./packages/cursor-cli.nix { cursor-cli = unstable.cursor-cli; };
         gh = unstable.gh;
         herdr = unstable.herdr;
         kimi-code = final.callPackage ./packages/kimi-code-bin.nix { };

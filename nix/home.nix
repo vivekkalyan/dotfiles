@@ -30,6 +30,7 @@ in
     clippy
     coreutils
     curl
+    cursor-cli
     eza
     fd
     fzf

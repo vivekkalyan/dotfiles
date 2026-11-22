@@ -118,6 +118,18 @@ Paseo's Claude provider uses `bin/paseo-claude` to select the existing claude.ai
 login instead of the pod API key. On this root-run pod it also removes Paseo's
 bypass-permission launch flags, retaining normal permission checks.
 
+### Cursor in Paseo
+
+Both hosts install the pinned Cursor CLI as `agent` and `cursor-agent`. Sign in
+with `agent login` on the host that runs the Paseo agent. On the pod, sign in
+from an SSH terminal. Then select Cursor when creating an agent on that host.
+
+Paseo discovers models from the signed-in Cursor account. Run
+`paseo provider models cursor` to check for Gemini 4 Neon (`gemini-4-neon`) and
+Gemini 4 Carbon (`gemini-4-carbon`). On the pod, use `dev-pod-paseo` in place of
+`paseo`. For direct CLI use, `agent models` lists the exact model and effort
+IDs, such as `gemini-4-neon-medium` and `gemini-4-carbon-medium`.
+
 ## Updates
 
 Update scripts change the repo first; apply scripts make a machine match the

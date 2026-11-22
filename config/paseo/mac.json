@@ -219,6 +219,16 @@
       },
       "muse": {
         "enabled": false
+      },
+      "cursor": {
+        "extends": "acp",
+        "label": "Cursor",
+        "description": "Cursor's coding agent",
+        "enabled": true,
+        "command": [
+          "cursor-agent",
+          "acp"
+        ]
       }
     }
   }
