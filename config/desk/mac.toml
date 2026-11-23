@@ -4,5 +4,8 @@
 # Brain tasks (efforts/tasks/), local filesystem service with zero API keys.
 [task]
 
+# Telegram Saved Messages (read-only), kept on the Mac with its local MTProto session.
+[telegram]
+
 # Personal tasks, tried on the Mac first.
 [todoist]
