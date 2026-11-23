@@ -33,6 +33,7 @@ in
     cursor-cli
     eza
     fd
+    ffmpeg-headless
     fzf
     gh
     git
@@ -60,6 +61,8 @@ in
     typst
     unzip
     uv
+    whisper-cpp
+    yt-dlp
     zoxide
     zsh
   ];

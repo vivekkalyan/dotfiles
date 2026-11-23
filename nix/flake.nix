@@ -42,6 +42,7 @@
         pi-coding-agent = unstable.pi-coding-agent;
         prek = unstable.prek;
         uv = unstable.uv;
+        yt-dlp = unstable.yt-dlp;
       };
 
     mkPkgs = system: import nixpkgs {
