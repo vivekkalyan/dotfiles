@@ -24,3 +24,6 @@
 
 # Meeting transcripts from Zoom (via Gmail + Helium) and local Meetily folders.
 [transcripts]
+
+# YouTube metadata, timestamped transcripts, frames, and local whisper.cpp ASR.
+[youtube]
