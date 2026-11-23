@@ -1,6 +1,9 @@
 # The desk services this Mac has, linked to ~/.config/desk/config.toml. Each table enables one
 # service; desk lists it once its keys are also in ~/workspace/.env.
 
+# Dedicated Helium browser session over CDP (~/.local/share/agents/helium-agents).
+[browser]
+
 # Brain tasks (efforts/tasks/), local filesystem service with zero API keys.
 [task]
 
