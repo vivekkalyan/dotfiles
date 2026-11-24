@@ -13,6 +13,9 @@
 # Gmail through the dedicated browser session.
 [gmail]
 
+# Slack (read-only) with a session captured from the dedicated browser (desk slack auth refresh).
+[slack]
+
 # Brain tasks (efforts/tasks/), local filesystem service with zero API keys.
 [task]
 
