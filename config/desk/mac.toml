@@ -7,6 +7,10 @@
 # Dedicated Helium browser session over CDP (~/.local/share/agents/helium-agents).
 [browser]
 
+# Confluence Cloud with an Atlassian API token (CONFLUENCE_EMAIL, CONFLUENCE_API_TOKEN).
+[confluence]
+base_url = "https://coreweave.atlassian.net/wiki"
+
 # Google Calendar through the dedicated browser session.
 [gcal]
 
