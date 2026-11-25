@@ -220,4 +220,26 @@ in
     source = oos "${dotfilesDir}/config/pi/agent/settings.json";
     force = true;
   };
+
+  # Cursor CLI stores runtime and auth state alongside user preferences in
+  # ~/.cursor/cli-config.json, so merge managed keys rather than symlinking.
+  home.activation.configureCursorCli = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    cursor_dir="${homeDir}/.cursor"
+    cursor_config="$cursor_dir/cli-config.json"
+    managed_config="${dotfilesDir}/config/cursor/cli-config.json"
+
+    mkdir -p "$cursor_dir"
+    if [ -L "$cursor_config" ]; then
+      rm -f "$cursor_config"
+    fi
+
+    tmp="$(mktemp "$cursor_dir/cli-config.json.XXXXXX")"
+    if [ -s "$cursor_config" ] && ${pkgs.jq}/bin/jq -e 'type == "object"' "$cursor_config" >/dev/null 2>&1; then
+      ${pkgs.jq}/bin/jq -s '.[0] * .[1]' "$cursor_config" "$managed_config" > "$tmp"
+    else
+      cp "$managed_config" "$tmp"
+    fi
+    chmod 600 "$tmp"
+    mv "$tmp" "$cursor_config"
+  '';
 }
